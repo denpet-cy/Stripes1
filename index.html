@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$STRIPES | The Rebellious Brother of Zeal</title>
+    <style>
+        :root {
+            --primary-blue: #0052ff;
+            --dark-bg: #0b0e14;
+            --card-bg: #151a26;
+            --text-light: #ffffff;
+            --text-gray: #8a99ad;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(11, 14, 20, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .cta-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .cta-btn.secondary {
+            background-color: transparent;
+            border: 2px solid var(--primary-blue);
+        }
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 82, 255, 0.5);
+        }
+        .hero {
+            padding: 150px 5% 80px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .highlight {
+            color: var(--primary-blue);
+        }
+        .hero p {
+            font-size: 18px;
+            color: var(--text-gray);
+            margin-bottom: 30px;
+        }
+        .ca-box {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #26324d;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .features {
+            display: flex;
+            gap: 20px;
+            padding: 40px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+        .card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            flex: 1;
+            min-width: 280px;
+            border: 1px solid #1f2738;
+        }
+        .card h3 {
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">🦓 $STRIPES</div>
+        <div class="nav-buttons">
+            <a href="https://dexscreener.com/robinhood/0x085cdc9ef630cc4dcbf9f01506a861c693eb999f0956809b2be08c1f067506c9" target="_blank" class="cta-btn secondary">DEX Screener</a>
+            <a href="https://zealz.fun/share/0xc8cce7f3c5c468c4ce1c2fbd92e2508D324b353C?v=4&ref=obsidian" target="_blank" class="cta-btn">Buy on Launchpad</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Zeal went corporate.<br>We found their <span class="highlight">STRIPES</span>.</h1>
+        <p>$ZEAL put on a suit to build utility, but they dropped their wild meme culture. With direct pools from block one and absolutely no bonding curves, $STRIPES is the rebellious cult brother here to take back the savannah.</p>
+        
+        <div class="ca-box" onclick="copyCA()">
+            <span id="ca-text">CA: 0xC8cce7F3C5c468C4Ce1c2FBd92E2508D324b353C</span>
+            <span style="color: var(--primary-blue); font-size: 14px;">📄 Copy Address</span>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="card">
+            <h3>💰 Hold & Earn zZEC</h3>
+            <p>Just hold $STRIPES in your wallet on the Robinhood Chain and automatically get rewarded with passive zZEC reflections straight to your address.</p>
+        </div>
+        <div class="card">
+            <h3>🪂 Social Airdrops</h3>
+            <p>No ghost wallets allowed. We reward the active herd. Raid socials, vote on discovery platforms, and earn your allocation.</p>
+        </div>
+        <div class="card">
+            <h3>🏛️ 100% Community DAO</h3>
+            <p>The 0.5% creator fee belongs to the herd. The community votes via Telegram polls on buy-backs, liquidity injection, or marketing updates.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>Join the Herd: <a href="https://t.me/StripesOnZealz" target="_blank" style="color: white; text-decoration: none;">Telegram</a> | <a href="https://x.com/dennispeters192" target="_blank" style="color: white; text-decoration: none;">X (Twitter)</a></p>
+        <p style="margin-top: 20px;">&copy; 2026 $STRIPES. 0% Corporate. 100% Vibe.</p>
+    </footer>
+
+    <script>
+        function copyCA() {
+            const caText = "0xC8cce7F3C5c468C4Ce1c2FBd92E2508D324b353C";
+            navigator.clipboard.writeText(caText);
+            alert("Contract Address copied to clipboard! 🦓");
+        }
+    </script>
+</body>
+</html>
