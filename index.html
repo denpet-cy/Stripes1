@@ -40,7 +40,7 @@
         .tab-nav {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 25px;
             flex-wrap: wrap;
         }
@@ -49,9 +49,9 @@
             background: var(--card-bg);
             color: var(--text-muted);
             border: 1px solid var(--border-color);
-            padding: 12px 28px;
+            padding: 12px 22px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: bold;
             border-radius: 10px;
             transition: all 0.3s ease;
@@ -239,6 +239,44 @@
             transition: width 0.5s ease;
         }
 
+        /* Utility Tab Styling */
+        .utility-box {
+            background: #12121c;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .utility-input {
+            width: 100%;
+            background: #1a1a26;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 15px;
+            color: var(--text-main);
+            font-family: monospace;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .utility-input:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
+        }
+
+        .utility-results {
+            margin-top: 20px;
+            background: #1a1a26;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            display: none;
+        }
+
         /* Roadmap Styling */
         .roadmap-container {
             text-align: left;
@@ -311,6 +349,7 @@
         <div class="tab-nav">
             <button class="tab-btn active" onclick="openTab(event, 'HomeTab')">Home</button>
             <button class="tab-btn" onclick="openTab(event, 'DashboardTab')">Dashboard</button>
+            <button class="tab-btn" onclick="openTab(event, 'UtilityTab')">⚡ Stripes Utility</button>
             <button class="tab-btn" onclick="openTab(event, 'RoadmapTab')">Roadmap</button>
         </div>
     </header>
@@ -369,7 +408,34 @@
         </div>
     </div>
 
-    <!-- TAB 3: ROADMAP -->
+    <!-- TAB 3: STRIPES UTILITY -->
+    <div id="UtilityTab" class="tab-content">
+        <div class="card-container" style="text-align: left;">
+            <h2 style="text-align: center; color: var(--neon-cyan); margin-bottom: 10px;">⚡ Stripes Utility Hub</h2>
+            <p style="text-align: center; font-size: 0.95rem; margin-bottom: 25px;">Echte tools voor The Real Herd. Geen onzin, pure on-chain bruikbaarheid.</p>
+            
+            <div class="utility-box">
+                <h3 style="color: var(--text-main); margin-top: 0; font-size: 1.1rem;">🔍 Holder & Wallet Quick Check</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 15px;">Voer je Solana wallet-adres in om snel te controleren of je $STRIPES bezit voor toekomstige holder-tools en exclusives.</p>
+                
+                <input type="text" id="wallet-input" class="utility-input" placeholder="Plak hier je Solana Wallet Adres...">
+                <button class="neon-btn pump" style="width: 100%; cursor: pointer;" onclick="checkWallet()">Wallet Controleren</button>
+
+                <div id="utility-results" class="utility-results">
+                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Status check:</div>
+                    <div id="result-text" style="font-weight: bold; color: var(--neon-cyan);">Voer een geldig adres in om te verifiëren.</div>
+                </div>
+            </div>
+
+            <div class="utility-box" style="margin-top: 20px;">
+                <h3 style="color: var(--text-main); margin-top: 0; font-size: 1.1rem;">🤖 Telegram Holder Bot</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 15px;">Word lid van onze Telegram en koppel je wallet via onze beveiligde bot om toegang te krijgen tot de exclusieve Real Herd kanalen.</p>
+                <a href="https://t.me/StripesPortal" target="_blank" class="neon-btn" style="width: 100%; text-align: center; box-sizing: border-box;">Open Telegram Portal</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 4: ROADMAP -->
     <div id="RoadmapTab" class="tab-content">
         <div class="card-container roadmap-container">
             <h2 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;">🦓 Official Roadmap: The Run of the Herd</h2>
@@ -386,13 +452,6 @@
                     <li>🔍 Establish official profile verifications on Bubblemaps and GeckoTerminal.</li>
                     <li>🛡️ Submit the Jupiter VRFD application and track its progress.</li>
                 </ul>
-
-                <div class="checks-title">Verifiable Completion Checks</div>
-                <ul>
-                    <li>✅ Official Bubblemaps profile is live and verified.</li>
-                    <li>✅ Official GeckoTerminal profile is live and verified.</li>
-                    <li>✅ Jupiter VRFD application has been submitted and its status is publicly trackable.</li>
-                </ul>
             </div>
 
             <div class="phase-box">
@@ -407,42 +466,20 @@
                     <li>📈 Reach defined community growth targets.</li>
                     <li>🤝 Build stronger relationships with holders, newcomers, creators, and potential partners.</li>
                 </ul>
-
-                <div class="checks-title">Verifiable Completion Checks</div>
-                <ul>
-                    <li>✅ Regular community Q&A and project updates are provided.</li>
-                    <li>✅ FUD and community concerns are addressed openly and transparently.</li>
-                    <li>✅ Wallet and token-supply information is communicated clearly when relevant.</li>
-                    <li>✅ Community growth targets are tracked and reported.</li>
-                </ul>
             </div>
 
             <div class="phase-box">
                 <h3>PHASE 3</h3>
                 <div class="phase-subtitle">Ready to Send — Migration, LP Locking, Live Dashboards & Community Bot</div>
-                <p>Once the Herd reaches the required milestone, $STRIPES moves into its next stage of development and ecosystem expansion. No fake enterprise software or forced features—focusing instead on real ecosystem tools like live on-chain dashboards, analytics, and an exclusive Telegram bot for holder verification, raids, and community coordination.</p>
+                <p>Once the Herd reaches the required milestone, $STRIPES moves into its next stage of development and ecosystem expansion. No fake enterprise software or forced features—focusing instead on real ecosystem tools like live on-chain dashboards, analytics, and an exclusive Telegram bot.</p>
                 
                 <div class="checks-title">Key Milestones</div>
                 <ul>
                     <li>🚀 Reach 100% of the Pump.fun bonding curve.</li>
                     <li>🌊 Successfully migrate $STRIPES to Raydium.</li>
                     <li>🔒 Lock the Raydium liquidity pool tokens immediately after migration.</li>
-                    <li>🔐 Lock an additional 2.5% of the total token supply for 3 months, with zero selling during the lock period.</li>
-                    <li>📊 Maintain and expand live on-chain tracking dashboards (Market Cap, SOL price, Bonding Curve).</li>
-                    <li>🤖 Develop and launch a dedicated Telegram bot for holder verification, raid coordination, and community engagement.</li>
-                    <li>📈 Build sustainable trading volume and strengthen project documentation.</li>
-                    <li>🌐 Work toward official CoinGecko and CoinMarketCap listings.</li>
-                    <li>🤝 Expand through the website, upcoming listings, partnerships, and broader ecosystem exposure.</li>
-                </ul>
-
-                <div class="checks-title">Verifiable Completion Checks</div>
-                <ul>
-                    <li>✅ Pump.fun bonding curve reaches 100%.</li>
-                    <li>✅ Migration to Raydium is completed.</li>
-                    <li>✅ LP tokens are locked following migration.</li>
-                    <li>✅ Additional 2.5% supply lock is publicly verifiable, including the lock period.</li>
-                    <li>✅ Live on-chain dashboard and Telegram bot are fully operational for the community.</li>
-                    <li>✅ Documentation and volume requirements for CoinGecko and CoinMarketCap applications are met.</li>
+                    <li>📊 Maintain and expand live on-chain tracking dashboards.</li>
+                    <li>🤖 Develop and launch dedicated utilities for the community.</li>
                 </ul>
             </div>
 
@@ -493,28 +530,6 @@
                                 maximumFractionDigits: 0
                             });
 
-                            let progress = (marketCap / 69000) * 100;
+                            let progress = (marketCap / 16400) * 100;
                             if (progress > 100) progress = 100;
-                            const progStr = progress.toFixed(1) + "%";
-                            document.getElementById('progress-text').innerText = progStr;
-                            document.getElementById('progress-bar').style.width = progStr;
-                        }
-                    }
-                }
-
-                if (solRes.ok) {
-                    const solData = await solRes.json();
-                    if (solData && solData.solana && solData.solana.usd) {
-                        document.getElementById('sol-price').innerText = "$" + solData.solana.usd.toFixed(2);
-                    }
-                }
-            } catch (error) {
-                console.error("Fout bij ophalen live data:", error);
-            }
-        }
-
-        fetchLiveData();
-        setInterval(fetchLiveData, 15000);
-    </script>
-</body>
-</html>
+                            const progStr 
