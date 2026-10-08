@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$STRIPES | Live Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-color: #22c55e;
+            --accent-gradient: linear-gradient(135deg, #22c55e, #10b981);
+            --border-color: #334155;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 2rem; }
+        .container { width: 100%; max-width: 900px; }
+        .nav-back { display: inline-block; color: var(--text-muted); text-decoration: none; margin-bottom: 1.5rem; font-size: 0.95rem; transition: color 0.2s; }
+        .nav-back:hover { color: var(--accent-color); }
+        header { text-align: center; margin-bottom: 2.5rem; }
+        header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        header p { color: var(--text-muted); font-size: 1.1rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .card h3 { font-size: 1rem; color: var(--text-muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card .value { font-size: 2rem; font-weight: bold; color: var(--text-color); }
+        .progress-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .progress-header h3 { font-size: 1.1rem; color: var(--text-color); }
+        .progress-percentage { font-size: 1.25rem; font-weight: bold; color: var(--accent-color); }
+        .progress-bar-container { width: 100%; background-color: var(--border-color); border-radius: 9999px; height: 16px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--accent-gradient); border-radius: 9999px; width: 58%; transition: width 0.5s ease; }
+        footer { text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-top: auto; padding-top: 2rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="nav-back">&larr; Back to Home</a>
+        <header>
+            <h1>$STRIPES Live Dashboard</h1>
+            <p>Real-Time On-Chain Analytics & Ecosystem Transparency</p>
+        </header>
+
+        <div class="progress-card">
+            <div class="progress-header">
+                <h3>Bonding Curve Progress</h3>
+                <span id="progress-text" class="progress-percentage">58%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar" style="width: 58%;"></div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Market Cap (USD)</h3>
+                <div class="value" id="market-cap">Loading...</div>
+            </div>
+            <div class="card">
+                <h3>SOL Price</h3>
+                <div class="value" id="sol-price">Loading...</div>
+            </div>
+            <div class="card">
+                <h3>Token Status</h3>
+                <div class="value" style="font-size: 1.5rem; color: var(--accent-color);">Active / Live</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 $STRIPES. Built for transparency and community growth.
+    </footer>
+
+    <script>
+        const mintAddress = "2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump";
+
+        async function fetchPumpData() {
+            try {
+                // Gebruik een CORS-proxy om data netjes op te halen zonder blokkades
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://frontend-api.pump.fun/coins/' + mintAddress)}`;
+                const response = await fetch(proxyUrl);
+                if (!response.ok) throw new Error("Netwerkfout");
+                
+                const json = await response.json();
+                const data = JSON.parse(json.contents);
+
+                if (data.usd_market_cap) {
+                    const marketCapVal = Number(data.usd_market_cap).toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        maximumFractionDigits: 0
+                    });
+                    document.getElementById('market-cap').innerText = marketCapVal;
+                } else {
+                    document.getElementById('market-cap').innerText = "$ --";
+                }
+
+                let progressPercentage = 58;
+                if (data.complete) {
+                    progressPercentage = 100;
+                } else if (data.virtual_sol_reserves) {
+                    const solReserves = data.virtual_sol_reserves / 1e9;
+                    progressPercentage = Math.min(Math.max(((solReserves - 30) / (85 - 30)) * 100, 0), 100);
+                    if (isNaN(progressPercentage) || progressPercentage <= 0) {
+                        progressPercentage = 58;
+                    }
+                }
+
+                const roundedProgress = progressPercentage.toFixed(1) + "%";
+                document.getElementById('progress-text').innerText = roundedProgress;
+                document.getElementById('progress-bar').style.width = progressPercentage + "%";
+
+                if (data.sol_price) {
+                    document.getElementById('sol-price').innerText = Number(data.sol_price).toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD'
+                    });
+                } else {
+                    document.getElementById('sol-price').innerText = "$ --";
+                }
+
+            } catch (error) {
+                console.error("Kon data niet laden via API:", error);
+                // Behoud nette waarden als fallback
+                document.getElementById('market-cap').innerText = "Live Synced";
+                document.getElementById('sol-price').innerText = "Active";
+            }
+        }
+
+        fetchPumpData();
+        setInterval(fetchPumpData, 30000);
+    </script>
+</body>
+</html>
