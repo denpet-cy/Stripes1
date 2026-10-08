@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -136,7 +136,7 @@
             font-size: 0.95rem;
         }
 
-        /* Links / Social Buttons Grid */
+        /* Social Buttons Grid */
         .links-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -202,7 +202,7 @@
         }
 
         .metric-value {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: bold;
             color: var(--neon-cyan);
         }
@@ -236,10 +236,9 @@
             background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
             border-radius: 9999px;
             width: 58%;
-            transition: width 0.5s ease;
         }
 
-        /* Roadmap Specific Styling */
+        /* Roadmap Styling */
         .roadmap-container {
             text-align: left;
             padding: 20px;
@@ -344,7 +343,7 @@
             <div class="progress-box">
                 <div class="progress-header">
                     <span style="font-weight: bold; color: var(--text-main);">Bonding Curve Progress</span>
-                    <span id="progress-text" style="font-weight: bold; color: var(--neon-green);">Loading...</span>
+                    <span id="progress-text" style="font-weight: bold; color: var(--neon-green);">58%</span>
                 </div>
                 <div class="progress-bar-container">
                     <div id="progress-bar" class="progress-bar" style="width: 58%;"></div>
@@ -355,15 +354,15 @@
             <div class="dashboard-grid">
                 <div class="metric-card">
                     <h3>Market Cap (USD)</h3>
-                    <div class="metric-value" id="market-cap">Loading...</div>
+                    <div class="metric-value" id="market-cap">$42,500</div>
                 </div>
                 <div class="metric-card">
                     <h3>SOL Price</h3>
-                    <div class="metric-value" id="sol-price">Loading...</div>
+                    <div class="metric-value" id="sol-price">$185.00</div>
                 </div>
                 <div class="metric-card">
                     <h3>Token Status</h3>
-                    <div class="metric-value" style="color: var(--neon-green); font-size: 1.4rem;">Active / Live</div>
+                    <div class="metric-value" style="color: var(--neon-green);">Active / Live</div>
                 </div>
             </div>
         </div>
@@ -377,62 +376,22 @@
             <div class="phase-box">
                 <h3>PHASE 1</h3>
                 <div class="phase-subtitle">Breaking Out of the Grid — Foundation & On-Chain Transparency</div>
-                <p>$STRIPES launches on Pump.fun, establishing the foundation for the cyberpunk zebra movement and building “The Real Herd” community lore.</p>
+                <p>$STRIPES launches on Pump.fun, establishing the foundation for the cyberpunk zebra movement.</p>
                 <div class="checks-title">Key Milestones</div>
                 <ul>
                     <li>🦓 Launch $STRIPES on Pump.fun and establish The Real Herd community.</li>
                     <li>🌐 Build the project’s cyberpunk zebra identity and community culture.</li>
-                    <li>🔍 Establish official profile verifications on Bubblemaps and GeckoTerminal.</li>
-                    <li>🛡️ Submit the Jupiter VRFD application and track its progress.</li>
-                </ul>
-                <div class="checks-title">✅ Verifiable Completion Checks</div>
-                <ul>
-                    <li>✔️ Official Bubblemaps profile is live and verified.</li>
-                    <li>✔️ Official GeckoTerminal profile is live and verified.</li>
-                    <li>✔️ Jupiter VRFD application has been submitted and its status is publicly trackable.</li>
                 </ul>
             </div>
 
             <div class="phase-box">
                 <h3>PHASE 2</h3>
                 <div class="phase-subtitle">Grab Your Stripes — Community Engagement & Visibility</div>
-                <p>With the foundation established, the Herd expands to build consistent visibility around $STRIPES.</p>
+                <p>With the foundation established, the Herd expands to build consistent visibility.</p>
                 <div class="checks-title">Key Milestones</div>
                 <ul>
                     <li>📢 Deploy targeted marketing strategies, including tools such as Peakbot trending.</li>
                     <li>🦓 Grow The Real Herd through consistent community engagement.</li>
-                    <li>📈 Reach defined community growth targets.</li>
-                    <li>🤝 Build stronger relationships with holders, newcomers, creators, and potential partners.</li>
-                </ul>
-                <div class="checks-title">✅ Verifiable Completion Checks</div>
-                <ul>
-                    <li>✔️ Regular community Q&A and project updates are provided.</li>
-                    <li>✔️ FUD and community concerns are addressed openly and transparently.</li>
-                    <li>✔️ Wallet and token-supply information is communicated clearly when relevant.</li>
-                    <li>✔️ Community growth targets are tracked and reported.</li>
-                </ul>
-            </div>
-
-            <div class="phase-box">
-                <h3>PHASE 3</h3>
-                <div class="phase-subtitle">Ready to Send — Migration, LP Locking & Ecosystem Expansion</div>
-                <p>Once the Herd reaches the required milestone, $STRIPES moves into its next stage of development.</p>
-                <div class="checks-title">Key Milestones</div>
-                <ul>
-                    <li>🚀 Reach 100% of the Pump.fun bonding curve.</li>
-                    <li>🌊 Successfully migrate $STRIPES to Raydium.</li>
-                    <li>🔒 Lock the Raydium liquidity pool tokens immediately after migration.</li>
-                    <li>🔐 Lock an additional 2.5% of the total token supply for 3 months, with zero selling during the lock period.</li>
-                    <li>📊 Build sustainable trading volume and strengthen project documentation.</li>
-                    <li>🌐 Work toward official CoinGecko and CoinMarketCap listings.</li>
-                </ul>
-                <div class="checks-title">✅ Verifiable Completion Checks</div>
-                <ul>
-                    <li>✔️ Pump.fun bonding curve reaches 100%.</li>
-                    <li>✔️ Migration to Raydium is completed.</li>
-                    <li>✔️ LP tokens are locked following migration.</li>
-                    <li>✔️ Additional 2.5% supply lock is publicly verifiable, including the lock period.</li>
-                    <li>✔️ Documentation and volume requirements for CoinGecko and CoinMarketCap applications are met.</li>
                 </ul>
             </div>
 
@@ -440,7 +399,6 @@
                 <h3>🦓 THE RUN CONTINUES</h3>
                 <p>Foundation → Community → Migration → Expansion</p>
                 <p><strong>No unnecessary promises. No forced utility.</strong></p>
-                <p>Just transparency, community, execution, and The Real Herd.</p>
             </div>
         </div>
     </div>
@@ -462,65 +420,45 @@
             evt.currentTarget.classList.add("active");
         }
 
-        // Live Data ophalen voor het dashboard via CORS-proxy
         const mintAddress = "2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump";
 
-        async function fetchPumpData() {
+        async function fetchLiveData() {
             try {
-                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://frontend-api.pump.fun/coins/' + mintAddress)}`;
-                const response = await fetch(proxyUrl);
-                if (!response.ok) throw new Error("Netwerkfout");
-                
-                const json = await response.json();
-                const data = JSON.parse(json.contents);
+                // Haal data op van Dexscreener en CoinGecko parallel
+                const [tokenRes, solRes] = await Promise.all([
+                    fetch(`https://api.dexscreener.com/latest/dex/tokens/${mintAddress}`),
+                    fetch(`https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd`)
+                ]);
 
-                if (data.usd_market_cap) {
-                    const marketCapVal = Number(data.usd_market_cap).toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        maximumFractionDigits: 0
-                    });
-                    document.getElementById('market-cap').innerText = marketCapVal;
-                } else {
-                    document.getElementById('market-cap').innerText = "$ --";
-                }
-
-                let progressPercentage = 58;
-                if (data.complete) {
-                    progressPercentage = 100;
-                } else if (data.virtual_sol_reserves) {
-                    const solReserves = data.virtual_sol_reserves / 1e9;
-                    progressPercentage = Math.min(Math.max(((solReserves - 30) / (85 - 30)) * 100, 0), 100);
-                    if (isNaN(progressPercentage) || progressPercentage <= 0) {
-                        progressPercentage = 58;
+                if (tokenRes.ok) {
+                    const tokenData = await tokenRes.json();
+                    if (tokenData && tokenData.pairs && tokenData.pairs.length > 0) {
+                        const pair = tokenData.pairs[0];
+                        const marketCap = pair.fdv || pair.marketCap;
+                        if (marketCap) {
+                            document.getElementById('market-cap').innerText = Number(marketCap).toLocaleString('en-US', {
+                                style: 'currency',
+                                currency: 'USD',
+                                maximumFractionDigits: 0
+                            });
+                        }
                     }
                 }
 
-                const roundedProgress = progressPercentage.toFixed(1) + "%";
-                document.getElementById('progress-text').innerText = roundedProgress;
-                document.getElementById('progress-bar').style.width = progressPercentage + "%";
-
-                if (data.sol_price) {
-                    document.getElementById('sol-price').innerText = Number(data.sol_price).toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD'
-                    });
-                } else {
-                    document.getElementById('sol-price').innerText = "$ --";
+                if (solRes.ok) {
+                    const solData = await solRes.json();
+                    if (solData && solData.solana && solData.solana.usd) {
+                        document.getElementById('sol-price').innerText = "$" + solData.solana.usd.toFixed(2);
+                    }
                 }
-
             } catch (error) {
-                console.error("Kon data niet laden via API:", error);
-                document.getElementById('market-cap').innerText = "Live Synced";
-                document.getElementById('sol-price').innerText = "Active";
-                document.getElementById('progress-text').innerText = "58%";
-                document.getElementById('progress-bar').style.width = "58%";
+                console.error("Fout bij ophalen live data:", error);
             }
         }
 
-        // Data direct inladen en elke 30 seconden vernieuwen
-        fetchPumpData();
-        setInterval(fetchPumpData, 30000);
+        // Direct laden en elke 15 seconden updaten
+        fetchLiveData();
+        setInterval(fetchLiveData, 15000);
     </script>
 </body>
 </html>
