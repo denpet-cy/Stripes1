@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$STRIPES — The Real Herd</title>
+    <title>$STRIPES — The Real Herd & Utility</title>
     <style>
         :root {
             --bg-color: #12121c;
@@ -25,7 +25,7 @@
         }
 
         .container {
-            max-width: 850px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
@@ -54,7 +54,7 @@
             background: var(--card-bg);
             color: var(--text-muted);
             border: 1px solid var(--border-color);
-            padding: 12px 20px;
+            padding: 12px 22px;
             cursor: pointer;
             font-size: 0.95rem;
             font-weight: bold;
@@ -91,6 +91,8 @@
             color: var(--neon-pink);
             text-align: center;
             margin-top: 0;
+            font-size: 2rem;
+            margin-bottom: 20px;
         }
 
         p {
@@ -120,7 +122,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .neon-btn {
@@ -156,9 +158,18 @@
             color: var(--bg-color);
         }
 
+        /* Utility Styling */
+        .utility-box {
+            background: #12121c;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
         .utility-input {
             width: 100%;
-            background: #12121c;
+            background: #1a1a26;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 12px 15px;
@@ -175,17 +186,74 @@
 
         .utility-results {
             margin-top: 15px;
-            background: #12121c;
+            background: #1a1a26;
             border: 1px solid var(--border-color);
             border-radius: 10px;
             padding: 15px;
             display: none;
         }
 
-        .roadmap-item {
-            margin-bottom: 20px;
+        .utility-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .utility-feature {
+            background: #12121c;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .utility-feature h3 {
+            color: var(--neon-cyan);
+            margin-top: 0;
+            font-size: 1.1rem;
+        }
+
+        /* Roadmap Styling */
+        .phase-box {
             border-left: 3px solid var(--neon-pink);
-            padding-left: 15px;
+            margin-bottom: 30px;
+            padding-left: 20px;
+        }
+
+        .phase-box.phase-3 {
+            border-left-color: var(--neon-cyan);
+        }
+
+        .phase-box h3 {
+            color: var(--neon-pink);
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .phase-box.phase-3 h3 {
+            color: var(--neon-cyan);
+        }
+
+        .phase-subtitle {
+            font-size: 1.02rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .roadmap-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .roadmap-list li {
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 0.96rem;
         }
     </style>
 </head>
@@ -224,34 +292,72 @@
         <div id="utility-tab" class="tab-pane">
             <div class="card-container">
                 <h2>⚡ Stripes Utility Hub</h2>
-                <p>Echte tools voor The Real Herd. Geen onzin, pure on-chain bruikbaarheid.</p>
+                <p>Echte tools voor The Real Herd. Geen onzin, pure on-chain bruikbaarheid en community-ondersteuning.</p>
                 
-                <h3 style="color: var(--text-main); font-size: 1.1rem; margin-top: 20px;">🔍 Holder & Wallet Quick Check</h3>
-                <p style="font-size: 0.9rem;">Voer je Solana wallet-adres in om te controleren of je klaar bent voor toekomstige holder-tools.</p>
-                
-                <input type="text" id="wallet-input" class="utility-input" placeholder="Plak hier je Solana Wallet Adres...">
-                <button class="neon-btn pump" style="width: 100%; border: none;" onclick="checkWallet()">Wallet Controleren</button>
+                <div class="utility-box">
+                    <h3 style="color: var(--text-main); margin-top: 0; font-size: 1.1rem;">🔍 Holder & Wallet Quick Check</h3>
+                    <p style="font-size: 0.9rem;">Voer je Solana wallet-adres in om te controleren of je klaar bent voor toekomstige holder-tools en exclusives.</p>
+                    
+                    <input type="text" id="wallet-input" class="utility-input" placeholder="Plak hier je Solana Wallet Adres...">
+                    <button class="neon-btn pump" style="width: 100%; border: none;" onclick="checkWallet()">Wallet Controleren</button>
 
-                <div id="utility-results" class="utility-results">
-                    <div id="result-text" style="font-weight: bold; color: var(--neon-cyan);">Voer een geldig adres in.</div>
+                    <div id="utility-results" class="utility-results">
+                        <div id="result-text" style="font-weight: bold; color: var(--neon-cyan);">Voer een geldig adres in.</div>
+                    </div>
+                </div>
+
+                <div class="utility-grid">
+                    <div class="utility-feature">
+                        <h3>🤖 Telegram Holder Bot</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 0;">Beveiligde integratie binnen onze Telegram portal om je wallet te verifiëren en toegang te krijgen tot exclusieve holder-kanalen.</p>
+                    </div>
+                    <div class="utility-feature">
+                        <h3>📊 On-Chain Transparency</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 0;">Volledig inzicht in transactiestromen, liquidity status en projectverificaties via gecertificeerde platformen.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div id="roadmap-tab" class="tab-pane">
             <div class="card-container">
-                <h2>🦓 Official Roadmap</h2>
-                <div class="roadmap-item">
-                    <strong style="color: var(--text-main);">Phase 1:</strong>
-                    <p style="margin: 5px 0 0 0;">Launch on Pump.fun, establishing community lore and profile verifications.</p>
+                <h2>🦓 Official Roadmap: The Run of the Herd</h2>
+
+                <div class="phase-box">
+                    <h3>PHASE 1</h3>
+                    <div class="phase-subtitle">Breaking Out of the Grid — Foundation & On-Chain Transparency</div>
+                    <p>$STRIPES launches on Pump.fun, establishing the foundation for the cyberpunk zebra movement and building “The Real Herd” community lore. The focus is on creating a strong identity while making the project transparent and verifiable on-chain.</p>
+                    <ul class="roadmap-list">
+                        <li>🦓 Launch $STRIPES on Pump.fun and establish The Real Herd community.</li>
+                        <li>🌐 Build the project’s cyberpunk zebra identity and community culture.</li>
+                        <li>🔍 Establish official profile verifications on Bubblemaps and GeckoTerminal.</li>
+                        <li>🛡️ Submit the Jupiter VRFD application and track its progress.</li>
+                    </ul>
                 </div>
-                <div class="roadmap-item">
-                    <strong style="color: var(--text-main);">Phase 2:</strong>
-                    <p style="margin: 5px 0 0 0;">Targeted marketing, community growth, and scaling The Real Herd.</p>
+
+                <div class="phase-box">
+                    <h3>PHASE 2</h3>
+                    <div class="phase-subtitle">Grab Your Stripes — Community Engagement & Visibility</div>
+                    <p>With the foundation established, the Herd expands. The goal is to spread the cyberpunk zebra movement, bring new members into the community, and build consistent visibility around $STRIPES.</p>
+                    <ul class="roadmap-list">
+                        <li>📢 Deploy targeted marketing strategies, including tools such as Peakbot trending.</li>
+                        <li>🦓 Grow The Real Herd through consistent community engagement.</li>
+                        <li>📈 Reach defined community growth targets.</li>
+                        <li>🤝 Build stronger relationships with holders, newcomers, creators, and potential partners.</li>
+                    </ul>
                 </div>
-                <div class="roadmap-item" style="border-left-color: var(--neon-cyan);">
-                    <strong style="color: var(--text-main);">Phase 3:</strong>
-                    <p style="margin: 5px 0 0 0;">100% Bonding Curve, Raydium migration, LP locking, and expanding on-chain utilities.</p>
+
+                <div class="phase-box phase-3">
+                    <h3>PHASE 3</h3>
+                    <div class="phase-subtitle">Ready to Send — Migration, LP Locking, Live Dashboards & Community Bot</div>
+                    <p>Once the Herd reaches the required milestone, $STRIPES moves into its next stage of development and ecosystem expansion. No fake enterprise software or forced features—focusing instead on real ecosystem tools like live on-chain dashboards, analytics, and an exclusive Telegram bot.</p>
+                    <ul class="roadmap-list">
+                        <li>🚀 Reach 100% of the Pump.fun bonding curve.</li>
+                        <li>🌊 Successfully migrate $STRIPES to Raydium.</li>
+                        <li>🔒 Lock the Raydium liquidity pool tokens immediately after migration.</li>
+                        <li>📊 Maintain and expand live on-chain tracking dashboards.</li>
+                        <li>🤖 Develop and launch dedicated utilities for the community.</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -259,19 +365,16 @@
 
     <script>
         function switchTab(evt, tabId) {
-            // Verberg alle tabbladen
             const panes = document.getElementsByClassName('tab-pane');
             for (let i = 0; i < panes.length; i++) {
                 panes[i].classList.remove('active');
             }
 
-            // Haal de actieve status weg van alle knoppen
             const buttons = document.getElementsByClassName('tab-btn');
             for (let i = 0; i < buttons.length; i++) {
                 buttons[i].classList.remove('active');
             }
 
-            // Toon de gekozen tab en maak de knop actief
             document.getElementById(tabId).classList.add('active');
             evt.currentTarget.classList.add('active');
         }
