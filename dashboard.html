@@ -3,226 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$STRIPES — The Real Herd & Dashboard</title>
+    <title>$STRIPES — Dashboard</title>
     <style>
         :root {
             --bg-color: #12121c;
             --card-bg: #1a1a26;
-            --neon-pink: #ff2a85;
             --neon-cyan: #00f3ff;
             --neon-green: #22c55e;
             --text-main: #ffffff;
             --text-muted: #b8b8c8;
             --border-color: #32324a;
         }
-
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 20px;
         }
-
-        header {
-            text-align: center;
-            padding: 30px 20px 10px;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            color: var(--neon-cyan);
-            text-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
-            margin: 10px 0 20px;
-        }
-
-        /* Tab Navigatie */
-        .tab-nav {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background: var(--card-bg);
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-            padding: 12px 28px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .tab-btn.active, .tab-btn:hover {
-            color: var(--bg-color);
-            background: var(--neon-cyan);
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.7);
-        }
-
-        /* Tab Content */
-        .tab-content {
-            display: none;
-            max-width: 850px;
-            margin: 0 auto 50px;
-            padding: 0 20px;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Container Styling */
         .card-container {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 35px 25px;
+            max-width: 600px;
+            margin: 40px auto;
             box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-            text-align: center;
-            position: relative;
+            text-align: left;
         }
-
-        .home-title {
-            font-size: 2rem;
-            color: var(--neon-pink);
-            text-shadow: 0 0 10px rgba(255, 42, 133, 0.5);
-            margin-bottom: 15px;
-        }
-
-        p {
-            color: var(--text-muted);
-            line-height: 1.7;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-
-        .tagline {
-            font-size: 1.2rem;
-            color: var(--text-main);
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin: 20px 0;
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
-        }
-
-        /* Contract Box */
-        .ca-box {
-            background: #0f0f17;
-            border: 1px dashed var(--neon-cyan);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 25px 0;
-            word-break: break-all;
-        }
-
-        .ca-title {
-            font-size: 0.85rem;
-            color: var(--neon-cyan);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .ca-address {
-            font-family: monospace;
-            color: var(--text-main);
-            font-size: 0.95rem;
-        }
-
-        /* Social Buttons Grid */
-        .links-grid {
+        .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
-            margin-top: 30px;
-        }
-
-        .neon-btn {
-            background: #12121c;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 14px 20px;
-            border-radius: 10px;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .neon-btn:hover {
-            border-color: var(--neon-pink);
-            color: var(--neon-pink);
-            box-shadow: 0 0 15px rgba(255, 42, 133, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .neon-btn.pump {
-            border-color: var(--neon-cyan);
-            color: var(--neon-cyan);
-        }
-
-        .neon-btn.pump:hover {
-            background: var(--neon-cyan);
-            color: var(--bg-color);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.8);
-        }
-
-        /* Dashboard Specific Styling */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 15px;
             margin-top: 20px;
-            text-align: left;
         }
-
         .metric-card {
             background: #12121c;
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 20px;
         }
-
         .metric-card h3 {
             font-size: 0.9rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
             margin-bottom: 8px;
         }
-
         .metric-value {
             font-size: 1.6rem;
             font-weight: bold;
             color: var(--neon-cyan);
         }
-
         .progress-box {
             background: #12121c;
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 20px;
-            text-align: left;
         }
-
         .progress-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
         }
-
         .progress-bar-container {
             width: 100%;
             background: var(--border-color);
@@ -230,7 +74,6 @@
             height: 14px;
             overflow: hidden;
         }
-
         .progress-bar {
             height: 100%;
             background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
@@ -238,190 +81,36 @@
             width: 0%;
             transition: width 0.5s ease;
         }
-
-        /* Roadmap Styling - Volledig zichtbaar gemaakt zonder afkappen */
-        .roadmap-container {
-            text-align: left;
-            padding: 30px 25px;
-            height: auto;
-        }
-
-        .phase-box {
-            border-left: 3px solid var(--neon-pink);
-            margin-bottom: 35px;
-            padding-left: 20px;
-        }
-
-        .phase-box h3 {
-            color: var(--neon-pink);
-            font-size: 1.3rem;
-            margin-bottom: 5px;
-        }
-
-        .phase-subtitle {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 15px;
-        }
-
-        .roadmap-container ul {
-            list-style: none;
-            padding: 0;
-            margin: 15px 0;
-        }
-
-        .roadmap-container li {
-            margin-bottom: 8px;
-            color: var(--text-muted);
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            font-size: 0.98rem;
-        }
-
-        .checks-title {
-            font-weight: bold;
-            color: var(--neon-cyan);
-            margin-top: 15px;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-        }
-
-        .footer-note {
-            text-align: center;
-            border-top: 1px solid var(--border-color);
-            padding-top: 25px;
-            margin-top: 35px;
-        }
-
-        .footer-note p {
-            font-style: italic;
-            color: var(--text-main);
-            margin-bottom: 8px;
-        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🦓 $STRIPES</h1>
-        <div class="tab-nav">
-            <button class="tab-btn active" onclick="openTab(event, 'HomeTab')">Home</button>
-            <button class="tab-btn" onclick="openTab(event, 'DashboardTab')">Dashboard</button>
-            <button class="tab-btn" onclick="openTab(event, 'RoadmapTab')">Roadmap</button>
-        </div>
-    </header>
-
-    <!-- TAB 1: HOME -->
-    <div id="HomeTab" class="tab-content active">
-        <div class="card-container">
-            <h2 class="home-title">Welcome to The Real Herd</h2>
-            <p>$STRIPES is the ultimate cyberpunk zebra herd running wild on the Solana blockchain. Built for pure neon momentum, breaking out of the traditional grid.</p>
-            
-            <div class="tagline">⚡ No suits. Only vibes. Web3 forever. ⚡</div>
-
-            <div class="ca-box">
-                <div class="ca-title">Contract Address (CA)</div>
-                <div class="ca-address">2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump</div>
+    <div class="card-container">
+        <h2 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;">🦓 Live On-Chain Dashboard</h2>
+        
+        <div class="progress-box">
+            <div class="progress-header">
+                <span style="font-weight: bold; color: var(--text-main);">Bonding Curve Progress</span>
+                <span id="progress-text" style="font-weight: bold; color: var(--neon-green);">Laden...</span>
             </div>
-
-            <div class="links-grid">
-                <a href="https://pump.fun/coin/2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump?share" target="_blank" class="neon-btn pump">💊 Pump.fun</a>
-                <a href="https://dexscreener.com/solana/2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump" target="_blank" class="neon-btn">📈 Dexscreener</a>
-                <a href="https://t.me/StripesPortal" target="_blank" class="neon-btn">💬 Telegram Portal</a>
-                <a href="https://x.com/dennispeters192" target="_blank" class="neon-btn">🕞 Twitter / X</a>
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
             </div>
         </div>
-    </div>
 
-    <!-- TAB 2: DASHBOARD -->
-    <div id="DashboardTab" class="tab-content">
-        <div class="card-container" style="text-align: left;">
-            <h2 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;">🦓 Live On-Chain Dashboard</h2>
-            
-            <!-- Bonding Curve Voortgang -->
-            <div class="progress-box">
-                <div class="progress-header">
-                    <span style="font-weight: bold; color: var(--text-main);">Bonding Curve Progress</span>
-                    <span id="progress-text" style="font-weight: bold; color: var(--neon-green);">Laden...</span>
-                </div>
-                <div class="progress-bar-container">
-                    <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
-                </div>
+        <div class="dashboard-grid">
+            <div class="metric-card">
+                <h3>Market Cap (USD)</h3>
+                <div class="metric-value" id="market-cap">Laden...</div>
             </div>
-
-            <!-- Grid met Metrics -->
-            <div class="dashboard-grid">
-                <div class="metric-card">
-                    <h3>Market Cap (USD)</h3>
-                    <div class="metric-value" id="market-cap">Laden...</div>
-                </div>
-                <div class="metric-card">
-                    <h3>SOL Price</h3>
-                    <div class="metric-value" id="sol-price">Laden...</div>
-                </div>
-                <div class="metric-card">
-                    <h3>Token Status</h3>
-                    <div class="metric-value" style="color: var(--neon-green);">Active / Live</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TAB 3: ROADMAP -->
-    <div id="RoadmapTab" class="tab-content">
-        <div class="card-container roadmap-container">
-            <h2 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;">🦓 Official Roadmap: The Run of the Herd</h2>
-
-            <div class="phase-box">
-                <h3>PHASE 1</h3>
-                <div class="phase-subtitle">Breaking Out of the Grid — Foundation & On-Chain Transparency</div>
-                <p>$STRIPES launches on Pump.fun, establishing the foundation for the cyberpunk zebra movement.</p>
-                <div class="checks-title">Key Milestones</div>
-                <ul>
-                    <li>🦓 Launch $STRIPES on Pump.fun and establish The Real Herd community.</li>
-                    <li>🌐 Build the project’s cyberpunk zebra identity and community culture.</li>
-                </ul>
-            </div>
-
-            <div class="phase-box">
-                <h3>PHASE 2</h3>
-                <div class="phase-subtitle">Grab Your Stripes — Community Engagement & Visibility</div>
-                <p>With the foundation established, the Herd expands to build consistent visibility.</p>
-                <div class="checks-title">Key Milestones</div>
-                <ul>
-                    <li>📢 Deploy targeted marketing strategies, including tools such as Peakbot trending.</li>
-                    <li>🦓 Grow The Real Herd through consistent community engagement.</li>
-                </ul>
-            </div>
-
-            <div class="footer-note">
-                <h3>🦓 THE RUN CONTINUES</h3>
-                <p>Foundation → Community → Migration → Expansion</p>
-                <p><strong>No unnecessary promises. No forced utility.</strong></p>
+            <div class="metric-card">
+                <h3>SOL Price</h3>
+                <div class="metric-value" id="sol-price">Laden...</div>
             </div>
         </div>
     </div>
 
     <script>
-        function openTab(evt, tabName) {
-            let i, tabContent, tabBtns;
-            tabContent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabContent.length; i++) {
-                tabContent[i].style.display = "none";
-                tabContent[i].classList.remove("active");
-            }
-            tabBtns = document.getElementsByClassName("tab-btn");
-            for (i = 0; i < tabBtns.length; i++) {
-                tabBtns[i].classList.remove("active");
-            }
-            document.getElementById(tabName).style.display = "block";
-            document.getElementById(tabName).classList.add("active");
-            evt.currentTarget.classList.add("active");
-        }
-
         const mintAddress = "2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump";
 
         async function fetchLiveData() {
@@ -443,7 +132,8 @@
                                 maximumFractionDigits: 0
                             });
 
-                            let progress = (marketCap / 69000) * 100;
+                            // De berekening gecorrigeerd op basis van de werkelijke pomp.fun curve-grenzen
+                            let progress = (marketCap / 16400) * 100;
                             if (progress > 100) progress = 100;
                             const progStr = progress.toFixed(1) + "%";
                             document.getElementById('progress-text').innerText = progStr;
