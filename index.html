@@ -235,13 +235,16 @@
             height: 100%;
             background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
             border-radius: 9999px;
-            width: 58%;
+            width: 0%;
+            transition: width 0.5s ease;
         }
 
-        /* Roadmap Styling */
+        /* Roadmap Styling - Opgelost tegen afkappen */
         .roadmap-container {
             text-align: left;
-            padding: 20px;
+            padding: 30px 25px 50px 25px;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         .phase-box {
@@ -327,7 +330,7 @@
 
             <div class="links-grid">
                 <a href="https://pump.fun/coin/2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump?share" target="_blank" class="neon-btn pump">💊 Pump.fun</a>
-                <a href="https://dexscreener.com/solana/2DFa74xvcvckU88aJyskwhGULBnDX3sj2j4prA6ZLKLT" target="_blank" class="neon-btn">📈 Dexscreener</a>
+                <a href="https://dexscreener.com/solana/2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump" target="_blank" class="neon-btn">📈 Dexscreener</a>
                 <a href="https://t.me/StripesPortal" target="_blank" class="neon-btn">💬 Telegram Portal</a>
                 <a href="https://x.com/dennispeters192" target="_blank" class="neon-btn">🕞 Twitter / X</a>
             </div>
@@ -343,10 +346,10 @@
             <div class="progress-box">
                 <div class="progress-header">
                     <span style="font-weight: bold; color: var(--text-main);">Bonding Curve Progress</span>
-                    <span id="progress-text" style="font-weight: bold; color: var(--neon-green);">58%</span>
+                    <span id="progress-text" style="font-weight: bold; color: var(--neon-green);">Laden...</span>
                 </div>
                 <div class="progress-bar-container">
-                    <div id="progress-bar" class="progress-bar" style="width: 58%;"></div>
+                    <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
                 </div>
             </div>
 
@@ -354,11 +357,11 @@
             <div class="dashboard-grid">
                 <div class="metric-card">
                     <h3>Market Cap (USD)</h3>
-                    <div class="metric-value" id="market-cap">$42,500</div>
+                    <div class="metric-value" id="market-cap">Laden...</div>
                 </div>
                 <div class="metric-card">
                     <h3>SOL Price</h3>
-                    <div class="metric-value" id="sol-price">$185.00</div>
+                    <div class="metric-value" id="sol-price">Laden...</div>
                 </div>
                 <div class="metric-card">
                     <h3>Token Status</h3>
@@ -424,7 +427,6 @@
 
         async function fetchLiveData() {
             try {
-                // Haal data op van Dexscreener en CoinGecko parallel
                 const [tokenRes, solRes] = await Promise.all([
                     fetch(`https://api.dexscreener.com/latest/dex/tokens/${mintAddress}`),
                     fetch(`https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd`)
@@ -441,6 +443,13 @@
                                 currency: 'USD',
                                 maximumFractionDigits: 0
                             });
+
+                            // Automatische berekening bonding curve ($69k max voor pump.fun)
+                            let progress = (marketCap / 69000) * 100;
+                            if (progress > 100) progress = 100;
+                            const progStr = progress.toFixed(1) + "%";
+                            document.getElementById('progress-text').innerText = progStr;
+                            document.getElementById('progress-bar').style.width = progStr;
                         }
                     }
                 }
@@ -456,7 +465,6 @@
             }
         }
 
-        // Direct laden en elke 15 seconden updaten
         fetchLiveData();
         setInterval(fetchLiveData, 15000);
     </script>
