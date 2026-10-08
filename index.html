@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$STRIPES | Ecosystem Dashboard</title>
+    <title>$STRIPES | Live Dashboard</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -35,6 +35,19 @@
         .container {
             width: 100%;
             max-width: 900px;
+        }
+
+        .nav-back {
+            display: inline-block;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-back:hover {
+            color: var(--accent-color);
         }
 
         header {
@@ -139,9 +152,11 @@
 <body>
 
     <div class="container">
+        <a href="index.html" class="nav-back">&larr; Back to Home</a>
+
         <header>
-            <h1>$STRIPES Dashboard</h1>
-            <p>Live On-Chain Analytics & Ecosystem Transparency</p>
+            <h1>$STRIPES Live Dashboard</h1>
+            <p>Real-Time On-Chain Analytics & Ecosystem Transparency</p>
         </header>
 
         <!-- Bonding Curve Voortgang -->
@@ -181,13 +196,11 @@
 
         async function fetchPumpData() {
             try {
-                // Pump.fun publieke API endpoint voor coin details
                 const response = await fetch(`https://frontend-api.pump.fun/coins/${mintAddress}`);
                 if (!response.ok) throw new Error("Netwerk respons was niet oké");
                 
                 const data = await response.json();
 
-                // 1. Market Cap berekenen / uitlezen (vaak in USD of SOL vanuit de API)
                 if (data.usd_market_cap) {
                     const marketCapVal = Number(data.usd_market_cap).toLocaleString('en-US', {
                         style: 'currency',
@@ -199,21 +212,14 @@
                     document.getElementById('market-cap').innerText = "$ --";
                 }
 
-                // 2. Bonding curve voortgang (complete percentage, pump.fun gebruikt vaak 'complete' of 'raydium_pool' status, of berekening via virtual_sol_reserves)
-                // Pump.fun bonding curve vult tot 85 SOL. We kunnen dit berekenen uit virtual_sol_reserves of de 'complete' status.
                 let progressPercentage = 0;
                 if (data.complete) {
                     progressPercentage = 100;
                 } else if (data.virtual_sol_reserves) {
-                    // Start is meestal 30 SOL, eindigt bij 85 SOL (of vergelijkbaar model). 
-                    // Een veilige schatting op basis van virtual sol of we tonen de progress direct als de API die meestuurt.
-                    // Veel pump.fun API's hebben een 'raydium_pool' of berekende vulling. 
-                    // Laten we een fallback berekening doen op basis van sol reserves (doel is 85 SOL bonding curve cap):
-                    const solReserves = data.virtual_sol_reserves / 1e9; // lamports naar SOL
-                    // Formule: (huidige reserves / doel reserves) * 100, globaal gemeten vanaf start (~30 tot 85)
+                    const solReserves = data.virtual_sol_reserves / 1e9;
                     progressPercentage = Math.min(Math.max(((solReserves - 30) / (85 - 30)) * 100, 0), 100);
                     if (isNaN(progressPercentage) || progressPercentage <= 0) {
-                        progressPercentage = 58; // Fallback naar jouw bekende percentage als de berekening afwijkt
+                        progressPercentage = 58;
                     }
                 } else {
                     progressPercentage = 58;
@@ -223,7 +229,6 @@
                 document.getElementById('progress-text').innerText = roundedProgress;
                 document.getElementById('progress-bar').style.width = progressPercentage + "%";
 
-                // 3. SOL prijs ophalen (optioneel via coingecko of pump data indien beschikbaar)
                 if (data.sol_price) {
                     document.getElementById('sol-price').innerText = Number(data.sol_price).toLocaleString('en-US', {
                         style: 'currency',
@@ -235,7 +240,6 @@
 
             } catch (error) {
                 console.error("Fout bij ophalen van pump.fun data:", error);
-                // Fallback bij CORS of verbindingsproblemen
                 document.getElementById('market-cap').innerText = "N/A";
                 document.getElementById('progress-text').innerText = "58%";
                 document.getElementById('progress-bar').style.width = "58%";
@@ -243,7 +247,6 @@
             }
         }
 
-        // Data direct ophalen bij laden en daarna elke 30 seconden verversen
         fetchPumpData();
         setInterval(fetchPumpData, 30000);
     </script>
