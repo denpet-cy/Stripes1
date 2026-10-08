@@ -57,23 +57,19 @@
             transition: all 0.3s ease;
         }
 
-        .tab-btn.active, .tab-btn:hover {
-            color: var(--bg-color);
-            background: var(--neon-cyan);
-            border-color: var(--neon-cyan);
+        .tab-btn.active {
+            color: var(--bg-color) !important;
+            background: var(--neon-cyan) !important;
+            border-color: var(--neon-cyan) !important;
             box-shadow: 0 0 20px rgba(0, 243, 255, 0.7);
         }
 
-        /* Tab Content - Standaard verborgen, behalve actieve */
+        /* Standaard verborgen */
         .tab-content {
             display: none;
             max-width: 850px;
             margin: 0 auto 50px;
             padding: 0 20px;
-        }
-
-        .tab-content.active {
-            display: block !important;
         }
 
         /* Container Styling */
@@ -262,12 +258,6 @@
             box-sizing: border-box;
         }
 
-        .utility-input:focus {
-            outline: none;
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
-        }
-
         .utility-results {
             margin-top: 20px;
             background: #1a1a26;
@@ -281,7 +271,6 @@
         .roadmap-container {
             text-align: left;
             padding: 35px 30px;
-            height: auto;
         }
 
         .phase-box {
@@ -347,15 +336,15 @@
     <header>
         <h1>🦓 $STRIPES</h1>
         <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab(event, 'HomeTab')">Home</button>
-            <button class="tab-btn" onclick="switchTab(event, 'DashboardTab')">Dashboard</button>
-            <button class="tab-btn" onclick="switchTab(event, 'UtilityTab')">⚡ Stripes Utility</button>
-            <button class="tab-btn" onclick="switchTab(event, 'RoadmapTab')">Roadmap</button>
+            <button class="tab-btn active" onclick="openTab('HomeTab', this)">Home</button>
+            <button class="tab-btn" onclick="openTab('DashboardTab', this)">Dashboard</button>
+            <button class="tab-btn" onclick="openTab('UtilityTab', this)">⚡ Stripes Utility</button>
+            <button class="tab-btn" onclick="openTab('RoadmapTab', this)">Roadmap</button>
         </div>
     </header>
 
     <!-- TAB 1: HOME -->
-    <div id="HomeTab" class="tab-content active">
+    <div id="HomeTab" class="tab-content" style="display: block;">
         <div class="card-container">
             <h2 class="home-title">Welcome to The Real Herd</h2>
             <p>$STRIPES is the ultimate cyberpunk zebra herd running wild on the Solana blockchain. Built for pure neon momentum, breaking out of the traditional grid.</p>
@@ -493,25 +482,22 @@
     </div>
 
     <script>
-        function switchTab(evt, tabName) {
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => {
-                content.style.display = 'none';
-                content.classList.remove('active');
-            });
-
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            const targetTab = document.getElementById(tabName);
-            if (targetTab) {
-                targetTab.style.display = 'block';
-                targetTab.classList.add('active');
+        function openTab(tabId, btnElement) {
+            // Verberg alle tabs
+            const contents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].style.display = 'none';
             }
-            
-            evt.currentTarget.classList.add('active');
+
+            // Haal de 'active' klasse weg van alle knoppen
+            const buttons = document.getElementsByClassName('tab-btn');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+
+            // Toon de gekozen tab en maak de knop actief
+            document.getElementById(tabId).style.display = 'block';
+            btnElement.classList.add('active');
         }
 
         const mintAddress = "2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump";
@@ -536,4 +522,8 @@
                             });
 
                             let progress = (marketCap / 16400) * 100;
-                            if (progress > 
+                            if (progress > 100) progress = 100;
+                            const progStr = progress.toFixed(1) + "%";
+                            document.getElementById('progress-text').innerText = progStr;
+                            document.getElementById('progress-bar').style.width = progStr;
+                      
