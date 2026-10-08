@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +41,7 @@
             margin: 0 0 15px 0;
         }
 
-        /* Tab Navigatie */
+        /* Tab Navigation */
         .tab-nav {
             display: flex;
             justify-content: center;
@@ -263,6 +263,7 @@
         <header>
             <h1>🦓 $STRIPES</h1>
             
+            <!-- Tab Navigation Buttons -->
             <div class="tab-nav">
                 <button class="tab-btn active" onclick="switchTab(event, 'home-tab')">Home</button>
                 <button class="tab-btn" onclick="switchTab(event, 'utility-tab')">⚡ Stripes Utility</button>
@@ -270,6 +271,7 @@
             </div>
         </header>
 
+        <!-- TAB 1: HOME -->
         <div id="home-tab" class="tab-pane active">
             <div class="card-container">
                 <h2>Welcome to The Real Herd</h2>
@@ -289,36 +291,38 @@
             </div>
         </div>
 
+        <!-- TAB 2: STRIPES UTILITY -->
         <div id="utility-tab" class="tab-pane">
             <div class="card-container">
-                <h2>⚡ Stripes Utility Hub</h2>
-                <p>Echte tools voor The Real Herd. Geen onzin, pure on-chain bruikbaarheid en community-ondersteuning.</p>
+                <h2>⚡ $STRIPES Utility & Holder Privileges</h2>
+                <p>At $STRIPES, we do not believe in empty hype or forced enterprise software. We build real, sustainable value and on-chain utility for The Real Herd.</p>
                 
                 <div class="utility-box">
                     <h3 style="color: var(--text-main); margin-top: 0; font-size: 1.1rem;">🔍 Holder & Wallet Quick Check</h3>
-                    <p style="font-size: 0.9rem;">Voer je Solana wallet-adres in om te controleren of je klaar bent voor toekomstige holder-tools en exclusives.</p>
+                    <p style="font-size: 0.9rem;">Our built-in wallet checker allows you to instantly verify whether your Solana address is connected to the movement and ready for upcoming features.</p>
                     
-                    <input type="text" id="wallet-input" class="utility-input" placeholder="Plak hier je Solana Wallet Adres...">
-                    <button class="neon-btn pump" style="width: 100%; border: none;" onclick="checkWallet()">Wallet Controleren</button>
+                    <input type="text" id="wallet-input" class="utility-input" placeholder="Enter your Solana Wallet Address...">
+                    <button class="neon-btn pump" style="width: 100%; border: none;" onclick="checkWallet()">Check Wallet</button>
 
                     <div id="utility-results" class="utility-results">
-                        <div id="result-text" style="font-weight: bold; color: var(--neon-cyan);">Voer een geldig adres in.</div>
+                        <div id="result-text" style="font-weight: bold; color: var(--neon-cyan);">Enter a valid address.</div>
                     </div>
                 </div>
 
                 <div class="utility-grid">
                     <div class="utility-feature">
-                        <h3>🤖 Telegram Holder Bot</h3>
-                        <p style="font-size: 0.9rem; margin-bottom: 0;">Beveiligde integratie binnen onze Telegram portal om je wallet te verifiëren en toegang te krijgen tot exclusieve holder-kanalen.</p>
+                        <h3>🔒 Exclusive Holder Privileges</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 0;">Holders meeting criteria gain access to private Telegram channels, early access to new features, community governance, and future collaborative drops.</p>
                     </div>
                     <div class="utility-feature">
-                        <h3>📊 On-Chain Transparency</h3>
-                        <p style="font-size: 0.9rem; margin-bottom: 0;">Volledig inzicht in transactiestromen, liquidity status en projectverificaties via gecertificeerde platformen.</p>
+                        <h3>🌱 Organic Rewards & Merch</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 0;">No paid spam bots, but fair ecosystem rewards for active members driving organic growth, plus exclusive cyberpunk merch discounts.</p>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- TAB 3: ROADMAP -->
         <div id="roadmap-tab" class="tab-pane">
             <div class="card-container">
                 <h2>🦓 Official Roadmap: The Run of the Herd</h2>
@@ -366,34 +370,5 @@
     <script>
         function switchTab(evt, tabId) {
             const panes = document.getElementsByClassName('tab-pane');
-            for (let i = 0; i < panes.length; i++) {
-                panes[i].classList.remove('active');
-            }
-
-            const buttons = document.getElementsByClassName('tab-btn');
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
-
-            document.getElementById(tabId).classList.add('active');
-            evt.currentTarget.classList.add('active');
-        }
-
-        function checkWallet() {
-            const input = document.getElementById('wallet-input').value.trim();
-            const resultsBox = document.getElementById('utility-results');
-            const resultText = document.getElementById('result-text');
-            
-            resultsBox.style.display = 'block';
-
-            if (input.length < 32) {
-                resultText.style.color = 'var(--neon-pink)';
-                resultText.innerText = '❌ Dit lijkt geen geldig Solana wallet-adres te zijn.';
-            } else {
-                resultText.style.color = 'var(--neon-green)';
-                resultText.innerText = '✅ Adres herkend! Sluit je aan bij de Telegram om de volledige on-chain verificatie te voltooien.';
-            }
-        }
-    </script>
-</body>
-</html>
+            for (let i = 0; i < panes
+        
