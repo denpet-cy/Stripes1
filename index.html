@@ -239,12 +239,11 @@
             transition: width 0.5s ease;
         }
 
-        /* Roadmap Styling - Opgelost tegen afkappen */
+        /* Roadmap Styling - Volledig zichtbaar gemaakt zonder afkappen */
         .roadmap-container {
             text-align: left;
-            padding: 30px 25px 50px 25px;
-            max-height: 80vh;
-            overflow-y: auto;
+            padding: 30px 25px;
+            height: auto;
         }
 
         .phase-box {
@@ -444,7 +443,6 @@
                                 maximumFractionDigits: 0
                             });
 
-                            // Automatische berekening bonding curve ($69k max voor pump.fun)
                             let progress = (marketCap / 69000) * 100;
                             if (progress > 100) progress = 100;
                             const progStr = progress.toFixed(1) + "%";
