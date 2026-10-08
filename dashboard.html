@@ -1,136 +1,282 @@
-<!DOCTYPE html>
-<html lang="en">
+ <!DOCTYPE html>
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$STRIPES | Live Dashboard</title>
+    <title>$STRIPES — Live On-Chain Dashboard</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-color: #22c55e;
-            --accent-gradient: linear-gradient(135deg, #22c55e, #10b981);
-            --border-color: #334155;
+            --bg-base: #0b0b12;
+            --bg-card: #14141f;
+            --border-color: #27273f;
+            --neon-cyan: #00f3ff;
+            --neon-pink: #ff2a85;
+            --neon-green: #22c55e;
+            --text-main: #f8f8fc;
+            --text-muted: #9494b8;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 2rem; }
-        .container { width: 100%; max-width: 900px; }
-        .nav-back { display: inline-block; color: var(--text-muted); text-decoration: none; margin-bottom: 1.5rem; font-size: 0.95rem; transition: color 0.2s; }
-        .nav-back:hover { color: var(--accent-color); }
-        header { text-align: center; margin-bottom: 2.5rem; }
-        header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        header p { color: var(--text-muted); font-size: 1.1rem; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .card h3 { font-size: 1rem; color: var(--text-muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        .card .value { font-size: 2rem; font-weight: bold; color: var(--text-color); }
-        .progress-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; }
-        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .progress-header h3 { font-size: 1.1rem; color: var(--text-color); }
-        .progress-percentage { font-size: 1.25rem; font-weight: bold; color: var(--accent-color); }
-        .progress-bar-container { width: 100%; background-color: var(--border-color); border-radius: 9999px; height: 16px; overflow: hidden; }
-        .progress-bar { height: 100%; background: var(--accent-gradient); border-radius: 9999px; width: 58%; transition: width 0.5s ease; }
-        footer { text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-top: auto; padding-top: 2rem; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .dashboard-wrapper {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.2rem;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            margin-bottom: 25px;
+        }
+
+        /* Bonding Curve Sectie */
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-main);
+        }
+
+        .progress-percentage {
+            font-weight: bold;
+            color: var(--neon-green);
+            font-size: 1.1rem;
+        }
+
+        .progress-track {
+            width: 100%;
+            background: var(--border-color);
+            border-radius: 999px;
+            height: 16px;
+            overflow: hidden;
+            padding: 2px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
+            border-radius: 999px;
+            width: 58%; /* Pas dit aan naarmate de curve vordert */
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
+        }
+
+        /* Metrics Raster */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-box {
+            background: #0f0f18;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--neon-cyan);
+            opacity: 0.7;
+        }
+
+        .metric-box.status::after {
+            background: var(--neon-green);
+        }
+
+        .metric-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .metric-value {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: var(--text-main);
+        }
+
+        .metric-value.highlight {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+
+        .metric-value.live {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+        }
+
+        .footer-action {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: var(--neon-cyan);
+            border: 1px solid var(--neon-cyan);
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--neon-cyan);
+            color: var(--bg-base);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="index.html" class="nav-back">&larr; Back to Home</a>
-        <header>
-            <h1>$STRIPES Live Dashboard</h1>
-            <p>Real-Time On-Chain Analytics & Ecosystem Transparency</p>
-        </header>
 
-        <div class="progress-card">
-            <div class="progress-header">
-                <h3>Bonding Curve Progress</h3>
-                <span id="progress-text" class="progress-percentage">58%</span>
+    <div class="dashboard-wrapper">
+        <div class="dashboard-header">
+            <h1>🦓 Live On-Chain Dashboard</h1>
+            <p>Real-time metrics for $STRIPES on Solana</p>
+        </div>
+
+        <div class="card">
+            <!-- Bonding Curve Voortgang -->
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span class="progress-title">Bonding Curve Progress</span>
+                    <span id="progress-text" class="progress-percentage">58%</span>
+                </div>
+                <div class="progress-track">
+                    <div id="progress-bar" class="progress-fill"></div>
+                </div>
             </div>
-            <div class="progress-bar-container">
-                <div id="progress-bar" class="progress-bar" style="width: 58%;"></div>
+
+            <!-- Overzichtskaarten -->
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="metric-title">Market Cap (USD)</div>
+                    <div class="metric-value highlight" id="market-cap">Laden...</div>
+                </div>
+                
+                <div class="metric-box">
+                    <div class="metric-title">Token Prijs (USD)</div>
+                    <div class="metric-value highlight" id="token-price" style="font-size: 1.4rem;">Laden...</div>
+                </div>
+
+                <div class="metric-box status">
+                    <div class="metric-title">Token Status</div>
+                    <div class="metric-value live" style="font-size: 1.3rem;">Active / Live</div>
+                </div>
             </div>
         </div>
 
-        <div class="grid">
-            <div class="card">
-                <h3>Market Cap (USD)</h3>
-                <div class="value" id="market-cap">Loading...</div>
-            </div>
-            <div class="card">
-                <h3>SOL Price</h3>
-                <div class="value" id="sol-price">Loading...</div>
-            </div>
-            <div class="card">
-                <h3>Token Status</h3>
-                <div class="value" style="font-size: 1.5rem; color: var(--accent-color);">Active / Live</div>
-            </div>
+        <div class="footer-action">
+            <a href="index.html" class="back-btn">← Terug naar Home</a>
         </div>
     </div>
-
-    <footer>
-        &copy; 2026 $STRIPES. Built for transparency and community growth.
-    </footer>
 
     <script>
         const mintAddress = "2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump";
 
-        async function fetchPumpData() {
+        async function fetchLiveData() {
             try {
-                // Gebruik een CORS-proxy om data netjes op te halen zonder blokkades
-                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://frontend-api.pump.fun/coins/' + mintAddress)}`;
-                const response = await fetch(proxyUrl);
-                if (!response.ok) throw new Error("Netwerkfout");
-                
-                const json = await response.json();
-                const data = JSON.parse(json.contents);
+                const response = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${mintAddress}`);
+                if (!response.ok) throw new Error("Fout bij ophalen API");
 
-                if (data.usd_market_cap) {
-                    const marketCapVal = Number(data.usd_market_cap).toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        maximumFractionDigits: 0
-                    });
-                    document.getElementById('market-cap').innerText = marketCapVal;
-                } else {
-                    document.getElementById('market-cap').innerText = "$ --";
-                }
+                const data = await response.json();
 
-                let progressPercentage = 58;
-                if (data.complete) {
-                    progressPercentage = 100;
-                } else if (data.virtual_sol_reserves) {
-                    const solReserves = data.virtual_sol_reserves / 1e9;
-                    progressPercentage = Math.min(Math.max(((solReserves - 30) / (85 - 30)) * 100, 0), 100);
-                    if (isNaN(progressPercentage) || progressPercentage <= 0) {
-                        progressPercentage = 58;
+                if (data && data.pairs && data.pairs.length > 0) {
+                    const pair = data.pairs[0];
+
+                    // Market Cap instellen (FDV of MarketCap)
+                    const marketCap = pair.fdv || pair.marketCap;
+                    if (marketCap) {
+                        document.getElementById('market-cap').innerText = Number(marketCap).toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                            maximumFractionDigits: 0
+                        });
+                    } else {
+                        document.getElementById('market-cap').innerText = "$0";
                     }
-                }
 
-                const roundedProgress = progressPercentage.toFixed(1) + "%";
-                document.getElementById('progress-text').innerText = roundedProgress;
-                document.getElementById('progress-bar').style.width = progressPercentage + "%";
-
-                if (data.sol_price) {
-                    document.getElementById('sol-price').innerText = Number(data.sol_price).toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD'
-                    });
+                    // Prijs instellen met nauwkeurige decimalen voor memecoins
+                    const priceUsd = pair.priceUsd;
+                    if (priceUsd) {
+                        const priceNum = Number(priceUsd);
+                        document.getElementById('token-price').innerText = "$" + (priceNum < 0.00001 ? priceNum.toExponential(4) : priceNum.toFixed(6));
+                    } else {
+                        document.getElementById('token-price').innerText = "$0.00";
+                    }
                 } else {
-                    document.getElementById('sol-price').innerText = "$ --";
+                    document.getElementById('market-cap').innerText = "Wachten op data";
+                    document.getElementById('token-price').innerText = "Wachten op data";
                 }
-
             } catch (error) {
-                console.error("Kon data niet laden via API:", error);
-                // Behoud nette waarden als fallback
-                document.getElementById('market-cap').innerText = "Live Synced";
-                document.getElementById('sol-price').innerText = "Active";
+                console.error("Netwerkfout:", error);
+                document.getElementById('market-cap').innerText = "Offline";
+                document.getElementById('token-price').innerText = "Offline";
             }
         }
 
-        fetchPumpData();
-        setInterval(fetchPumpData, 30000);
+        // Direct laden bij openen en elke 15 seconden verversen
+        fetchLiveData();
+        setInterval(fetchLiveData, 15000);
     </script>
 </body>
 </html>
