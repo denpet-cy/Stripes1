@@ -72,6 +72,10 @@
             padding: 0 20px;
         }
 
+        .tab-content.active {
+            display: block !important;
+        }
+
         /* Container Styling */
         .card-container {
             background: var(--card-bg);
@@ -336,15 +340,14 @@
     <header>
         <h1>🦓 $STRIPES</h1>
         <div class="tab-nav">
-            <button class="tab-btn active" onclick="openTab('HomeTab', this)">Home</button>
-            <button class="tab-btn" onclick="openTab('DashboardTab', this)">Dashboard</button>
-            <button class="tab-btn" onclick="openTab('UtilityTab', this)">⚡ Stripes Utility</button>
-            <button class="tab-btn" onclick="openTab('RoadmapTab', this)">Roadmap</button>
+            <button class="tab-btn active" data-target="HomeTab">Home</button>
+            <button class="tab-btn" data-target="DashboardTab">Dashboard</button>
+            <button class="tab-btn" data-target="UtilityTab">⚡ Stripes Utility</button>
+            <button class="tab-btn" data-target="RoadmapTab">Roadmap</button>
         </div>
     </header>
 
-    <!-- TAB 1: HOME -->
-    <div id="HomeTab" class="tab-content" style="display: block;">
+    <div id="HomeTab" class="tab-content active">
         <div class="card-container">
             <h2 class="home-title">Welcome to The Real Herd</h2>
             <p>$STRIPES is the ultimate cyberpunk zebra herd running wild on the Solana blockchain. Built for pure neon momentum, breaking out of the traditional grid.</p>
@@ -365,7 +368,6 @@
         </div>
     </div>
 
-    <!-- TAB 2: DASHBOARD -->
     <div id="DashboardTab" class="tab-content">
         <div class="card-container" style="text-align: left;">
             <h2 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;">🦓 Live On-Chain Dashboard</h2>
@@ -376,154 +378,4 @@
                     <span id="progress-text" style="font-weight: bold; color: var(--neon-green);">Laden...</span>
                 </div>
                 <div class="progress-bar-container">
-                    <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
-                </div>
-            </div>
-
-            <div class="dashboard-grid">
-                <div class="metric-card">
-                    <h3>Market Cap (USD)</h3>
-                    <div class="metric-value" id="market-cap">Laden...</div>
-                </div>
-                <div class="metric-card">
-                    <h3>SOL Price</h3>
-                    <div class="metric-value" id="sol-price">Laden...</div>
-                </div>
-                <div class="metric-card">
-                    <h3>Token Status</h3>
-                    <div class="metric-value" style="color: var(--neon-green);">Active / Live</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TAB 3: STRIPES UTILITY -->
-    <div id="UtilityTab" class="tab-content">
-        <div class="card-container" style="text-align: left;">
-            <h2 style="text-align: center; color: var(--neon-cyan); margin-bottom: 10px;">⚡ Stripes Utility Hub</h2>
-            <p style="text-align: center; font-size: 0.95rem; margin-bottom: 25px;">Echte tools voor The Real Herd. Geen onzin, pure on-chain bruikbaarheid.</p>
-            
-            <div class="utility-box">
-                <h3 style="color: var(--text-main); margin-top: 0; font-size: 1.1rem;">🔍 Holder & Wallet Quick Check</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 15px;">Voer je Solana wallet-adres in om snel te controleren of je $STRIPES bezit voor toekomstige holder-tools en exclusives.</p>
-                
-                <input type="text" id="wallet-input" class="utility-input" placeholder="Plak hier je Solana Wallet Adres...">
-                <button class="neon-btn pump" style="width: 100%; cursor: pointer;" onclick="checkWallet()">Wallet Controleren</button>
-
-                <div id="utility-results" class="utility-results">
-                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Status check:</div>
-                    <div id="result-text" style="font-weight: bold; color: var(--neon-cyan);">Voer een geldig adres in om te verifiëren.</div>
-                </div>
-            </div>
-
-            <div class="utility-box" style="margin-top: 20px;">
-                <h3 style="color: var(--text-main); margin-top: 0; font-size: 1.1rem;">🤖 Telegram Holder Bot</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 15px;">Word lid van onze Telegram en koppel je wallet via onze beveiligde bot om toegang te krijgen tot de exclusieve Real Herd kanalen.</p>
-                <a href="https://t.me/StripesPortal" target="_blank" class="neon-btn" style="width: 100%; text-align: center; box-sizing: border-box;">Open Telegram Portal</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- TAB 4: ROADMAP -->
-    <div id="RoadmapTab" class="tab-content">
-        <div class="card-container roadmap-container">
-            <h2 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;">🦓 Official Roadmap: The Run of the Herd</h2>
-
-            <div class="phase-box">
-                <h3>PHASE 1</h3>
-                <div class="phase-subtitle">Breaking Out of the Grid — Foundation & On-Chain Transparency</div>
-                <p>$STRIPES launches on Pump.fun, establishing the foundation for the cyberpunk zebra movement and building “The Real Herd” community lore. The focus is on creating a strong identity while making the project transparent and verifiable on-chain.</p>
-                
-                <div class="checks-title">Key Milestones</div>
-                <ul>
-                    <li>🦓 Launch $STRIPES on Pump.fun and establish The Real Herd community.</li>
-                    <li>🌐 Build the project’s cyberpunk zebra identity and community culture.</li>
-                    <li>🔍 Establish official profile verifications on Bubblemaps and GeckoTerminal.</li>
-                    <li>🛡️ Submit the Jupiter VRFD application and track its progress.</li>
-                </ul>
-            </div>
-
-            <div class="phase-box">
-                <h3>PHASE 2</h3>
-                <div class="phase-subtitle">Grab Your Stripes — Community Engagement & Visibility</div>
-                <p>With the foundation established, the Herd expands. The goal is to spread the cyberpunk zebra movement, bring new members into the community, and build consistent visibility around $STRIPES.</p>
-                
-                <div class="checks-title">Key Milestones</div>
-                <ul>
-                    <li>📢 Deploy targeted marketing strategies, including tools such as Peakbot trending.</li>
-                    <li>🦓 Grow The Real Herd through consistent community engagement.</li>
-                    <li>📈 Reach defined community growth targets.</li>
-                    <li>🤝 Build stronger relationships with holders, newcomers, creators, and potential partners.</li>
-                </ul>
-            </div>
-
-            <div class="phase-box">
-                <h3>PHASE 3</h3>
-                <div class="phase-subtitle">Ready to Send — Migration, LP Locking, Live Dashboards & Community Bot</div>
-                <p>Once the Herd reaches the required milestone, $STRIPES moves into its next stage of development and ecosystem expansion. No fake enterprise software or forced features—focusing instead on real ecosystem tools like live on-chain dashboards, analytics, and an exclusive Telegram bot.</p>
-                
-                <div class="checks-title">Key Milestones</div>
-                <ul>
-                    <li>🚀 Reach 100% of the Pump.fun bonding curve.</li>
-                    <li>🌊 Successfully migrate $STRIPES to Raydium.</li>
-                    <li>🔒 Lock the Raydium liquidity pool tokens immediately after migration.</li>
-                    <li>📊 Maintain and expand live on-chain tracking dashboards.</li>
-                    <li>🤖 Develop and launch dedicated utilities for the community.</li>
-                </ul>
-            </div>
-
-            <div class="footer-note">
-                <h3>🦓 THE RUN CONTINUES</h3>
-                <p>Foundation → Community → Migration → Expansion</p>
-                <p><strong>No unnecessary promises. No forced utility.</strong></p>
-                <p>Just transparency, community, execution, and The Real Herd.</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function openTab(tabId, btnElement) {
-            // Verberg alle tabs
-            const contents = document.getElementsByClassName('tab-content');
-            for (let i = 0; i < contents.length; i++) {
-                contents[i].style.display = 'none';
-            }
-
-            // Haal de 'active' klasse weg van alle knoppen
-            const buttons = document.getElementsByClassName('tab-btn');
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
-
-            // Toon de gekozen tab en maak de knop actief
-            document.getElementById(tabId).style.display = 'block';
-            btnElement.classList.add('active');
-        }
-
-        const mintAddress = "2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump";
-
-        async function fetchLiveData() {
-            try {
-                const [tokenRes, solRes] = await Promise.all([
-                    fetch(`https://api.dexscreener.com/latest/dex/tokens/${mintAddress}`),
-                    fetch(`https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd`)
-                ]);
-
-                if (tokenRes.ok) {
-                    const tokenData = await tokenRes.json();
-                    if (tokenData && tokenData.pairs && tokenData.pairs.length > 0) {
-                        const pair = tokenData.pairs[0];
-                        const marketCap = pair.fdv || pair.marketCap;
-                        if (marketCap) {
-                            document.getElementById('market-cap').innerText = Number(marketCap).toLocaleString('en-US', {
-                                style: 'currency',
-                                currency: 'USD',
-                                maximumFractionDigits: 0
-                            });
-
-                            let progress = (marketCap / 16400) * 100;
-                            if (progress > 100) progress = 100;
-                            const progStr = progress.toFixed(1) + "%";
-                            document.getElementById('progress-text').innerText = progStr;
-                            document.getElementById('progress-bar').style.width = progStr;
-                      
+                    
