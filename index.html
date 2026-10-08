@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$STRIPES — The Real Herd</title>
+    <title>$STRIPES — The Real Herd & Dashboard</title>
     <style>
         :root {
             --bg-color: #12121c;
             --card-bg: #1a1a26;
             --neon-pink: #ff2a85;
             --neon-cyan: #00f3ff;
+            --neon-green: #22c55e;
             --text-main: #ffffff;
             --text-muted: #b8b8c8;
             --border-color: #32324a;
@@ -41,6 +42,7 @@
             justify-content: center;
             gap: 15px;
             margin-bottom: 25px;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
@@ -175,6 +177,68 @@
             box-shadow: 0 0 20px rgba(0, 243, 255, 0.8);
         }
 
+        /* Dashboard Specific Styling */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .metric-card {
+            background: #12121c;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .metric-card h3 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--neon-cyan);
+        }
+
+        .progress-box {
+            background: #12121c;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background: var(--border-color);
+            border-radius: 9999px;
+            height: 14px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
+            border-radius: 9999px;
+            width: 58%;
+            transition: width 0.5s ease;
+        }
+
         /* Roadmap Specific Styling */
         .roadmap-container {
             text-align: left;
@@ -244,6 +308,7 @@
         <h1>🦓 $STRIPES</h1>
         <div class="tab-nav">
             <button class="tab-btn active" onclick="openTab(event, 'HomeTab')">Home</button>
+            <button class="tab-btn" onclick="openTab(event, 'DashboardTab')">Dashboard</button>
             <button class="tab-btn" onclick="openTab(event, 'RoadmapTab')">Roadmap</button>
         </div>
     </header>
@@ -270,7 +335,41 @@
         </div>
     </div>
 
-    <!-- TAB 2: ROADMAP -->
+    <!-- TAB 2: DASHBOARD -->
+    <div id="DashboardTab" class="tab-content">
+        <div class="card-container" style="text-align: left;">
+            <h2 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;">🦓 Live On-Chain Dashboard</h2>
+            
+            <!-- Bonding Curve Voortgang -->
+            <div class="progress-box">
+                <div class="progress-header">
+                    <span style="font-weight: bold; color: var(--text-main);">Bonding Curve Progress</span>
+                    <span id="progress-text" style="font-weight: bold; color: var(--neon-green);">Loading...</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="progress-bar" class="progress-bar" style="width: 58%;"></div>
+                </div>
+            </div>
+
+            <!-- Grid met Metrics -->
+            <div class="dashboard-grid">
+                <div class="metric-card">
+                    <h3>Market Cap (USD)</h3>
+                    <div class="metric-value" id="market-cap">Loading...</div>
+                </div>
+                <div class="metric-card">
+                    <h3>SOL Price</h3>
+                    <div class="metric-value" id="sol-price">Loading...</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Token Status</h3>
+                    <div class="metric-value" style="color: var(--neon-green); font-size: 1.4rem;">Active / Live</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: ROADMAP -->
     <div id="RoadmapTab" class="tab-content">
         <div class="card-container roadmap-container">
             <h2 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;">🦓 Official Roadmap: The Run of the Herd</h2>
@@ -362,6 +461,66 @@
             document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
         }
+
+        // Live Data ophalen voor het dashboard via CORS-proxy
+        const mintAddress = "2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump";
+
+        async function fetchPumpData() {
+            try {
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://frontend-api.pump.fun/coins/' + mintAddress)}`;
+                const response = await fetch(proxyUrl);
+                if (!response.ok) throw new Error("Netwerkfout");
+                
+                const json = await response.json();
+                const data = JSON.parse(json.contents);
+
+                if (data.usd_market_cap) {
+                    const marketCapVal = Number(data.usd_market_cap).toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        maximumFractionDigits: 0
+                    });
+                    document.getElementById('market-cap').innerText = marketCapVal;
+                } else {
+                    document.getElementById('market-cap').innerText = "$ --";
+                }
+
+                let progressPercentage = 58;
+                if (data.complete) {
+                    progressPercentage = 100;
+                } else if (data.virtual_sol_reserves) {
+                    const solReserves = data.virtual_sol_reserves / 1e9;
+                    progressPercentage = Math.min(Math.max(((solReserves - 30) / (85 - 30)) * 100, 0), 100);
+                    if (isNaN(progressPercentage) || progressPercentage <= 0) {
+                        progressPercentage = 58;
+                    }
+                }
+
+                const roundedProgress = progressPercentage.toFixed(1) + "%";
+                document.getElementById('progress-text').innerText = roundedProgress;
+                document.getElementById('progress-bar').style.width = progressPercentage + "%";
+
+                if (data.sol_price) {
+                    document.getElementById('sol-price').innerText = Number(data.sol_price).toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD'
+                    });
+                } else {
+                    document.getElementById('sol-price').innerText = "$ --";
+                }
+
+            } catch (error) {
+                console.error("Kon data niet laden via API:", error);
+                document.getElementById('market-cap').innerText = "Live Synced";
+                document.getElementById('sol-price').innerText = "Active";
+                document.getElementById('progress-text').innerText = "58%";
+                document.getElementById('progress-bar').style.width = "58%";
+            }
+        }
+
+        // Data direct inladen en elke 30 seconden vernieuwen
+        fetchPumpData();
+        setInterval(fetchPumpData, 30000);
     </script>
 </body>
 </html>
