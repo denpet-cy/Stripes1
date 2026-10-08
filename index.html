@@ -64,7 +64,7 @@
             box-shadow: 0 0 20px rgba(0, 243, 255, 0.7);
         }
 
-        /* Tab Content */
+        /* Tab Content - Standaard verborgen, behalve actieve */
         .tab-content {
             display: none;
             max-width: 850px;
@@ -73,7 +73,7 @@
         }
 
         .tab-content.active {
-            display: block;
+            display: block !important;
         }
 
         /* Container Styling */
@@ -347,10 +347,10 @@
     <header>
         <h1>🦓 $STRIPES</h1>
         <div class="tab-nav">
-            <button class="tab-btn active" onclick="openTab(event, 'HomeTab')">Home</button>
-            <button class="tab-btn" onclick="openTab(event, 'DashboardTab')">Dashboard</button>
-            <button class="tab-btn" onclick="openTab(event, 'UtilityTab')">⚡ Stripes Utility</button>
-            <button class="tab-btn" onclick="openTab(event, 'RoadmapTab')">Roadmap</button>
+            <button class="tab-btn active" onclick="switchTab(event, 'HomeTab')">Home</button>
+            <button class="tab-btn" onclick="switchTab(event, 'DashboardTab')">Dashboard</button>
+            <button class="tab-btn" onclick="switchTab(event, 'UtilityTab')">⚡ Stripes Utility</button>
+            <button class="tab-btn" onclick="switchTab(event, 'RoadmapTab')">Roadmap</button>
         </div>
     </header>
 
@@ -493,20 +493,25 @@
     </div>
 
     <script>
-        function openTab(evt, tabName) {
-            let i, tabContent, tabBtns;
-            tabContent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabContent.length; i++) {
-                tabContent[i].style.display = "none";
-                tabContent[i].classList.remove("active");
+        function switchTab(evt, tabName) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.style.display = 'none';
+                content.classList.remove('active');
+            });
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            const targetTab = document.getElementById(tabName);
+            if (targetTab) {
+                targetTab.style.display = 'block';
+                targetTab.classList.add('active');
             }
-            tabBtns = document.getElementsByClassName("tab-btn");
-            for (i = 0; i < tabBtns.length; i++) {
-                tabBtns[i].classList.remove("active");
-            }
-            document.getElementById(tabName).style.display = "block";
-            document.getElementById(tabName).classList.add("active");
-            evt.currentTarget.classList.add("active");
+            
+            evt.currentTarget.classList.add('active');
         }
 
         const mintAddress = "2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump";
@@ -531,5 +536,4 @@
                             });
 
                             let progress = (marketCap / 16400) * 100;
-                            if (progress > 100) progress = 100;
-                            const progStr 
+                            if (progress > 
