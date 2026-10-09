@@ -87,11 +87,6 @@
             margin-bottom: 30px;
         }
         
-        <a href="https://gmgn.ai/sol/token/2ctBZN1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump" target="_blank" style="display: block; background: #121212; border: 1px solid #00ffcc; color: #ffffff; text-align: center; padding: 12px; margin: 10px 0; border-radius: 8px; text-decoration: none; font-weight: bold;">
-    📊 GMGN Analytics ($STRIPES)
-</a>
-        }
-        
         h2 {
             color: var(--neon-pink);
             text-align: center;
@@ -161,6 +156,17 @@
         .neon-btn.pump:hover {
             background: var(--neon-cyan);
             color: var(--bg-color);
+        }
+
+        .neon-btn.gmgn {
+            border-color: #00ffcc;
+            color: #00ffcc;
+        }
+
+        .neon-btn.gmgn:hover {
+            background: #00ffcc;
+            color: var(--bg-color);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
         }
 
         /* Utility Styling */
@@ -292,12 +298,13 @@
                 
                 <div class="ca-box">
                     <div style="font-size: 0.85rem; color: var(--neon-cyan); text-transform: uppercase; font-weight: bold;">Contract Address (CA)</div>
-                    <div class="ca-address">2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump</div>
+                    <div class="ca-address">2ctBZN1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump</div>
                 </div>
 
                 <div class="links-grid">
-                    <a href="https://pump.fun/coin/2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump?share" target="_blank" class="neon-btn pump">💊 Pump.fun</a>
-                    <a href="https://dexscreener.com/solana/2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump" target="_blank" class="neon-btn">📈 Dexscreener</a>
+                    <a href="https://pump.fun/coin/2ctBZN1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump?share" target="_blank" class="neon-btn pump">💊 Pump.fun</a>
+                    <a href="https://dexscreener.com/solana/2ctBZN1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump" target="_blank" class="neon-btn">📈 Dexscreener</a>
+                    <a href="https://gmgn.ai/sol/token/2ctBZN1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump" target="_blank" class="neon-btn gmgn">📊 GMGN Analytics</a>
                     <a href="https://t.me/StripesPortal" target="_blank" class="neon-btn">💬 Telegram</a>
                     <a href="https://x.com/dennispeters192" target="_blank" class="neon-btn">🕞 Twitter / X</a>
                 </div>
@@ -425,7 +432,7 @@
     </div>
 
     <script>
-        function switchTab(evt, tabId) {
+        function switchTab(event, tabId) {
             const panes = document.getElementsByClassName('tab-pane');
             for (let i = 0; i < panes.length; i++) {
                 panes[i].classList.remove('active');
@@ -437,7 +444,7 @@
             }
 
             document.getElementById(tabId).classList.add('active');
-            evt.currentTarget.classList.add('active');
+            event.currentTarget.classList.add('active');
         }
 
         function checkWallet() {
