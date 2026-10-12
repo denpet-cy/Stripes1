@@ -6,22 +6,26 @@
     <title>$STRIPES — The Real Herd & Utility</title>
     <style>
         :root {
-            --bg-color: #12121c;
-            --card-bg: #1a1a26;
-            --neon-pink: #ff2a85;
+            --bg-color: #07070c;
+            --card-bg: #11111d;
+            --neon-pink: #ff007f;
             --neon-cyan: #00f3ff;
-            --neon-green: #22c55e;
+            --neon-purple: #9d00ff;
             --text-main: #ffffff;
-            --text-muted: #b8b8c8;
-            --border-color: #32324a;
+            --text-muted: #a0a0c0;
+            --border-color: #262642;
         }
 
         body {
             background-color: var(--bg-color);
+            background-image: linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 0, 127, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
             color: var(--text-main);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
+            scroll-behavior: smooth;
         }
 
         .container {
@@ -31,91 +35,100 @@
 
         header {
             text-align: center;
-            padding: 20px 0 20px;
+            padding: 30px 0 20px;
         }
 
         header h1 {
-            font-size: 2.8rem;
+            font-size: 3rem;
             color: var(--neon-cyan);
-            text-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.8), 0 0 30px rgba(0, 243, 255, 0.4);
             margin: 0 0 15px 0;
+            letter-spacing: 2px;
+            font-weight: 900;
         }
 
-        /* Tab Navigation */
-        .tab-nav {
+        /* Quick Jump Menu */
+        .jump-menu {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
+            gap: 15px;
+            margin-bottom: 40px;
             flex-wrap: wrap;
         }
 
-        .tab-btn {
+        .jump-btn {
             background: var(--card-bg);
             color: var(--text-muted);
             border: 1px solid var(--border-color);
-            padding: 12px 22px;
+            padding: 10px 20px;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: bold;
             border-radius: 10px;
+            text-decoration: none;
             transition: all 0.3s ease;
+            text-transform: uppercase;
         }
 
-        .tab-btn.active, .tab-btn:hover {
-            color: var(--bg-color);
+        .jump-btn:hover {
+            color: #000;
             background: var(--neon-cyan);
             border-color: var(--neon-cyan);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
-        }
-
-        /* Tab Content */
-        .tab-pane {
-            display: none;
-        }
-
-        .tab-pane.active {
-            display: block;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.8);
         }
 
         .card-container {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 35px 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-            margin-bottom: 30px;
+            border-radius: 18px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.9);
+            margin-bottom: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple));
         }
         
         h2 {
             color: var(--neon-pink);
             text-align: center;
             margin-top: 0;
-            font-size: 2rem;
-            margin-bottom: 20px;
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
         }
 
         p {
             color: var(--text-muted);
-            line-height: 1.7;
+            line-height: 1.8;
             font-size: 1.05rem;
         }
 
         .ca-box {
-            background: #0f0f17;
+            background: #08080f;
             border: 1px dashed var(--neon-cyan);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 20px 0;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 25px 0;
             word-break: break-all;
             text-align: center;
         }
 
         .ca-address {
             font-family: monospace;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            margin-top: 5px;
+            color: var(--neon-cyan);
+            font-size: 1rem;
+            margin-top: 8px;
+            font-weight: bold;
         }
 
         .links-grid {
@@ -126,11 +139,11 @@
         }
 
         .neon-btn {
-            background: #12121c;
+            background: #0c0c14;
             color: var(--text-main);
             border: 1px solid var(--border-color);
             padding: 14px 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: bold;
             text-decoration: none;
             display: inline-flex;
@@ -145,7 +158,8 @@
         .neon-btn:hover {
             border-color: var(--neon-pink);
             color: var(--neon-pink);
-            box-shadow: 0 0 15px rgba(255, 42, 133, 0.5);
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.6);
+            transform: translateY(-2px);
         }
 
         .neon-btn.pump {
@@ -155,35 +169,25 @@
 
         .neon-btn.pump:hover {
             background: var(--neon-cyan);
-            color: var(--bg-color);
-        }
-
-        .neon-btn.gmgn {
-            border-color: #00ffcc;
-            color: #00ffcc;
-        }
-
-        .neon-btn.gmgn:hover {
-            background: #00ffcc;
-            color: var(--bg-color);
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.8);
         }
 
         /* Utility Styling */
         .utility-box {
-            background: #12121c;
+            background: #0c0c14;
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 25px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .utility-input {
             width: 100%;
-            background: #1a1a26;
+            background: #12121c;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px 15px;
+            border-radius: 10px;
+            padding: 14px 18px;
             color: var(--text-main);
             font-family: monospace;
             box-sizing: border-box;
@@ -193,14 +197,15 @@
         .utility-input:focus {
             outline: none;
             border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
         }
 
         .utility-results {
             margin-top: 15px;
-            background: #1a1a26;
+            background: #12121c;
             border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 18px;
             display: none;
         }
 
@@ -208,36 +213,39 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .utility-feature {
-            background: #12121c;
+            background: #0c0c14;
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 14px;
+            padding: 22px;
         }
 
         .utility-feature h3 {
             color: var(--neon-cyan);
             margin-top: 0;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
         }
 
         /* Roadmap Styling */
         .phase-box {
-            border-left: 3px solid var(--neon-pink);
+            border-left: 4px solid var(--neon-pink);
+            background: rgba(255, 0, 127, 0.02);
+            padding: 20px;
+            border-radius: 0 14px 14px 0;
             margin-bottom: 35px;
-            padding-left: 20px;
         }
 
         .phase-box.phase-3 {
             border-left-color: var(--neon-cyan);
+            background: rgba(0, 243, 255, 0.02);
         }
 
         .phase-box h3 {
             color: var(--neon-pink);
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin-bottom: 5px;
         }
 
@@ -246,7 +254,7 @@
         }
 
         .phase-subtitle {
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: var(--text-main);
             margin-bottom: 12px;
@@ -259,20 +267,21 @@
         }
 
         .roadmap-list li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: var(--text-muted);
             display: flex;
             align-items: flex-start;
-            gap: 8px;
-            font-size: 0.96rem;
+            gap: 10px;
+            font-size: 0.98rem;
         }
 
         .roadmap-subheading {
-            color: var(--text-main);
+            color: var(--neon-cyan);
             font-weight: bold;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-size: 0.98rem;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -282,179 +291,159 @@
         <header>
             <h1>🦓 $STRIPES</h1>
             
-            <!-- Tab Navigation Buttons -->
-            <div class="tab-nav">
-                <button class="tab-btn active" onclick="switchTab(event, 'home-tab')">Home</button>
-                <button class="tab-btn" onclick="switchTab(event, 'utility-tab')">⚡ Stripes Utility</button>
-                <button class="tab-btn" onclick="switchTab(event, 'roadmap-tab')">Roadmap</button>
+            <!-- Quick Navigation Menu -->
+            <div class="jump-menu">
+                <a href="#home-section" class="jump-btn">Home</a>
+                <a href="#utility-section" class="jump-btn">⚡ Utility</a>
+                <a href="#roadmap-section" class="jump-btn">Roadmap</a>
             </div>
         </header>
 
-        <!-- TAB 1: HOME -->
-        <div id="home-tab" class="tab-pane active">
-            <div class="card-container">
-                <h2>Welcome to The Real Herd</h2>
-                <p>$STRIPES is the ultimate cyberpunk zebra herd running wild on the Solana blockchain. Built for pure neon momentum, breaking out of the traditional grid.</p>
-                
-                <div class="ca-box">
-                    <div style="font-size: 0.85rem; color: var(--neon-cyan); text-transform: uppercase; font-weight: bold;">Contract Address (CA)</div>
-                    <div class="ca-address">2ctBZN1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump</div>
-                </div>
+        <!-- SECTION 1: HOME -->
+        <div id="home-section" class="card-container">
+            <h2>Welcome to The Real Herd</h2>
+            <p>$STRIPES is the ultimate cyberpunk zebra herd running wild on the Solana blockchain. Built for pure neon momentum, breaking out of the traditional grid.</p>
+            
+            <div class="ca-box">
+                <div style="font-size: 0.85rem; color: var(--neon-pink); text-transform: uppercase; font-weight: bold;">Contract Address (CA)</div>
+                <div class="ca-address">2ctBZN1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump</div>
+            </div>
 
-                <div class="links-grid">
-                    <a href="https://app.streamflow.finance/contract/solana/mainnet/7dU1icdcC1qnYXHpXDWHsCStiPM5AZV6nQAqYYrhhku" target="_blank" class="link-btn lock-btn" style="background: rgba(0, 255, 204, 0.1); border: 1px solid #00ffcc; color: #00ffcc; font-weight: bold; font-size: 1.05rem; padding: 14px; margin-bottom: 12px; display: block; border-radius: 12px; text-decoration: none;">
-  🔒 2.5% Supply Locked on Streamflow ↗
-                    </a>
+            <div class="links-grid">
+                <a href="https://app.streamflow.finance/contract/solana/mainnet/7dU1icdcC1qnYXHpXDWHsCStiPM5AZV6nQAqYYrhhku" target="_blank" class="neon-btn" style="border-color: var(--neon-cyan); color: var(--neon-cyan); grid-column: 1 / -1;">
+                    🔒 2.5% Supply Locked on Streamflow ↗
+                </a>
+            
+                <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump" target="_blank" class="neon-btn pump">💊 Pumpswap</a>
+                <a href="https://dexscreener.com/solana/5Kynn3ihycCtN5z3b2pftoyxYUVwsw7uCfQ5NdCBMVrx" target="_blank" class="neon-btn">📈 Dexscreener</a>
+                <a href="https://v2.bubblemaps.io/map/qNeUKirYqvWQuZbTFO69" target="_blank" class="neon-btn">🫧 Bubblemaps</a>
+                <a href="https://www.dextools.io/app/solana/pair-explorer/5Kynn3ihycCtN5z3b2pftoyxYUVwsw7uCfQ5NdCBMVrx" target="_blank" class="neon-btn">🛠️ Dextools</a>
+                <a href="https://t.me/StripesPortal" target="_blank" class="neon-btn">💬 Telegram</a>
+                <a href="https://x.com/dennispeters192" target="_blank" class="neon-btn">🕞 Twitter / X</a>
+            </div>
+
+            <div style="margin-top: 30px; text-align: center; font-size: 14px; opacity: 0.8;">
+                <p>Contact: <a href="mailto:info@stripesonzealz.fun" style="color: var(--neon-cyan); text-decoration: underline;">info@stripesonzealz.fun</a></p>
+            </div>
+        </div>
+
+        <!-- SECTION 2: UTILITY -->
+        <div id="utility-section" class="card-container">
+            <h2>⚡ $STRIPES Utility & Holder Privileges</h2>
+            <p>At $STRIPES, we do not believe in empty hype or forced enterprise software. We build real, sustainable value, on-chain verification, and community-driven utilities for The Real Herd.</p>
+            
+            <div class="utility-box">
+                <h3 style="color: var(--text-main); margin-top: 0; font-size: 1.15rem;">🔍 Holder & Wallet Quick Check</h3>
+                <p style="font-size: 0.9rem;">Our built-in wallet checker allows you to instantly verify whether your Solana address is connected to the movement and ready for upcoming features.</p>
                 
-                    <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump" target="_blank" class="neon-btn pump">💊 Pumpswap</a>
-                    <a href="https://dexscreener.com/solana/5Kynn3ihycCtN5z3b2pftoyxYUVwsw7uCfQ5NdCBMVrx" target="_blank" class="neon-btn">📈 Dexscreener</a>
-                    <a href="https://v2.bubblemaps.io/map/qNeUKirYqvWQuZbTFO69" target="_blank" class="neon-btn bubblemaps">🫧 Bubblemaps</a>
-                    <a href="https://www.dextools.io/app/solana/pair-explorer/5Kynn3ihycCtN5z3b2pftoyxYUVwsw7uCfQ5NdCBMVrx" target="_blank" class="neon-btn dextools">🛠️ Dextools</a>
-                    <a href="https://t.me/StripesPortal" target="_blank" class="neon-btn">💬 Telegram</a>
-                    <a href="https://x.com/dennispeters192" target="_blank" class="neon-btn">🕞 Twitter / X</a>
-                    <div style="margin-top: 20px; text-align: center; font-size: 14px; opacity: 0.8;">
-  <p>Contact: <a href="mailto:info@stripesonzealz.fun" style="color: #fff; text-decoration: underline;">info@stripesonzealz.fun</a></p>
-                    </div>
+                <input type="text" id="wallet-input" class="utility-input" placeholder="Enter your Solana Wallet Address...">
+                <button class="neon-btn pump" style="width: 100%; border: none; font-size: 1rem; cursor: pointer;" onclick="checkWallet()">Check Wallet</button>
+
+                <div id="utility-results" class="utility-results">
+                    <div id="result-text" style="font-weight: bold; color: var(--neon-cyan);">Enter a valid address.</div>
+                </div>
+            </div>
+
+            <div class="utility-grid">
+                <div class="utility-feature">
+                    <h3>🔒 Exclusive Holder Privileges</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">Holders meeting criteria gain access to private Telegram channels, early access to new features, community governance/voting, and future collaborative drops.</p>
+                </div>
+                <div class="utility-feature">
+                    <h3>🌱 Organic Rewards & Merch</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">No paid spam bots, but fair ecosystem rewards for active members driving organic growth, plus exclusive cyberpunk merch discounts.</p>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 2: STRIPES UTILITY -->
-        <div id="utility-tab" class="tab-pane">
-            <div class="card-container">
-                <h2>⚡ $STRIPES Utility & Holder Privileges</h2>
-                <p>At $STRIPES, we do not believe in empty hype or forced enterprise software. We build real, sustainable value, on-chain verification, and community-driven utilities for The Real Herd.</p>
+        <!-- SECTION 3: ROADMAP -->
+        <div id="roadmap-section" class="card-container">
+            <h2>🦓 OFFICIAL ROADMAP: THE RUN OF THE HERD</h2>
+
+            <div class="phase-box">
+                <h3>PHASE 1</h3>
+                <div class="phase-subtitle">Breaking Out of the Grid — Foundation & On-Chain Transparency</div>
+                <p>$STRIPES launches on Pump.fun, establishing the foundation for the cyberpunk zebra movement and building “The Real Herd” community lore. The focus is on creating a strong identity while making the project transparent and verifiable on-chain.</p>
                 
-                <div class="utility-box">
-                    <h3 style="color: var(--text-main); margin-top: 0; font-size: 1.1rem;">🔍 Holder & Wallet Quick Check</h3>
-                    <p style="font-size: 0.9rem;">Our built-in wallet checker allows you to instantly verify whether your Solana address is connected to the movement and ready for upcoming features.</p>
-                    
-                    <input type="text" id="wallet-input" class="utility-input" placeholder="Enter your Solana Wallet Address...">
-                    <button class="neon-btn pump" style="width: 100%; border: none;" onclick="checkWallet()">Check Wallet</button>
+                <div class="roadmap-subheading">Key Milestones:</div>
+                <ul class="roadmap-list">
+                    <li>🦓 Launch $STRIPES on Pump.fun and establish The Real Herd community.</li>
+                    <li>🌐 Build the project’s cyberpunk zebra identity and community culture.</li>
+                    <li>🔍 Establish official profile verifications on Bubblemaps and GeckoTerminal.</li>
+                    <li>🛡️ Submit the Jupiter VRFD application and track its progress.</li>
+                </ul>
 
-                    <div id="utility-results" class="utility-results">
-                        <div id="result-text" style="font-weight: bold; color: var(--neon-cyan);">Enter a valid address.</div>
-                    </div>
-                </div>
-
-                <div class="utility-grid">
-                    <div class="utility-feature">
-                        <h3>🔒 Exclusive Holder Privileges</h3>
-                        <p style="font-size: 0.9rem; margin-bottom: 0;">Holders meeting criteria gain access to private Telegram channels, early access to new features, community governance/voting, and future collaborative drops.</p>
-                    </div>
-                    <div class="utility-feature">
-                        <h3>🌱 Organic Rewards & Merch</h3>
-                        <p style="font-size: 0.9rem; margin-bottom: 0;">No paid spam bots, but fair ecosystem rewards for active members driving organic growth, plus exclusive cyberpunk merch discounts.</p>
-                    </div>
-                </div>
+                <div class="roadmap-subheading">Verifiable Completion Checks:</div>
+                <ul class="roadmap-list">
+                    <li>✅ Official Bubblemaps profile is live and verified.</li>
+                    <li>✅ Official GeckoTerminal profile is live and verified.</li>
+                    <li>✅ Jupiter VRFD application has been submitted and its status is publicly trackable.</li>
+                </ul>
             </div>
-        </div>
 
-        <!-- TAB 3: ROADMAP -->
-        <div id="roadmap-tab" class="tab-pane">
-            <div class="card-container">
-                <h2>🦓 OFFICIAL ROADMAP: THE RUN OF THE HERD</h2>
+            <div class="phase-box">
+                <h3>PHASE 2</h3>
+                <div class="phase-subtitle">Grab Your Stripes — Community Engagement & Visibility</div>
+                <p>With the foundation established, the Herd expands. The goal is to spread the cyberpunk zebra movement, bring new members into the community, and build consistent visibility around $STRIPES.</p>
+                
+                <div class="roadmap-subheading">Key Milestones:</div>
+                <ul class="roadmap-list">
+                    <li>📢 Deploy targeted marketing strategies, including tools such as Peakbot trending.</li>
+                    <li>🦓 Grow The Real Herd through consistent community engagement.</li>
+                    <li>📈 Reach defined community growth targets.</li>
+                    <li>🤝 Build stronger relationships with holders, newcomers, creators, and potential partners.</li>
+                </ul>
 
-                <div class="phase-box">
-                    <h3>PHASE 1</h3>
-                    <div class="phase-subtitle">Breaking Out of the Grid — Foundation & On-Chain Transparency</div>
-                    <p>$STRIPES launches on Pump.fun, establishing the foundation for the cyberpunk zebra movement and building “The Real Herd” community lore. The focus is on creating a strong identity while making the project transparent and verifiable on-chain.</p>
-                    
-                    <div class="roadmap-subheading">Key Milestones:</div>
-                    <ul class="roadmap-list">
-                        <li>🦓 Launch $STRIPES on Pump.fun and establish The Real Herd community.</li>
-                        <li>🌐 Build the project’s cyberpunk zebra identity and community culture.</li>
-                        <li>🔍 Establish official profile verifications on Bubblemaps and GeckoTerminal.</li>
-                        <li>🛡️ Submit the Jupiter VRFD application and track its progress.</li>
-                    </ul>
+                <div class="roadmap-subheading">Verifiable Completion Checks:</div>
+                <ul class="roadmap-list">
+                    <li>✅ Regular community Q&A and project updates are provided.</li>
+                    <li>✅ FUD and community concerns are addressed openly and transparently.</li>
+                    <li>✅ Wallet and token-supply information is communicated clearly when relevant.</li>
+                    <li>✅ Community growth targets are tracked and reported.</li>
+                </ul>
+            </div>
 
-                    <div class="roadmap-subheading">Verifiable Completion Checks:</div>
-                    <ul class="roadmap-list">
-                        <li>✅ Official Bubblemaps profile is live and verified.</li>
-                        <li>✅ Official GeckoTerminal profile is live and verified.</li>
-                        <li>✅ Jupiter VRFD application has been submitted and its status is publicly trackable.</li>
-                    </ul>
-                </div>
+            <div class="phase-box phase-3">
+                <h3>PHASE 3</h3>
+                <div class="phase-subtitle">Ready to Send — Migration, LP Locking, Utility & Community Bot</div>
+                <p>Once the Herd reaches the required milestone, $STRIPES moves into its next stage of development and ecosystem expansion. No fake enterprise software or forced features—focusing instead on real ecosystem utility like live on-chain dashboards, exclusive holder privileges, and a dedicated Telegram bot.</p>
+                
+                <div class="roadmap-subheading">Key Milestones:</div>
+                <ul class="roadmap-list">
+                    <li>🚀 Reach 100% of the Pump.fun bonding curve.</li>
+                    <li>🌊 Successfully migrate $STRIPES to Raydium.</li>
+                    <li>🔒 Lock the Raydium liquidity pool tokens immediately after migration.</li>
+                    <li>🔐 Lock an additional 2.5% of the total token supply for 3 months, with zero selling during the lock period.</li>
+                    <li>📊 Maintain and expand live on-chain tracking dashboards (Market Cap, SOL price, Bonding Curve).</li>
+                    <li>🤖 Develop and launch a dedicated Telegram bot for automated wallet verification, raid coordination, and community engagement.</li>
+                    <li>🔒 Implement exclusive holder perks, private inner-circle channels, early access, and governance voting.</li>
+                    <li>🌐 Work toward official CoinGecko and CoinMarketCap listings.</li>
+                    <li>🤝 Expand through the website, upcoming listings, partnerships, and broader ecosystem exposure.</li>
+                </ul>
 
-                <div class="phase-box">
-                    <h3>PHASE 2</h3>
-                    <div class="phase-subtitle">Grab Your Stripes — Community Engagement & Visibility</div>
-                    <p>With the foundation established, the Herd expands. The goal is to spread the cyberpunk zebra movement, bring new members into the community, and build consistent visibility around $STRIPES.</p>
-                    
-                    <div class="roadmap-subheading">Key Milestones:</div>
-                    <ul class="roadmap-list">
-                        <li>📢 Deploy targeted marketing strategies, including tools such as Peakbot trending.</li>
-                        <li>🦓 Grow The Real Herd through consistent community engagement.</li>
-                        <li>📈 Reach defined community growth targets.</li>
-                        <li>🤝 Build stronger relationships with holders, newcomers, creators, and potential partners.</li>
-                    </ul>
+                <div class="roadmap-subheading">Verifiable Completion Checks:</div>
+                <ul class="roadmap-list">
+                    <li>✅ Pump.fun bonding curve reaches 100%.</li>
+                    <li>✅ Migration to Raydium is completed.</li>
+                    <li>✅ LP tokens are locked following migration.</li>
+                    <li>✅ Additional 2.5% supply lock is publicly verifiable, including the lock period.</li>
+                    <li>✅ Live on-chain dashboard, wallet checker, and Telegram bot are fully operational.</li>
+                    <li>✅ Holder privileges, private channels, and community governance voting structures are live.</li>
+                    <li>✅ Documentation and volume requirements for CoinGecko and CoinMarketCap applications are met.</li>
+                </ul>
+            </div>
 
-                    <div class="roadmap-subheading">Verifiable Completion Checks:</div>
-                    <ul class="roadmap-list">
-                        <li>✅ Regular community Q&A and project updates are provided.</li>
-                        <li>✅ FUD and community concerns are addressed openly and transparently.</li>
-                        <li>✅ Wallet and token-supply information is communicated clearly when relevant.</li>
-                        <li>✅ Community growth targets are tracked and reported.</li>
-                    </ul>
-                </div>
-
-                <div class="phase-box phase-3">
-                    <h3>PHASE 3</h3>
-                    <div class="phase-subtitle">Ready to Send — Migration, LP Locking, Utility & Community Bot</div>
-                    <p>Once the Herd reaches the required milestone, $STRIPES moves into its next stage of development and ecosystem expansion. No fake enterprise software or forced features—focusing instead on real ecosystem utility like live on-chain dashboards, exclusive holder privileges, and a dedicated Telegram bot.</p>
-                    
-                    <div class="roadmap-subheading">Key Milestones:</div>
-                    <ul class="roadmap-list">
-                        <li>🚀 Reach 100% of the Pump.fun bonding curve.</li>
-                        <li>🌊 Successfully migrate $STRIPES to Raydium.</li>
-                        <li>🔒 Lock the Raydium liquidity pool tokens immediately after migration.</li>
-                        <li>🔐 Lock an additional 2.5% of the total token supply for 3 months, with zero selling during the lock period.</li>
-                        <li>📊 Maintain and expand live on-chain tracking dashboards (Market Cap, SOL price, Bonding Curve).</li>
-                        <li>🤖 Develop and launch a dedicated Telegram bot for automated wallet verification, raid coordination, and community engagement.</li>
-                        <li>🔒 Implement exclusive holder perks, private inner-circle channels, early access, and governance voting.</li>
-                        <li>🌐 Work toward official CoinGecko and CoinMarketCap listings.</li>
-                        <li>🤝 Expand through the website, upcoming listings, partnerships, and broader ecosystem exposure.</li>
-                    </ul>
-
-                    <div class="roadmap-subheading">Verifiable Completion Checks:</div>
-                    <ul class="roadmap-list">
-                        <li>✅ Pump.fun bonding curve reaches 100%.</li>
-                        <li>✅ Migration to Pumpswap is completed.</li>
-                        <li>✅ LP tokens are locked following migration.</li>
-                        <li>✅ Additional 2.5% supply lock is publicly verifiable, including the lock period.</li>
-                        <li>✅ Live on-chain dashboard, wallet checker, and Telegram bot are fully operational.</li>
-                        <li>✅ Holder privileges, private channels, and community governance voting structures are live.</li>
-                        <li>✅ Documentation and volume requirements for CoinGecko and CoinMarketCap applications are met.</li>
-                    </ul>
-                </div>
-
-                <div style="text-align: center; margin-top: 40px; padding: 20px; background: #12121c; border-radius: 12px; border: 1px solid var(--border-color);">
-                    <h3 style="color: var(--neon-cyan); margin-top: 0;">🦓 THE RUN CONTINUES</h3>
-                    <p style="font-size: 0.95rem; margin-bottom: 15px;">Foundation → Community → Migration → Expansion</p>
-                    <p style="color: var(--text-main); font-weight: bold; font-style: italic; margin: 0;">
-                        No unnecessary promises. No forced utility.<br>Just transparency, community execution, real utility, and The Real Herd. 💎
-                    </p>
-                </div>
+            <div style="text-align: center; margin-top: 40px; padding: 25px; background: #0c0c14; border-radius: 14px; border: 1px solid var(--border-color);">
+                <h3 style="color: var(--neon-cyan); margin-top: 0;">🦓 THE RUN CONTINUES</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 15px;">Foundation → Community → Migration → Expansion</p>
+                <p style="color: var(--text-main); font-weight: bold; font-style: italic; margin: 0;">
+                    No unnecessary promises. No forced utility.<br>Just transparency, community execution, real utility, and The Real Herd. 💎
+                </p>
             </div>
         </div>
     </div>
 
     <script>
-        function switchTab(event, tabId) {
-            const panes = document.getElementsByClassName('tab-pane');
-            for (let i = 0; i < panes.length; i++) {
-                panes[i].classList.remove('active');
-            }
-
-            const buttons = document.getElementsByClassName('tab-btn');
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
-
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-
         function checkWallet() {
             const input = document.getElementById('wallet-input').value.trim();
             const resultsBox = document.getElementById('utility-results');
@@ -466,4 +455,10 @@
                 resultText.style.color = 'var(--neon-pink)';
                 resultText.innerText = '❌ This does not look like a valid Solana wallet address.';
             } else {
-                resultText.style.color =
+                resultText.style.color = 'var(--neon-cyan)';
+                resultText.innerText = '✅ Valid Solana address detected! Ready for $STRIPES perks.';
+            }
+        }
+    </script>
+</body>
+</html>
