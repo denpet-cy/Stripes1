@@ -355,7 +355,21 @@
                 </div>
             </div>
         </div>
+        
+<!-- ARCADE GAME SECTION -->
+<div id="game-section" class="card-container" style="background: #11111d; border: 1px solid #ff007f; border-radius: 18px; padding: 25px; margin-bottom: 35px;">
+    <h2 style="color: #ff007f; text-align: center; font-size: 2rem; margin-top: 0;">🎮 NEON HERD RUN ARCADE</h2>
+    <p style="text-align: center; color: #a0a0c0; margin-bottom: 15px;">Jump over lasers and dodge drones!</p>
+    
+    <canvas id="gameCanvas" width="800" height="400" style="width: 100% !important; height: auto !important; max-height: 400px; background: #05050a; border: 1px solid #00f3ff; border-radius: 12px; display: block; margin: 0 auto;"></canvas>
 
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+        <button onclick="handleTap()" style="background: #0c0c14; border: 1px solid #00f3ff; color: #00f3ff; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer;">⬆️ JUMP</button>
+        <button onclick="handleSlide()" style="background: #0c0c14; border: 1px solid #00f3ff; color: #00f3ff; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer;">⬇️ SLIDE</button>
+        <button onclick="handleBoost()" style="background: #0c0c14; border: 1px solid #ff007f; color: #ff007f; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; grid-column: span 2;">⚡ HYPER BOOST</button>
+    </div>
+</div>
+        
         <!-- SECTION 3: ROADMAP -->
         <div id="roadmap-section" class="card-container">
             <h2>🦓 OFFICIAL ROADMAP: THE RUN OF THE HERD</h2>
@@ -459,6 +473,102 @@
                 resultText.innerText = '✅ Valid Solana address detected! Ready for $STRIPES perks.';
             }
         }
+    </script>
+    <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let gameState = 'START';
+    let score = 0;
+    let isBoosting = false;
+    let frame = 0;
+
+    const player = { x: 80, y: 280, width: 40, height: 50, velocityY: 0, gravity: 0.8, isJumping: false, isSliding: false, slideTimer: 0 };
+    let obstacles = [];
+
+    function drawBackground() {
+        ctx.fillStyle = '#05050a';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#00f3ff';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(0, 330); ctx.lineTo(800, 330); ctx.stroke();
+    }
+
+    function drawPlayer() {
+        ctx.save();
+        if (player.isSliding) {
+            ctx.fillStyle = '#ff007f';
+            ctx.fillRect(player.x, player.y + 25, player.width + 10, player.height - 25);
+        } else {
+            ctx.fillStyle = '#ffffff'; ctx.fillRect(player.x, player.y, player.width, player.height);
+            ctx.fillStyle = '#000000'; ctx.fillRect(player.x + 8, player.y, 6, player.height); ctx.fillRect(player.x + 22, player.y, 6, player.height);
+            ctx.fillStyle = '#00f3ff'; ctx.fillRect(player.x + 20, player.y + 8, 18, 8);
+        }
+        ctx.restore();
+    }
+
+    function updatePlayer() {
+        player.velocityY += player.gravity; player.y += player.velocityY;
+        if (player.y > 280) { player.y = 280; player.velocityY = 0; player.isJumping = false; }
+        if (player.isSliding) { player.slideTimer--; if (player.slideTimer <= 0) player.isSliding = false; }
+    }
+
+    function spawnObstacle() {
+        if (frame % 90 === 0) {
+            const type = Math.random() > 0.5 ? 'laser' : 'drone';
+            obstacles.push({ x: 800, y: type === 'laser' ? 290 : 230, width: 20, height: 40, type: type });
+        }
+    }
+
+    function updateObstacles() {
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+            obstacles[i].x -= isBoosting ? 12 : 6;
+            ctx.fillStyle = obstacles[i].type === 'laser' ? '#ff007f' : '#9d00ff';
+            ctx.fillRect(obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height);
+
+            if (player.x < obstacles[i].x + obstacles[i].width && player.x + player.width > obstacles[i].x &&
+                player.y < obstacles[i].y + obstacles[i].height && player.y + player.height > obstacles[i].y) {
+                if (!isBoosting) gameState = 'GAMEOVER';
+            }
+            if (obstacles[i].x < -50) obstacles.splice(i, 1);
+        }
+    }
+
+    function drawUI() {
+        ctx.fillStyle = '#00f3ff'; ctx.font = 'bold 16px sans-serif'; ctx.fillText('SCORE: ' + score, 20, 30);
+        if (gameState === 'START' || gameState === 'GAMEOVER') {
+            ctx.fillStyle = 'rgba(7, 7, 12, 0.85)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = gameState === 'START' ? '#00f3ff' : '#ff007f'; ctx.font = 'bold 24px sans-serif'; ctx.textAlign = 'center';
+            ctx.fillText(gameState === 'START' ? '🦓 NEON HERD RUN' : '💥 GAME OVER', canvas.width / 2, 160);
+            ctx.fillStyle = '#ffffff'; ctx.font = 'bold 18px sans-serif';
+            ctx.fillText('[ TAP HERE TO PLAY ]', canvas.width / 2, 220);
+            ctx.textAlign = 'left';
+        }
+    }
+
+    function gameLoop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBackground();
+        if (gameState === 'PLAYING') {
+            frame++; score += 1; updatePlayer(); spawnObstacle(); updateObstacles(); drawPlayer();
+        }
+        drawUI();
+        requestAnimationFrame(gameLoop);
+    }
+
+    function handleTap() {
+        if (gameState === 'START' || gameState === 'GAMEOVER') { score = 0; obstacles = []; gameState = 'PLAYING'; }
+        else if (gameState === 'PLAYING' && !player.isJumping) { player.velocityY = -13; player.isJumping = true; }
+    }
+    function handleSlide() { if (gameState === 'PLAYING') { player.isSliding = true; player.slideTimer = 25; } }
+    function handleBoost() { if (gameState === 'PLAYING') { isBoosting = true; setTimeout(() => { isBoosting = false; }, 2000); } }
+
+    canvas.addEventListener('click', handleTap);
+    window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' || e.code === 'ArrowUp') handleTap();
+        if (e.code === 'ArrowDown') handleSlide();
+    });
+    gameLoop();
     </script>
 </body>
 </html>
