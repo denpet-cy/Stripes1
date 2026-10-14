@@ -9,14 +9,13 @@
     body {
       background-color: #060709;
       color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: Arial, sans-serif;
       text-align: center;
       padding: 20px 10px;
     }
     h1 {
       color: #00ffcc;
       font-size: 26px;
-      letter-spacing: 1px;
       text-shadow: 0 0 12px rgba(0, 255, 204, 0.6);
       margin-bottom: 6px;
     }
@@ -52,7 +51,6 @@
       font-weight: bold;
       margin-bottom: 12px;
       font-size: 14px;
-      letter-spacing: 0.5px;
     }
 
     .inputs { display: flex; flex-direction: column; gap: 10px; }
@@ -67,7 +65,6 @@
       font-size: 16px;
       text-align: center;
       outline: none;
-      box-shadow: inset 0 0 8px rgba(0, 255, 204, 0.2);
     }
 
     .nav-buttons { display: flex; gap: 8px; }
@@ -82,7 +79,6 @@
       font-weight: 800;
       border-radius: 8px;
       cursor: pointer;
-      text-transform: uppercase;
     }
     .btn:active { transform: scale(0.97); }
     .btn-secondary { background: #181b24; color: #00ffcc; border: 1px solid #00ffcc; }
@@ -99,7 +95,7 @@
       <canvas id="pfpCanvas" width="800" height="800"></canvas>
     </div>
 
-    <div class="counter" id="styleCounter">Zebra Stijl 1 van 50</div>
+    <div class="counter" id="styleCounter">Laden van Zebra 1 van 50...</div>
 
     <div class="inputs">
       <input type="text" id="userHandle" placeholder="Voer je @handle in" value="@STRIPES" oninput="drawPFP()">
@@ -119,79 +115,90 @@
     const ctx = canvas.getContext('2d');
     const TOTAL_STYLES = 50;
     let currentStyle = 1;
+    let loadedImg = new Image();
 
-    // Paletten met felle neon combinaties
-    const colorPalettes = [
-      { main: '#00ffcc', sub: '#ff007f', bg: '#080010' },
-      { main: '#ff007f', sub: '#00e5ff', bg: '#050a15' },
-      { main: '#9d00ff', sub: '#00ff66', bg: '#0a0015' },
-      { main: '#ffea00', sub: '#ff0055', bg: '#100500' },
-      { main: '#00f0ff', sub: '#7000ff', bg: '#020b14' }
-    ];
+    function loadZebraImage(index) {
+      document.getElementById('styleCounter').innerText = `Zebra Stijl ${index} van ${TOTAL_STYLES}`;
+      
+      // Teken tijdelijk een donker laadscherm
+      ctx.fillStyle = '#060709';
+      ctx.fillRect(0, 0, 800, 800);
+      ctx.fillStyle = '#00ffcc';
+      ctx.font = 'bold 30px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(`Laden van Zebra ${index}...`, 400, 400);
+
+      // Strikte AI Prompt: Uitsluitend Zebra's, GEEN mensen of andere dieren
+      const prompt = encodeURIComponent(`head portrait of a zebra, glowing neon purple and cyan circuit stripes, cyberpunk visor, dark neon city background, highly detailed animal portrait, 8k`);
+      const negative = encodeURIComponent(`human, person, woman, man, girl, boy, lion, tiger, cat, dog, face, female, male`);
+      
+      // Unieke seed per stijl (1 t/m 50)
+      const aiUrl = `https://image.pollinations.ai/prompt/${prompt}?negative=${negative}&seed=${index * 4321}&width=800&height=800&nologo=true`;
+
+      loadedImg = new Image();
+      loadedImg.crossOrigin = "anonymous";
+      loadedImg.src = aiUrl;
+
+      loadedImg.onload = function() {
+        drawPFP();
+      };
+    }
 
     function drawPFP() {
-      // Bepaal stijleigenschappen op basis van het stijl-nummer (1-50)
-      const seed = currentStyle;
-      const palette = colorPalettes[(seed - 1) % colorPalettes.length];
-      
-      // 1. Achtergrond & Grid
-      ctx.fillStyle = palette.bg;
-      ctx.fillRect(0, 0, 800, 800);
+      if (!loadedImg.complete) return;
 
-      // Perspective Cyber Grid Lines
-      ctx.strokeStyle = palette.main + '22';
-      ctx.lineWidth = 2;
-      for (let i = 0; i < 800; i += 40) {
-        ctx.beginPath();
-        ctx.moveTo(i, 0); ctx.lineTo(i, 800);
-        ctx.moveTo(0, i); ctx.lineTo(800, i);
-        ctx.stroke();
-      }
+      // 1. Teken de AI Afbeelding
+      ctx.drawImage(loadedImg, 0, 0, 800, 800);
 
-      // Digital Rain Particles
-      ctx.fillStyle = palette.sub + '44';
-      for (let i = 0; i < 60; i++) {
-        let x = (Math.sin(i * seed) * 0.5 + 0.5) * 800;
-        let y = (Math.cos(i * seed * 2) * 0.5 + 0.5) * 800;
-        ctx.fillRect(x, y, 4, 15);
-      }
+      // 2. Neon Cyber Frame
+      ctx.strokeStyle = '#00ffcc';
+      ctx.lineWidth = 14;
+      ctx.strokeRect(10, 10, 780, 780);
 
-      // 2. Zebra Hoofd Basis (Silhouette)
-      ctx.save();
-      ctx.translate(400, 420);
+      // 3. Donkere verlooplaag onderaan voor de tekst
+      const grad = ctx.createLinearGradient(0, 550, 0, 800);
+      grad.addColorStop(0, 'rgba(0,0,0,0)');
+      grad.addColorStop(1, 'rgba(6, 7, 9, 0.95)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 550, 800, 250);
 
-      // Oren
-      ctx.fillStyle = '#0b0d14';
-      ctx.beginPath();
-      ctx.ellipse(-140, -180, 35, 90, -Math.PI / 6, 0, Math.PI * 2);
-      ctx.ellipse(140, -180, 35, 90, Math.PI / 6, 0, Math.PI * 2);
-      ctx.fill();
+      // 4. Branding Badge ($STRIPES)
+      ctx.fillStyle = '#ff007f';
+      ctx.font = '900 38px Arial';
+      ctx.textAlign = 'left';
+      ctx.fillText('$STRIPES', 40, 70);
 
-      // Zebra Snuit & Kaak
-      ctx.beginPath();
-      ctx.moveTo(-120, -120);
-      ctx.quadraticCurveTo(-150, 100, -60, 220);
-      ctx.quadraticCurveTo(0, 270, 60, 220);
-      ctx.quadraticCurveTo(150, 100, 120, -120);
-      ctx.quadraticCurveTo(0, -200, -120, -120);
-      ctx.fillStyle = '#0d0f17';
-      ctx.fill();
-      ctx.strokeStyle = palette.main;
-      ctx.lineWidth = 4;
-      ctx.stroke();
+      // 5. Custom User Handle
+      const handle = document.getElementById('userHandle').value || '@STRIPES';
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 44px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(handle, 400, 730);
+    }
 
-      // Neus
-      ctx.fillStyle = '#050609';
-      ctx.beginPath();
-      ctx.ellipse(0, 180, 50, 35, 0, 0, Math.PI * 2);
-      ctx.fill();
+    function changeStyle(delta) {
+      currentStyle += delta;
+      if (currentStyle > TOTAL_STYLES) currentStyle = 1;
+      if (currentStyle < 1) currentStyle = TOTAL_STYLES;
+      loadZebraImage(currentStyle);
+    }
 
-      // 3. Cyber Neon Strepen (Aangestuurd door stijl-seed)
-      ctx.shadowBlur = 18;
-      ctx.shadowColor = palette.main;
-      ctx.strokeStyle = palette.main;
-      ctx.lineWidth = 10;
-      ctx.lineCap = 'round';
+    function randomStyle() {
+      currentStyle = Math.floor(Math.random() * TOTAL_STYLES) + 1;
+      loadZebraImage(currentStyle);
+    }
 
-      const stripeCount = 6 + (seed % 
-                               
+    function downloadPFP() {
+      const link = document.createElement('a');
+      link.download = `stripes-zebra-${currentStyle}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    window.onload = function() {
+      loadZebraImage(1);
+    };
+  </script>
+
+</body>
+</html>
