@@ -10,7 +10,7 @@
         input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; background: #252538; color: #fff; font-size: 16px; box-sizing: border-box; }
         button { width: 90%; padding: 12px; background: #00f0ff; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; margin-top: 10px; }
         button:hover { background: #00b3be; }
-        #result { margin-top: 20px; }
+        #result { margin-top: 20px; word-break: break-word; font-size: 14px; }
         img { width: 100%; border-radius: 12px; margin-top: 10px; border: 2px solid #00f0ff; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #00f0ff; text-decoration: none; }
     </style>
@@ -43,6 +43,11 @@
 
                 const data = await response.json();
                 
+                if (!response.ok) {
+                    resDiv.innerHTML = `<span style="color: #ff4444;">Fout: ${data.error || 'Onbekende serverfout'}</span>`;
+                    return;
+                }
+
                 if (data.output && data.output.length > 0) {
                     const imgUrl = data.output[0];
                     resDiv.innerHTML = `
@@ -53,11 +58,10 @@
                         </a>
                     `;
                 } else {
-                    resDiv.innerHTML = "Er is iets misgegaan bij het genereren. Probeer het opnieuw.";
+                    resDiv.innerHTML = `<span style="color: #ff4444;">Geen output ontvangen van Replicate.</span>`;
                 }
             } catch (error) {
-                resDiv.innerHTML = "Fout bij verbinden met de server.";
-                console.error(error);
+                resDiv.innerHTML = `<span style="color: #ff4444;">Netwerkfout: ${error.message}</span>`;
             }
         }
     </script>
