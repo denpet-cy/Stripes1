@@ -1,34 +1,65 @@
-<script>
-    async function generatePFP() {
-        const extra = document.getElementById('extra').value;
-        const resDiv = document.getElementById('result');
-        resDiv.innerHTML = "Bezig met genereren in cyberpunk neon stijl... Even geduld! 🎨";
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberpunk Zebra PFP Generator</title>
+    <style>
+        body { font-family: sans-serif; background: #0a0a10; color: #fff; text-align: center; padding: 20px; }
+        .card { max-width: 400px; margin: auto; background: #161622; padding: 25px; border-radius: 16px; border: 1px solid #ff007f; box-shadow: 0 0 15px rgba(255,0,127,0.3); }
+        input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; background: #252538; color: #fff; font-size: 16px; box-sizing: border-box; }
+        button { width: 90%; padding: 12px; background: #00f0ff; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background: #00b3be; }
+        #result { margin-top: 20px; }
+        img { width: 100%; border-radius: 12px; margin-top: 10px; border: 2px solid #00f0ff; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #00f0ff; text-decoration: none; }
+    </style>
+</head>
+<body>
 
-        try {
-            // Roept de beveiligde backend functie aan op Vercel
-            const response = await fetch('/api/generate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: extra })
-            });
+    <div class="card">
+        <a href="index.html" class="back-link">← Terug naar home</a>
+        <h2>Neon Zebra Generator ⚡️</h2>
+        <p style="font-size: 14px; color: #aaa;">Maak jouw unieke cyberpunk PFP.</p>
+        
+        <input type="text" id="extra" placeholder="Extra wens (bijv. 'met zonnebril')">
+        <button onclick="generatePFP()">Genereer PFP</button>
+        
+        <div id="result"></div>
+    </div>
 
-            const data = await response.json();
-            
-            if (data.output && data.output.length > 0) {
-                const imgUrl = data.output[0];
-                resDiv.innerHTML = `
-                    <img src="${imgUrl}" alt="Cyberpunk Zebra PFP" style="width:100%; border-radius:12px; margin-top:10px; border:2px solid #00f0ff;">
-                    <br><br>
-                    <a href="${imgUrl}" target="_blank" download="cyberpunk-zebra-pfp.jpg">
-                        <button style="background:#ff007f;color:#fff; padding:12px; border-radius:8px; border:none; font-weight:bold; cursor:pointer;">Download PFP</button>
-                    </a>
-                `;
-            } else {
-                resDiv.innerHTML = "Er is iets misgegaan bij het genereren. Probeer het opnieuw.";
+    <script>
+        async function generatePFP() {
+            const extra = document.getElementById('extra').value;
+            const resDiv = document.getElementById('result');
+            resDiv.innerHTML = "Bezig met genereren in cyberpunk neon stijl... Even geduld! 🎨";
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: extra })
+                });
+
+                const data = await response.json();
+                
+                if (data.output && data.output.length > 0) {
+                    const imgUrl = data.output[0];
+                    resDiv.innerHTML = `
+                        <img src="${imgUrl}" alt="Cyberpunk Zebra PFP">
+                        <br><br>
+                        <a href="${imgUrl}" target="_blank" download="cyberpunk-zebra-pfp.jpg">
+                            <button style="background:#ff007f;color:#fff;">Download PFP</button>
+                        </a>
+                    `;
+                } else {
+                    resDiv.innerHTML = "Er is iets misgegaan bij het genereren. Probeer het opnieuw.";
+                }
+            } catch (error) {
+                resDiv.innerHTML = "Fout bij verbinden met de server.";
+                console.error(error);
             }
-        } catch (error) {
-            resDiv.innerHTML = "Fout bij verbinden met de server.";
-            console.error(error);
         }
-    }
-</script>
+    </script>
+</body>
+</html>
