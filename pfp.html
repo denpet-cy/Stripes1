@@ -1,243 +1,34 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>$STRIPES Cyberpunk PFP Generator</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background-color: #040507;
-      color: #ffffff;
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      text-align: center;
-      padding: 15px 10px;
+<script>
+    async function generatePFP() {
+        const extra = document.getElementById('extra').value;
+        const resDiv = document.getElementById('result');
+        resDiv.innerHTML = "Bezig met genereren in cyberpunk neon stijl... Even geduld! 🎨";
+
+        try {
+            // Roept de beveiligde backend functie aan op Vercel
+            const response = await fetch('/api/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: extra })
+            });
+
+            const data = await response.json();
+            
+            if (data.output && data.output.length > 0) {
+                const imgUrl = data.output[0];
+                resDiv.innerHTML = `
+                    <img src="${imgUrl}" alt="Cyberpunk Zebra PFP" style="width:100%; border-radius:12px; margin-top:10px; border:2px solid #00f0ff;">
+                    <br><br>
+                    <a href="${imgUrl}" target="_blank" download="cyberpunk-zebra-pfp.jpg">
+                        <button style="background:#ff007f;color:#fff; padding:12px; border-radius:8px; border:none; font-weight:bold; cursor:pointer;">Download PFP</button>
+                    </a>
+                `;
+            } else {
+                resDiv.innerHTML = "Er is iets misgegaan bij het genereren. Probeer het opnieuw.";
+            }
+        } catch (error) {
+            resDiv.innerHTML = "Fout bij verbinden met de server.";
+            console.error(error);
+        }
     }
-    h1 {
-      color: #00ffcc;
-      font-size: 24px;
-      font-weight: 900;
-      letter-spacing: 1.5px;
-      text-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
-      margin-bottom: 4px;
-    }
-    p { color: #8899a6; font-size: 13px; margin-bottom: 15px; }
-    
-    .card {
-      background: linear-gradient(145deg, #0d0f17, #08090d);
-      border: 1px solid #1f2836;
-      border-radius: 20px;
-      padding: 14px;
-      max-width: 400px;
-      margin: 0 auto;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 255, 204, 0.1);
-    }
-
-    #canvas-container {
-      position: relative;
-      width: 100%;
-      margin-bottom: 10px;
-      border-radius: 14px;
-      overflow: hidden;
-    }
-
-    canvas {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
-    }
-
-    .counter {
-      color: #00ffcc;
-      font-weight: 700;
-      margin-bottom: 10px;
-      font-size: 13px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .inputs { display: flex; flex-direction: column; gap: 8px; }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 11px;
-      border-radius: 10px;
-      border: 1px solid #00ffcc;
-      background: #050608;
-      color: #fff;
-      font-size: 15px;
-      font-weight: bold;
-      text-align: center;
-      outline: none;
-      box-shadow: inset 0 0 10px rgba(0, 255, 204, 0.15);
-    }
-    input[type="text"]:focus { border-color: #ff007f; box-shadow: inset 0 0 10px rgba(255, 0, 127, 0.2); }
-
-    .nav-buttons { display: flex; gap: 8px; }
-
-    .btn {
-      flex: 1;
-      background: linear-gradient(135deg, #00ffcc, #ff007f);
-      border: none;
-      color: #000;
-      padding: 11px;
-      font-size: 13px;
-      font-weight: 900;
-      border-radius: 9px;
-      cursor: pointer;
-      text-transform: uppercase;
-      box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
-      transition: transform 0.1s ease;
-    }
-    .btn:active { transform: scale(0.96); }
-    .btn-secondary { background: #131722; color: #00ffcc; border: 1px solid #00ffcc55; box-shadow: none; }
-    .btn-download { background: linear-gradient(135deg, #00ffcc, #00bfff); color: #000; width: 100%; font-size: 15px; margin-top: 2px; box-shadow: 0 4px 20px rgba(0, 255, 204, 0.4); }
-  </style>
-</head>
-<body>
-
-  <h1>$STRIPES PFP GENERATOR</h1>
-  <p>Vorm de kudde. Kies uit 50 unieke Cyberpunk Neon Zebra's!</p>
-
-  <div class="card">
-    <div id="canvas-container">
-      <canvas id="pfpCanvas" width="800" height="800"></canvas>
-    </div>
-
-    <div class="counter" id="styleCounter">Zebra Stijl 1 van 50</div>
-
-    <div class="inputs">
-      <input type="text" id="userHandle" placeholder="Voer je @handle in" value="@STRIPES" oninput="drawPFP()">
-      
-      <div class="nav-buttons">
-        <button class="btn btn-secondary" onclick="changeStyle(-1)">◀ Vorige</button>
-        <button class="btn" onclick="randomStyle()">🎲 Random</button>
-        <button class="btn btn-secondary" onclick="changeStyle(1)">Volgende ▶</button>
-      </div>
-
-      <button class="btn btn-download" onclick="downloadPFP()">💾 Download HQ PFP</button>
-    </div>
-  </div>
-
-  <script>
-    const canvas = document.getElementById('pfpCanvas');
-    const ctx = canvas.getContext('2d');
-    const TOTAL_STYLES = 50;
-    let currentStyle = 1;
-    let loadedImg = new Image();
-
-    // Verschillende unieke sferen / kleurenthema's per stijl
-    const themes = [
-      { v: "neon cyan and glowing magenta stripes", bg: "dark cyberpunk alley with rain" },
-      { v: "electric purple and acid green glowing stripes", bg: "futuristic neon Tokyo street" },
-      { v: "laser gold and crimson red glowing stripes", bg: "cyber matrix digital grid" },
-      { v: "plasma blue and hot pink glowing stripes", bg: "underground cyberpunk club with lasers" },
-      { v: "toxic orange and electric cyan glowing stripes", bg: "futuristic neon rooftop at night" }
-    ];
-
-    function loadZebraImage(index) {
-      document.getElementById('styleCounter').innerText = `Zebra Stijl ${index} van ${TOTAL_STYLES}`;
-      
-      // Laadscherm tonen op canvas
-      ctx.fillStyle = '#050608';
-      ctx.fillRect(0, 0, 800, 800);
-      ctx.fillStyle = '#00ffcc';
-      ctx.font = '900 28px Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText(`⚡ ZEBRA STIJL ${index} LADEN...`, 400, 400);
-
-      const theme = themes[(index - 1) % themes.length];
-      
-      // Professionele, ultra-gedetailleerde AI Prompt
-      const prompt = encodeURIComponent(`epic close-up profile picture portrait of a majestic zebra animal, ${theme.v}, wearing a futuristic cybernetic visor, highly detailed digital masterpiece, cinematic lighting, vibrant neon colors, ${theme.bg}, 8k resolution, nft pfp style`);
-      const negative = encodeURIComponent(`human, person, woman, man, girl, boy, human face, hands, body of human, lion, tiger, cat, dog, animal hybrid with human`);
-      
-      const aiUrl = `https://image.pollinations.ai/prompt/${prompt}?negative=${negative}&seed=${index * 7777}&width=800&height=800&nologo=true`;
-
-      loadedImg = new Image();
-      loadedImg.crossOrigin = "anonymous";
-      loadedImg.src = aiUrl;
-
-      loadedImg.onload = function() {
-        drawPFP();
-      };
-    }
-
-    function drawPFP() {
-      if (!loadedImg.complete) return;
-
-      // 1. Teken de AI Afbeelding
-      ctx.drawImage(loadedImg, 0, 0, 800, 800);
-
-      // 2. High-End Neon Cyber Frame met dikke glow
-      ctx.shadowBlur = 20;
-      ctx.shadowColor = '#00ffcc';
-      ctx.strokeStyle = '#00ffcc';
-      ctx.lineWidth = 14;
-      ctx.strokeRect(10, 10, 780, 780);
-      ctx.shadowBlur = 0; // Reset shadow
-
-      // 3. Strakke Vloeiende Gradiënt onderaan voor maximale tekstleesbaarheid
-      const grad = ctx.createLinearGradient(0, 520, 0, 800);
-      grad.addColorStop(0, 'rgba(4, 5, 7, 0)');
-      grad.addColorStop(0.4, 'rgba(4, 5, 7, 0.8)');
-      grad.addColorStop(1, 'rgba(4, 5, 7, 0.98)');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 520, 800, 280);
-
-      // 4. Logo / Branding Badge ($STRIPES)
-      ctx.shadowBlur = 15;
-      ctx.shadowColor = '#ff007f';
-      ctx.fillStyle = '#ff007f';
-      ctx.font = '900 40px Arial';
-      ctx.textAlign = 'left';
-      ctx.fillText('$STRIPES', 38, 72);
-
-      // Stijl-nummer badge rechtsboven
-      ctx.shadowColor = '#00ffcc';
-      ctx.fillStyle = '#00ffcc';
-      ctx.font = 'bold 24px Arial';
-      ctx.textAlign = 'right';
-      ctx.fillText(`#${currentStyle}`, 762, 72);
-
-      // 5. Custom User Handle (Gecentreerd onderaan)
-      const handle = document.getElementById('userHandle').value || '@STRIPES';
-      ctx.shadowBlur = 18;
-      ctx.shadowColor = '#00ffcc';
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '900 46px Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText(handle, 400, 735);
-
-      // Reset shadows
-      ctx.shadowBlur = 0;
-    }
-
-    function changeStyle(delta) {
-      currentStyle += delta;
-      if (currentStyle > TOTAL_STYLES) currentStyle = 1;
-      if (currentStyle < 1) currentStyle = TOTAL_STYLES;
-      loadZebraImage(currentStyle);
-    }
-
-    function randomStyle() {
-      currentStyle = Math.floor(Math.random() * TOTAL_STYLES) + 1;
-      loadZebraImage(currentStyle);
-    }
-
-    function downloadPFP() {
-      const link = document.createElement('a');
-      link.download = `stripes-cyberpunk-zebra-${currentStyle}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    }
-
-    window.onload = function() {
-      loadZebraImage(1);
-    };
-  </script>
-
-</body>
-</html>
+</script>
