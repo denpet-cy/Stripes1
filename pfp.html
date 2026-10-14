@@ -1,324 +1,163 @@
-```html
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$STRIPES - Cyberpunk Zebra PFP Generator</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        cyber: {
-                            black: '#08090e',
-                            card: '#0f1322',
-                            border: '#1f2942',
-                            pink: '#ff007f',
-                            cyan: '#00f3ff',
-                            purple: '#8a2be2',
-                            lime: '#39ff14',
-                            yellow: '#ffe600'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Courier New', 'monospace']
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            background-color: #06070a;
-            color: #e2e8f0;
-            font-family: 'Rajdhani', sans-serif;
-        }
-        .font-orbitron {
-            font-family: 'Orbitron', sans-serif;
-        }
-        /* Custom Neon Glow Utilities */
-        .glow-cyan {
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
-        }
-        .glow-pink {
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
-        }
-        .text-glow-cyan {
-            text-shadow: 0 0 8px rgba(0, 243, 255, 0.8);
-        }
-        .text-glow-pink {
-            text-shadow: 0 0 8px rgba(255, 0, 127, 0.8);
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0b0d17;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1f2942;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00f3ff;
-        }
-        .glass-panel {
-            background: rgba(15, 19, 34, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 243, 255, 0.15);
-        }
-        .tab-btn.active {
-            border-bottom: 2px solid #00f3ff;
-            color: #00f3ff;
-            background: rgba(0, 243, 255, 0.08);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>$STRIPES Cyberpunk Zebra Generator</title>
+  <style>
+    body {
+      background-color: #0b0c10;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+    }
+    h1 { color: #00ffcc; margin-bottom: 5px; }
+    p { color: #888; font-size: 14px; }
+    #canvas-container {
+      margin: 20px auto;
+      max-width: 400px;
+    }
+    canvas {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+      background: #111;
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    button {
+      background: linear-gradient(45deg, #00ffcc, #ff007f);
+      border: none;
+      color: #000;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:active { transform: scale(0.98); }
+    input {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: #222;
+      color: #fff;
+      text-align: center;
+    }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-cyber-pink selection:text-white">
+<body>
 
-    <!-- Top Header / Navigation -->
-    <header class="w-full border-b border-cyber-border/80 bg-cyber-black/90 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyber-pink to-cyber-cyan p-0.5 shadow-lg shadow-cyber-cyan/20">
-                    <div class="w-full h-full bg-cyber-black rounded-[10px] flex items-center justify-center font-orbitron font-black text-xl text-cyber-cyan">
-                        ⚡
-                    </div>
-                </div>
-                <div>
-                    <h1 class="font-orbitron text-xl sm:text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan via-white to-cyber-pink">
-                        $STRIPES
-                    </h1>
-                    <p class="text-xs text-slate-400 tracking-widest uppercase -mt-1 font-mono">PFP Studio v2.0</p>
-                </div>
-            </div>
+  <h1>$STRIPES PFP Generator</h1>
+  <p>Maak jouw unieke Cyberpunk Neon Zebra avatar!</p>
 
-            <div class="flex items-center gap-3">
-                <a href="https://x.com" target="_blank" rel="noopener" class="px-3.5 py-1.5 rounded-lg border border-cyber-border hover:border-cyber-cyan bg-cyber-card text-xs font-semibold hover:text-cyber-cyan transition-all flex items-center gap-2">
-                    <i class="fa-brands fa-x-twitter text-sm"></i>
-                    <span class="hidden sm:inline">Twitter / X</span>
-                </a>
-                <a href="https://t.me" target="_blank" rel="noopener" class="px-3.5 py-1.5 rounded-lg border border-cyber-border hover:border-cyber-pink bg-cyber-card text-xs font-semibold hover:text-cyber-pink transition-all flex items-center gap-2">
-                    <i class="fa-brands fa-telegram text-sm"></i>
-                    <span class="hidden sm:inline">Telegram</span>
-                </a>
-            </div>
-        </div>
-    </header>
+  <div id="canvas-container">
+    <canvas id="pfpCanvas" width="500" height="500"></canvas>
+  </div>
 
-    <!-- Main Workspace -->
-    <main class="max-w-7xl mx-auto w-full px-4 py-6 flex-grow flex flex-col lg:flex-row gap-6">
+  <div class="controls">
+    <input type="text" id="username" placeholder="Voer je Telegram/X naam in" value="@STRIPES">
+    <button onclick="generateZebra()">⚡ Genereer Nieuwe Zebra</button>
+    <button onclick="downloadPFP()" style="background: #00ffcc;">💾 Download PFP</button>
+  </div>
 
-        <!-- Left Column: Canvas Preview & Quick Export Tools -->
-        <div class="w-full lg:w-5/12 flex flex-col items-center gap-4">
-            
-            <div class="w-full glass-panel rounded-2xl p-4 sm:p-6 flex flex-col items-center relative overflow-hidden group">
-                <!-- Glowing corner accents -->
-                <div class="absolute -top-10 -left-10 w-24 h-24 bg-cyber-cyan/20 rounded-full blur-xl"></div>
-                <div class="absolute -bottom-10 -right-10 w-24 h-24 bg-cyber-pink/20 rounded-full blur-xl"></div>
+  <script>
+    const canvas = document.getElementById('pfpCanvas');
+    const ctx = canvas.getContext('2d');
 
-                <!-- Section Header -->
-                <div class="w-full flex justify-between items-center mb-4">
-                    <span class="text-xs font-mono text-cyber-cyan flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-cyber-cyan animate-ping"></span>
-                        CANVAS_PREVIEW (1024x1024)
-                    </span>
-                    <button id="randomizeBtn" class="px-3 py-1 bg-cyber-pink/10 hover:bg-cyber-pink/20 border border-cyber-pink/40 text-cyber-pink text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 active:scale-95">
-                        <i class="fa-solid fa-dice text-sm"></i>
-                        <span>RANDOMIZE</span>
-                    </button>
-                </div>
+    function getRandomColor() {
+      const colors = ['#00ffcc', '#ff007f', '#9d00ff', '#0099ff', '#ffcc00'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
 
-                <!-- HTML5 Canvas Container -->
-                <div class="relative w-full max-w-[380px] aspect-square rounded-xl overflow-hidden border-2 border-cyber-border group-hover:border-cyber-cyan/50 transition-all shadow-2xl bg-black">
-                    <canvas id="pfpCanvas" width="1024" height="1024" class="w-full h-full object-contain cursor-crosshair"></canvas>
-                    
-                    <!-- Floating Overlay Status Text -->
-                    <div id="toastMessage" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-cyber-black/90 border border-cyber-cyan text-cyber-cyan text-xs px-4 py-2 rounded-full font-mono shadow-lg opacity-0 transition-opacity pointer-events-none flex items-center gap-2">
-                        <i class="fa-solid fa-circle-check"></i>
-                        <span id="toastText">Action completed</span>
-                    </div>
-                </div>
+    function generateZebra() {
+      // Background
+      ctx.fillStyle = '#0a0a12';
+      ctx.fillRect(0, 0, 500, 500);
 
-                <!-- Export & Download Action Buttons -->
-                <div class="w-full grid grid-cols-2 gap-3 mt-5">
-                    <button id="downloadBtn" class="col-span-2 sm:col-span-1 py-3 px-4 rounded-xl bg-gradient-to-r from-cyber-cyan to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-orbitron font-extrabold text-sm tracking-wide shadow-lg shadow-cyber-cyan/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-download text-base"></i>
-                        <span>DOWNLOAD PFP</span>
-                    </button>
-                    <button id="copyBtn" class="col-span-2 sm:col-span-1 py-3 px-4 rounded-xl bg-cyber-card border border-cyber-cyan/30 hover:border-cyber-cyan text-cyber-cyan font-orbitron font-bold text-sm tracking-wide hover:bg-cyber-cyan/10 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-copy text-base"></i>
-                        <span>COPY IMAGE</span>
-                    </button>
-                </div>
+      // Cyber Grid / Rain Effect
+      ctx.strokeStyle = 'rgba(0, 255, 204, 0.15)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 500; i += 25) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0); ctx.lineTo(i, 500);
+        ctx.moveTo(0, i); ctx.lineTo(500, i);
+        ctx.stroke();
+      }
 
-                <!-- Social Share Bar -->
-                <div class="w-full mt-3 pt-3 border-t border-cyber-border/60 flex items-center justify-between text-xs text-slate-400">
-                    <span>Show off your $STRIPES:</span>
-                    <button id="shareXBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold transition-all flex items-center gap-2">
-                        <i class="fa-brands fa-x-twitter text-cyber-cyan"></i>
-                        <span>Share on X</span>
-                    </button>
-                </div>
+      const mainColor = getRandomColor();
+      const accentColor = getRandomColor();
 
-            </div>
+      // Zebra Base Head Silhouette
+      ctx.fillStyle = '#161625';
+      ctx.beginPath();
+      ctx.ellipse(250, 260, 110, 150, 0, 0, Math.PI * 2);
+      ctx.fill();
 
-            <!-- Quick Tip Box -->
-            <div class="w-full glass-panel rounded-xl p-3.5 text-xs text-slate-400 flex items-start gap-3 border-l-4 border-l-cyber-cyan">
-                <i class="fa-solid fa-circle-info text-cyber-cyan text-base mt-0.5"></i>
-                <p>
-                    <strong class="text-slate-200">Pro-tip:</strong> Use your handle in the Text tab to create your official custom $STRIPES avatar for Telegram & X daily competitions!
-                </p>
-            </div>
+      // Snout
+      ctx.fillStyle = '#0d0d18';
+      ctx.beginPath();
+      ctx.ellipse(250, 360, 60, 45, 0, 0, Math.PI * 2);
+      ctx.fill();
 
-        </div>
+      // Cyber Stripes
+      ctx.strokeStyle = mainColor;
+      ctx.lineWidth = 8;
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = mainColor;
 
-        <!-- Right Column: Interactive Customization Controls -->
-        <div class="w-full lg:w-7/12 glass-panel rounded-2xl p-4 sm:p-6 flex flex-col">
-            
-            <!-- Customization Navigation Tabs -->
-            <div class="flex flex-wrap border-b border-cyber-border mb-6 gap-1 font-orbitron text-xs sm:text-sm font-bold">
-                <button class="tab-btn active px-4 py-2.5 rounded-t-lg transition-all flex items-center gap-2" data-tab="preset">
-                    <i class="fa-solid fa-palette text-cyber-pink"></i>
-                    <span>SCHEME</span>
-                </button>
-                <button class="tab-btn px-4 py-2.5 rounded-t-lg transition-all flex items-center gap-2" data-tab="accessories">
-                    <i class="fa-solid fa-glasses text-cyber-cyan"></i>
-                    <span>GEAR</span>
-                </button>
-                <button class="tab-btn px-4 py-2.5 rounded-t-lg transition-all flex items-center gap-2" data-tab="background">
-                    <i class="fa-solid fa-image text-purple-400"></i>
-                    <span>BG & HUD</span>
-                </button>
-                <button class="tab-btn px-4 py-2.5 rounded-t-lg transition-all flex items-center gap-2" data-tab="text">
-                    <i class="fa-solid fa-font text-cyber-lime"></i>
-                    <span>TEXT & HANDLE</span>
-                </button>
-            </div>
+      for (let i = 0; i < 7; i++) {
+        ctx.beginPath();
+        ctx.moveTo(160, 180 + (i * 25));
+        ctx.bezierCurveTo(210, 190 + (i * 25), 230, 170 + (i * 25), 280, 200 + (i * 25));
+        ctx.stroke();
+      }
 
-            <!-- TAB 1: Neon Schemes & Zebra Colors -->
-            <div id="tab-preset" class="tab-content flex flex-col gap-6">
-                <div>
-                    <label class="block text-xs font-mono text-cyber-cyan uppercase mb-3">
-                        <i class="fa-solid fa-bolt mr-1"></i> Neon Stripe Color Palette
-                    </label>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        <button class="palette-option p-3 rounded-xl border-2 border-cyber-cyan bg-cyber-card hover:bg-cyber-card/80 text-left transition-all flex items-center gap-3" data-scheme="cyberpunk">
-                            <div class="w-6 h-6 rounded-full bg-gradient-to-r from-cyber-pink to-cyber-cyan shadow"></div>
-                            <div>
-                                <div class="text-xs font-bold text-white">Neon Cyber</div>
-                                <div class="text-[10px] text-slate-400 font-mono">Pink & Cyan</div>
-                            </div>
-                        </button>
-                        <button class="palette-option p-3 rounded-xl border border-cyber-border bg-cyber-card hover:border-cyber-cyan/50 text-left transition-all flex items-center gap-3" data-scheme="matrix">
-                            <div class="w-6 h-6 rounded-full bg-gradient-to-r from-cyber-lime to-emerald-600 shadow"></div>
-                            <div>
-                                <div class="text-xs font-bold text-white">Matrix Code</div>
-                                <div class="text-[10px] text-slate-400 font-mono">Lime & Emerald</div>
-                            </div>
-                        </button>
-                        <button class="palette-option p-3 rounded-xl border border-cyber-border bg-cyber-card hover:border-cyber-cyan/50 text-left transition-all flex items-center gap-3" data-scheme="gold">
-                            <div class="w-6 h-6 rounded-full bg-gradient-to-r from-yellow-400 to-amber-600 shadow"></div>
-                            <div>
-                                <div class="text-xs font-bold text-white">Golden Herd</div>
-                                <div class="text-[10px] text-slate-400 font-mono">Electric Gold</div>
-                            </div>
-                        </button>
-                        <button class="palette-option p-3 rounded-xl border border-cyber-border bg-cyber-card hover:border-cyber-cyan/50 text-left transition-all flex items-center gap-3" data-scheme="purple">
-                            <div class="w-6 h-6 rounded-full bg-gradient-to-r from-fuchsia-500 to-purple-800 shadow"></div>
-                            <div>
-                                <div class="text-xs font-bold text-white">Synthwave</div>
-                                <div class="text-[10px] text-slate-400 font-mono">Deep Magenta</div>
-                            </div>
-                        </button>
-                        <button class="palette-option p-3 rounded-xl border border-cyber-border bg-cyber-card hover:border-cyber-cyan/50 text-left transition-all flex items-center gap-3" data-scheme="stealth">
-                            <div class="w-6 h-6 rounded-full bg-gradient-to-r from-slate-200 to-slate-600 shadow"></div>
-                            <div>
-                                <div class="text-xs font-bold text-white">Stealth Monochrome</div>
-                                <div class="text-[10px] text-slate-400 font-mono">Silver & Dark</div>
-                            </div>
-                        </button>
-                        <button class="palette-option p-3 rounded-xl border border-cyber-border bg-cyber-card hover:border-cyber-cyan/50 text-left transition-all flex items-center gap-3" data-scheme="spectrum">
-                            <div class="w-6 h-6 rounded-full bg-gradient-to-r from-red-500 via-green-500 to-blue-500 shadow"></div>
-                            <div>
-                                <div class="text-xs font-bold text-white">Hyper Spectrum</div>
-                                <div class="text-[10px] text-slate-400 font-mono">Full RGB Glow</div>
-                            </div>
-                        </button>
-                    </div>
-                </div>
+      // Glowing Cyber Visor / Glasses
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = accentColor;
+      ctx.fillStyle = accentColor;
+      ctx.beginPath();
+      ctx.roundRect(170, 220, 160, 40, 10);
+      ctx.fill();
 
-                <!-- Custom Slider Adjustments -->
-                <div class="space-y-4 pt-2 border-t border-cyber-border/60">
-                    <div>
-                        <div class="flex justify-between text-xs mb-1 font-mono">
-                            <span class="text-slate-300">Neon Glow Intensity</span>
-                            <span id="glowVal" class="text-cyber-cyan">80%</span>
-                        </div>
-                        <input id="glowRange" type="range" min="10" max="100" value="80" class="w-full accent-cyber-cyan bg-slate-800 rounded-lg h-2 cursor-pointer">
-                    </div>
+      // Visor Glow Line
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(180, 240);
+      ctx.lineTo(320, 240);
+      ctx.stroke();
 
-                    <div>
-                        <div class="flex justify-between text-xs mb-1 font-mono">
-                            <span class="text-slate-300">Cybernetic Circuit Density</span>
-                            <span id="circuitVal" class="text-cyber-pink">75%</span>
-                        </div>
-                        <input id="circuitRange" type="range" min="20" max="100" value="75" class="w-full accent-cyber-pink bg-slate-800 rounded-lg h-2 cursor-pointer">
-                    </div>
-                </div>
-            </div>
+      // Reset Shadow for Text
+      ctx.shadowBlur = 0;
 
-            <!-- TAB 2: Cyber Gear & Accessories -->
-            <div id="tab-accessories" class="tab-content hidden flex flex-col gap-6">
-                <div>
-                    <label class="block text-xs font-mono text-cyber-cyan uppercase mb-3">
-                        <i class="fa-solid fa-glasses mr-1"></i> Eyewear & Visor Gear
-                    </label>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <button class="gear-eyewear p-3 rounded-xl border border-cyber-cyan bg-cyber-card hover:border-cyber-cyan text-center transition-all" data-eyewear="visor">
-                            <div class="text-xl mb-1 text-cyber-cyan"><i class="fa-solid fa-vr-cardboard"></i></div>
-                            <div class="text-xs font-bold">Cyber Visor</div>
-                        </button>
-                        <button class="gear-eyewear p-3 rounded-xl border border-cyber-border bg-cyber-card hover:border-cyber-cyan/50 text-center transition-all" data-eyewear="glasses">
-                            <div class="text-xl mb-1 text-cyber-pink"><i class="fa-solid fa-glasses"></i></div>
-                            <div class="text-xs font-bold">LED Shades</div>
-                        </button>
-                        <button class="gear-eyewear p-3 rounded-xl border border-cyber-border bg-cyber-card hover:border-cyber-cyan/50 text-center transition-all" data-eyewear="scouter">
-                            <div class="text-xl mb-1 text-cyber-lime"><i class="fa-solid fa-eye-dropper"></i></div>
-                            <div class="text-xs font-bold">HUD Scouter</div>
-                        </button>
-                        <button class="gear-eyewear p-3 rounded-xl border border-cyber-border bg-cyber-card hover:border-cyber-cyan/50 text-center transition-all" data-eyewear="none">
-                            <div class="text-xl mb-1 text-slate-500"><i class="fa-solid fa-ban"></i></div>
-                            <div class="text-xs font-bold text-slate-400">None</div>
-                        </button>
-                    </div>
-                </div>
+      // Custom Username overlay
+      const userText = document.getElementById('username').value || '$STRIPES';
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 22px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(userText, 250, 470);
+    }
 
-                <div>
-                    <label class="block text-xs font-mono text-cyber-cyan uppercase mb-3">
-                        <i class="fa-solid fa-headset mr-1"></i> Headwear & Audio Tech
-                    </label>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        <button class="gear-headwear p-3 rounded-xl border border-cyber-border bg-cyber-card hover:border-cyber-cyan/50 text-center transition-all" data-headwear="headphones">
-                            <div class="text-xl mb-1 text-cyber-cyan"><i class="fa-solid fa-headphones"></i></div>
-                            <div class="text-xs font-bold">RGB Headphones</div>
-                        </button>
-                        <button class="gear-headwear p-3 rounded-xl border border-cyber-border bg-cyber-card hover:border-cyber-cyan/50 text-center transition-all" data-headwear="horn">
-                            <div class="text-xl mb-1 text-yellow-400"><i class="fa-solid fa-bolt"></i></div>
-                            <div class="text-xs font-bold">Cyber Horn</div>
-                        </button>
-                        <button class="gear-headwear p-3 rounded-xl border border-cyber-cyan bg-cyber-card text-center transition-all" data-headwear="none"
+    function downloadPFP() {
+      const link = document.createElement('a');
+      link.download = 'cyberpunk-zebra-pfp.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+
+    // Automatically generate one on load
+    window.onload = generateZebra;
+  </script>
+
+</body>
+</html>
