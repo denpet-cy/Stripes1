@@ -3,38 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>$STRIPES Cyberpunk Zebra Generator</title>
+  <title>$STRIPES AI Cyberpunk PFP Generator</title>
   <style>
+    * { box-sizing: border-box; }
     body {
-      background-color: #0b0c10;
+      background-color: #08090c;
       color: #ffffff;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
-      padding: 20px;
+      padding: 20px 10px;
       margin: 0;
     }
-    h1 { color: #00ffcc; margin-bottom: 5px; }
-    p { color: #888; font-size: 14px; }
-    #canvas-container {
-      margin: 20px auto;
-      max-width: 400px;
+    h1 {
+      color: #00ffcc;
+      font-size: 28px;
+      text-shadow: 0 0 12px rgba(0, 255, 204, 0.6);
+      margin-bottom: 5px;
     }
-    canvas {
-      width: 100%;
-      height: auto;
+    p { color: #aaa; font-size: 14px; margin-bottom: 20px; }
+    
+    .card {
+      background: #111319;
+      border: 1px solid #1f2430;
       border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
-      background: #111;
+      padding: 20px;
+      max-width: 440px;
+      margin: 0 auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     }
-    .controls {
+
+    #preview-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      margin-bottom: 15px;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid #00ffcc;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+    }
+
+    #pfpImage {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .loading-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(8, 9, 12, 0.85);
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      max-width: 400px;
-      margin: 0 auto;
+      align-items: center;
+      justify-content: center;
+      color: #00ffcc;
+      font-weight: bold;
+      font-size: 16px;
     }
-    button {
-      background: linear-gradient(45deg, #00ffcc, #ff007f);
+
+    .spinner {
+      border: 4px solid rgba(0, 255, 204, 0.1);
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border-left-color: #00ffcc;
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    .inputs { display: flex; flex-direction: column; gap: 12px; }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #090a0f;
+      color: #fff;
+      font-size: 16px;
+      text-align: center;
+      outline: none;
+    }
+    input[type="text"]:focus { border-color: #00ffcc; }
+
+    .btn {
+      background: linear-gradient(135deg, #00ffcc, #ff007f);
       border: none;
       color: #000;
       padding: 14px;
@@ -43,121 +101,36 @@
       border-radius: 8px;
       cursor: pointer;
     }
-    button:active { transform: scale(0.98); }
-    input {
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #333;
-      background: #222;
-      color: #fff;
-      text-align: center;
-    }
+    .btn:active { transform: scale(0.98); }
+    .btn-download { background: #00ffcc; color: #000; }
   </style>
 </head>
 <body>
 
-  <h1>$STRIPES PFP Generator</h1>
-  <p>Maak jouw unieke Cyberpunk Neon Zebra avatar!</p>
+  <h1>$STRIPES AI GENERATOR</h1>
+  <p>Genereer een unieke AI Cyberpunk Neon Zebra PFP</p>
 
-  <div id="canvas-container">
-    <canvas id="pfpCanvas" width="500" height="500"></canvas>
-  </div>
+  <div class="card">
+    <div id="preview-container">
+      <img id="pfpImage" src="" alt="AI Zebra PFP">
+      <div id="loader" class="loading-overlay">
+        <div class="spinner"></div>
+        <span>AI is generating your Zebra...</span>
+      </div>
+    </div>
 
-  <div class="controls">
-    <input type="text" id="username" placeholder="Voer je Telegram/X naam in" value="@STRIPES">
-    <button onclick="generateZebra()">⚡ Genereer Nieuwe Zebra</button>
-    <button onclick="downloadPFP()" style="background: #00ffcc;">💾 Download PFP</button>
+    <div class="inputs">
+      <input type="text" id="userHandle" placeholder="Voer je @handle in" value="@STRIPES">
+      <button class="btn" onclick="generateAIZebra()">⚡ Genereer Nieuwe AI Zebra</button>
+      <button class="btn btn-download" onclick="downloadPFP()">💾 Download PFP</button>
+    </div>
   </div>
 
   <script>
-    const canvas = document.getElementById('pfpCanvas');
-    const ctx = canvas.getContext('2d');
+    const imgElement = document.getElementById('pfpImage');
+    const loader = document.getElementById('loader');
 
-    function getRandomColor() {
-      const colors = ['#00ffcc', '#ff007f', '#9d00ff', '#0099ff', '#ffcc00'];
-      return colors[Math.floor(Math.random() * colors.length)];
-    }
+    function generateAIZebra() {
+      loader.style.display = 'flex';
 
-    function generateZebra() {
-      // Background
-      ctx.fillStyle = '#0a0a12';
-      ctx.fillRect(0, 0, 500, 500);
-
-      // Cyber Grid / Rain Effect
-      ctx.strokeStyle = 'rgba(0, 255, 204, 0.15)';
-      ctx.lineWidth = 1;
-      for (let i = 0; i < 500; i += 25) {
-        ctx.beginPath();
-        ctx.moveTo(i, 0); ctx.lineTo(i, 500);
-        ctx.moveTo(0, i); ctx.lineTo(500, i);
-        ctx.stroke();
-      }
-
-      const mainColor = getRandomColor();
-      const accentColor = getRandomColor();
-
-      // Zebra Base Head Silhouette
-      ctx.fillStyle = '#161625';
-      ctx.beginPath();
-      ctx.ellipse(250, 260, 110, 150, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Snout
-      ctx.fillStyle = '#0d0d18';
-      ctx.beginPath();
-      ctx.ellipse(250, 360, 60, 45, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Cyber Stripes
-      ctx.strokeStyle = mainColor;
-      ctx.lineWidth = 8;
-      ctx.shadowBlur = 15;
-      ctx.shadowColor = mainColor;
-
-      for (let i = 0; i < 7; i++) {
-        ctx.beginPath();
-        ctx.moveTo(160, 180 + (i * 25));
-        ctx.bezierCurveTo(210, 190 + (i * 25), 230, 170 + (i * 25), 280, 200 + (i * 25));
-        ctx.stroke();
-      }
-
-      // Glowing Cyber Visor / Glasses
-      ctx.shadowBlur = 20;
-      ctx.shadowColor = accentColor;
-      ctx.fillStyle = accentColor;
-      ctx.beginPath();
-      ctx.roundRect(170, 220, 160, 40, 10);
-      ctx.fill();
-
-      // Visor Glow Line
-      ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(180, 240);
-      ctx.lineTo(320, 240);
-      ctx.stroke();
-
-      // Reset Shadow for Text
-      ctx.shadowBlur = 0;
-
-      // Custom Username overlay
-      const userText = document.getElementById('username').value || '$STRIPES';
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 22px Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText(userText, 250, 470);
-    }
-
-    function downloadPFP() {
-      const link = document.createElement('a');
-      link.download = 'cyberpunk-zebra-pfp.png';
-      link.href = canvas.toDataURL();
-      link.click();
-    }
-
-    // Automatically generate one on load
-    window.onload = generateZebra;
-  </script>
-
-</body>
-</html>
+    
