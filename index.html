@@ -1,4 +1,4 @@
-loop<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -35,7 +35,7 @@ loop<!DOCTYPE html>
             border: 2px solid #00ffff;
         }
 
-         /* Video Background */
+        /* MP4 Video Background */
         .video-container {
             position: fixed;
             top: 0;
@@ -44,8 +44,14 @@ loop<!DOCTYPE html>
             height: 100vh;
             z-index: -1;
             overflow: hidden;
-            /* Helderheid maximaal opgeschroefd! */
             filter: brightness(2.0) contrast(1.1); 
+        }
+        
+        .video-container video {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            pointer-events: none;
         }
         
         .overlay {
@@ -54,7 +60,6 @@ loop<!DOCTYPE html>
             left: 0;
             width: 100%;
             height: 100%;
-            /* Filter er overheen helemaal weggehaald */
             background: transparent;
             z-index: 0;
         }
@@ -75,35 +80,39 @@ loop<!DOCTYPE html>
         .content-wrapper {
             position: relative;
             z-index: 10;
-            /* Extra donkere achtergrond achter secties zodat tekst leesbaar blijft op lichte video */
-            background: linear-gradient(to bottom, transparent 0%, rgba(5,5,5,0.8) 40%, rgba(5,5,5,1) 100%);
+            background: linear-gradient(to bottom, transparent 0%, transparent 90vh, #050505 110vh, #050505 100%);
+        }
+        
+        .heavy-text-shadow {
+            text-shadow: 2px 2px 8px rgba(0,0,0,1), -1px -1px 4px rgba(0,0,0,0.8);
         }
     </style>
 </head>
 <body class="antialiased selection:bg-pink-500 selection:text-white">
 
-    <!-- Background YouTube Video -->
+    <!-- Raw MP4 Video Background -->
     <div class="video-container">
-        <!-- Using standard embed with autoplay, mute, loop -->
-        <iframe src="https://www.youtube.com/embed/9ZlSMfa3zBo?autoplay=1&mute=1&controls=0&loop=1&playlist=9ZlSMfa3zBo&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <video autoplay loop muted playsinline>
+            <source src="VID_20261022_192740_666.mp4" type="video/mp4">
+        </video>
     </div>
     <div class="overlay"></div>
 
     <div class="content-wrapper pt-0">
         <!-- Navigation -->
-        <nav class="fixed w-full z-50 bg-black/70 backdrop-blur-md border-b border-cyan-500/30">
+        <nav class="fixed w-full z-50 bg-black/50 backdrop-blur-md border-b border-cyan-500/30">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-20">
-                    <div class="flex-shrink-0 orbitron text-xl md:text-2xl font-bold tracking-wider">
+                    <div class="flex-shrink-0 orbitron text-xl md:text-2xl font-bold tracking-wider heavy-text-shadow">
                         <span class="text-white">CYBERPUNK</span><span class="text-cyan-400 neon-text-cyan">ZEBRA</span>
                     </div>
                     <div class="hidden md:block">
-                        <div class="ml-10 flex items-baseline space-x-8">
-                            <a href="#about" class="text-gray-300 hover:text-pink-400 px-3 py-2 rounded-md text-lg font-bold transition-colors">About</a>
-                            <a href="#ecosystem" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-md text-lg font-bold transition-colors">Ecosystem</a>
-                            <a href="#bot" class="text-gray-300 hover:text-pink-400 px-3 py-2 rounded-md text-lg font-bold transition-colors">AI Bot</a>
-                            <a href="#memes" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-md text-lg font-bold transition-colors">Memes</a>
-                            <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump" target="_blank" class="bg-pink-600 hover:bg-pink-500 text-white px-6 py-2 rounded-full font-bold neon-box-pink glitch-hover transition-all">BUY $STRIPES</a>
+                        <div class="ml-10 flex items-baseline space-x-8 heavy-text-shadow">
+                            <a href="#about" class="text-gray-200 hover:text-pink-400 px-3 py-2 rounded-md text-lg font-bold transition-colors">About</a>
+                            <a href="#ecosystem" class="text-gray-200 hover:text-cyan-400 px-3 py-2 rounded-md text-lg font-bold transition-colors">Ecosystem</a>
+                            <a href="#bot" class="text-gray-200 hover:text-pink-400 px-3 py-2 rounded-md text-lg font-bold transition-colors">AI Bot</a>
+                            <a href="#memes" class="text-gray-200 hover:text-cyan-400 px-3 py-2 rounded-md text-lg font-bold transition-colors">Memes</a>
+                            <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump" target="_blank" class="bg-pink-600 hover:bg-pink-500 text-white px-6 py-2 rounded-full font-bold neon-box-pink glitch-hover transition-all border-none">BUY $STRIPES</a>
                         </div>
                     </div>
                 </div>
@@ -112,27 +121,27 @@ loop<!DOCTYPE html>
 
         <!-- Hero Section -->
         <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden min-h-screen flex flex-col justify-center">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center bg-black/40 p-8 rounded-2xl backdrop-blur-sm border border-cyan-500/20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
                 <div class="flex justify-center mb-8">
-                    <!-- Zorg dat 7763.jpg op GitHub staat -->
-                    <img src="7763.jpg" alt="Cyberpunk Zebra Laser Eyes" class="w-48 h-48 md:w-64 md:h-64 object-cover rounded-full neon-box-pink animate-pulse bg-gray-900" onerror="this.src='https://via.placeholder.com/256/000000/ff00ff?text=STRIPES'">
+                    <!-- Laser Eyes Image -->
+                    <img src="7763.jpg" alt="Cyberpunk Zebra Laser Eyes" class="w-48 h-48 md:w-64 md:h-64 object-cover rounded-full neon-box-pink animate-pulse bg-gray-900 shadow-[0_0_30px_rgba(255,0,255,0.6)]">
                 </div>
-                <h1 class="text-5xl md:text-7xl font-black mb-6 uppercase tracking-tighter" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
+                <h1 class="text-5xl md:text-7xl font-black mb-6 uppercase tracking-tighter heavy-text-shadow">
                     The Real Herd is <br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-500 neon-text-pink">Awake.</span>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-500 neon-text-pink drop-shadow-[0_2px_2px_rgba(0,0,0,1)]">Awake.</span>
                 </h1>
-                <p class="mt-4 text-xl md:text-2xl text-white max-w-3xl mx-auto mb-10 font-bold" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.9);">
+                <p class="mt-4 text-xl md:text-2xl text-white max-w-3xl mx-auto mb-10 font-bold heavy-text-shadow">
                     Welcome to $STRIPES. We are not just a memecoin. We are a movement. Stay sharp, stay fast. We stay focused on the future.
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center gap-6">
-                    <a href="https://t.me/StripesPortal" target="_blank" class="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white rounded-md font-bold text-xl neon-box-cyan glitch-hover flex items-center justify-center">
+                    <a href="https://t.me/StripesPortal" target="_blank" class="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white rounded-md font-bold text-xl neon-box-cyan glitch-hover flex items-center justify-center shadow-[0_0_20px_rgba(0,255,255,0.4)]">
                         JOIN THE TELEGRAM
                     </a>
-                    <a href="https://dexscreener.com/solana/5Kynn3ihycCtN5z3b2pftoyxYUVwsw7uCfQ5NdCBMVrx" target="_blank" class="px-8 py-4 bg-black/60 border-2 border-pink-500 text-pink-400 hover:bg-pink-900/50 rounded-md font-bold text-xl neon-box-pink transition-all flex items-center justify-center backdrop-blur-md">
+                    <a href="https://dexscreener.com/solana/5Kynn3ihycCtN5z3b2pftoyxYUVwsw7uCfQ5NdCBMVrx" target="_blank" class="px-8 py-4 bg-black/40 border-2 border-pink-500 text-pink-300 hover:bg-pink-900/50 rounded-md font-bold text-xl neon-box-pink transition-all flex items-center justify-center backdrop-blur-sm">
                         VIEW CHART
                     </a>
                 </div>
-                <div class="mt-8 text-sm text-gray-300 font-mono bg-black/80 inline-block px-4 py-2 rounded border border-gray-700">
+                <div class="mt-8 text-sm text-white font-bold font-mono bg-black/60 inline-block px-4 py-2 rounded border border-gray-600 heavy-text-shadow">
                     CA: 2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump
                 </div>
             </div>
@@ -147,7 +156,6 @@ loop<!DOCTYPE html>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Website & Arcade -->
                     <div class="bg-gray-900/80 p-8 rounded-xl border border-cyan-500/30 hover:border-cyan-400 transition-colors">
                         <h3 class="text-2xl font-bold text-cyan-400 mb-6 flex items-center"><span class="text-3xl mr-2">🌐</span> Web & Arcade</h3>
                         <ul class="space-y-4">
@@ -161,7 +169,6 @@ loop<!DOCTYPE html>
                         </ul>
                     </div>
 
-                    <!-- Trade & Analytics -->
                     <div class="bg-gray-900/80 p-8 rounded-xl border border-pink-500/30 hover:border-pink-400 transition-colors">
                         <h3 class="text-2xl font-bold text-pink-400 mb-6 flex items-center"><span class="text-3xl mr-2">📊</span> Trade & Data</h3>
                         <ul class="space-y-4">
@@ -172,7 +179,6 @@ loop<!DOCTYPE html>
                         </ul>
                     </div>
 
-                    <!-- Security & Socials -->
                     <div class="bg-gray-900/80 p-8 rounded-xl border border-purple-500/30 hover:border-purple-400 transition-colors">
                         <h3 class="text-2xl font-bold text-purple-400 mb-6 flex items-center"><span class="text-3xl mr-2">🔒</span> Security & Socials</h3>
                         <ul class="space-y-4">
@@ -195,7 +201,6 @@ loop<!DOCTYPE html>
                 </div>
                 
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    <!-- Zorg dat deze bestanden op GitHub staan -->
                     <img src="7299.jpg" class="w-full h-auto aspect-square object-cover rounded-lg border border-pink-500 hover:neon-box-pink transition-all bg-gray-900" alt="Zebra PFP">
                     <img src="7298.jpg" class="w-full h-auto aspect-square object-cover rounded-lg border border-cyan-500 hover:neon-box-cyan transition-all bg-gray-900" alt="Zebra PFP">
                     <img src="7344.jpg" class="w-full h-auto aspect-square object-cover rounded-lg border border-pink-500 hover:neon-box-pink transition-all bg-gray-900" alt="Zebra PFP">
@@ -219,7 +224,6 @@ loop<!DOCTYPE html>
                 </div>
                 
                 <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-                    <!-- Zorg dat deze bestanden op GitHub staan -->
                     <img src="7163.jpg" class="w-full rounded-xl border border-gray-700 hover:border-pink-500 hover:neon-box-pink transition-all duration-300 bg-gray-900" alt="$STRIPES Meme">
                     <img src="7162.jpg" class="w-full rounded-xl border border-gray-700 hover:border-cyan-500 hover:neon-box-cyan transition-all duration-300 bg-gray-900" alt="$STRIPES Meme">
                     <img src="7320.jpg" class="w-full rounded-xl border border-gray-700 hover:border-pink-500 hover:neon-box-pink transition-all duration-300 bg-gray-900" alt="$STRIPES Meme">
@@ -263,4 +267,11 @@ loop<!DOCTYPE html>
                 <div class="orbitron text-3xl font-bold tracking-wider mb-6">
                     <span class="text-white">CYBERPUNK</span><span class="text-cyan-400 neon-text-cyan">ZEBRA</span>
                 </div>
-                <p class="text-gray-500 mb-2">Support: <a href="mailto:info@stripesonzealz.fun" class="text-pink-4
+                <p class="text-gray-500 mb-2">Support: <a href="mailto:info@stripesonzealz.fun" class="text-pink-400 hover:text-pink-300">info@stripesonzealz.fun</a></p>
+                <p class="text-gray-600 text-sm">© 2026 Cyberpunk Zebra. Not financial advice. Do your own research.</p>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>
