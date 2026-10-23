@@ -1,298 +1,276 @@
-```html
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$STRIPES | The Cyberpunk Herd Takeover on Solana</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Cyberpunk Zebra | $STRIPES</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        cyberdark: '#07050d',
-                        cybersurface: '#120d20',
-                        neoncyan: '#00f0ff',
-                        neonpink: '#ff007f',
-                        neonpurple: '#b000ff',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Orbitron', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'neon-cyan': '0 0 20px rgba(0, 240, 255, 0.5)',
-                        'neon-pink': '0 0 20px rgba(255, 0, 127, 0.5)',
-                        'neon-purple': '0 0 25px rgba(176, 0, 255, 0.4)',
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap');
+
         body {
-            background-color: #07050d;
-            color: #f3f4f6;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #050505;
+            color: #fff;
             overflow-x: hidden;
         }
-        .cyber-grid {
-            background-size: 40px 40px;
-            background-image: 
-                linear-gradient(to right, rgba(176, 0, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(176, 0, 255, 0.05) 1px, transparent 1px);
+
+        h1, h2, h3, .orbitron {
+            font-family: 'Orbitron', sans-serif;
         }
-        .neon-text-glow {
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.7), 0 0 20px rgba(0, 240, 255, 0.4);
+
+        /* Neon Text & Box Shadows */
+        .neon-text-pink {
+            text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff;
         }
-        .pink-text-glow {
-            text-shadow: 0 0 10px rgba(255, 0, 127, 0.7), 0 0 20px rgba(255, 0, 127, 0.4);
+        .neon-text-cyan {
+            text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
         }
-        ::-webkit-scrollbar {
-            width: 8px;
+        .neon-box-pink {
+            box-shadow: 0 0 10px #ff00ff, inset 0 0 10px #ff00ff;
+            border: 2px solid #ff00ff;
         }
-        ::-webkit-scrollbar-track {
-            background: #07050d;
+        .neon-box-cyan {
+            box-shadow: 0 0 10px #00ffff, inset 0 0 10px #00ffff;
+            border: 2px solid #00ffff;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #b000ff;
-            border-radius: 4px;
+
+        /* Video Background */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00f0ff;
+        .video-container iframe {
+            width: 100vw;
+            height: 56.25vw; /* 16:9 aspect ratio */
+            min-height: 100vh;
+            min-width: 177.77vh; /* 16:9 aspect ratio */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 5, 0.85);
+            z-index: 0;
+        }
+
+        /* Glitch Effect */
+        .glitch-hover:hover {
+            animation: glitch 0.3s linear infinite;
+        }
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+        
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
         }
     </style>
 </head>
-<body class="bg-cyberdark text-white cyber-grid min-h-screen relative">
+<body class="antialiased selection:bg-pink-500 selection:text-white">
 
-    <!-- Toast Notification Container -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-32 opacity-0 transition-all duration-300 bg-cybersurface border border-neoncyan text-neoncyan px-5 py-3 rounded-xl shadow-neon-cyan flex items-center space-x-3">
-        <i class="fa-solid fa-circle-check text-lg"></i>
-        <span id="toast-message" class="font-semibold text-sm">Copied to clipboard!</span>
+    <!-- Background YouTube Video -->
+    <div class="video-container">
+        <!-- Using standard embed with autoplay, mute, loop -->
+        <iframe src="https://www.youtube.com/embed/9ZlSMfa3zBo?autoplay=1&mute=1&controls=0&loop=1&playlist=9ZlSMfa3zBo&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+    <div class="overlay"></div>
+
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="fixed w-full z-50 bg-black/50 backdrop-blur-md border-b border-cyan-500/30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <div class="flex-shrink-0 orbitron text-2xl font-bold tracking-wider">
+                        <span class="text-white">CYBERPUNK</span><span class="text-cyan-400 neon-text-cyan">ZEBRA</span>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-8">
+                            <a href="#about" class="text-gray-300 hover:text-pink-400 px-3 py-2 rounded-md text-lg font-bold transition-colors">About</a>
+                            <a href="#ecosystem" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-md text-lg font-bold transition-colors">Ecosystem</a>
+                            <a href="#bot" class="text-gray-300 hover:text-pink-400 px-3 py-2 rounded-md text-lg font-bold transition-colors">AI Bot</a>
+                            <a href="#memes" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-md text-lg font-bold transition-colors">Memes</a>
+                            <a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump" target="_blank" class="bg-pink-600 hover:bg-pink-500 text-white px-6 py-2 rounded-full font-bold neon-box-pink glitch-hover transition-all">BUY $STRIPES</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
+                <div class="flex justify-center mb-8">
+                    <img src="7763.jpg" alt="Cyberpunk Zebra Laser Eyes" class="w-64 h-64 object-cover rounded-full neon-box-pink animate-pulse">
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black mb-6 uppercase tracking-tighter">
+                    The Real Herd is <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-500 neon-text-pink">Awake.</span>
+                </h1>
+                <p class="mt-4 text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10">
+                    Welcome to $STRIPES. We are not just a memecoin. We are a movement. Stay sharp, stay fast. We stay focused on the future.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-6">
+                    <a href="https://t.me/StripesPortal" target="_blank" class="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white rounded-md font-bold text-xl neon-box-cyan glitch-hover flex items-center justify-center">
+                        JOIN THE TELEGRAM
+                    </a>
+                    <a href="https://dexscreener.com/solana/5Kynn3ihycCtN5z3b2pftoyxYUVwsw7uCfQ5NdCBMVrx" target="_blank" class="px-8 py-4 bg-transparent border-2 border-pink-500 text-pink-400 hover:bg-pink-900/30 rounded-md font-bold text-xl neon-box-pink transition-all flex items-center justify-center">
+                        VIEW CHART
+                    </a>
+                </div>
+                <div class="mt-8 text-sm text-gray-400 font-mono bg-black/60 inline-block px-4 py-2 rounded border border-gray-800">
+                    CA: 2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump
+                </div>
+            </div>
+        </section>
+
+        <!-- Ecosystem Directory -->
+        <section id="ecosystem" class="py-20 bg-black/80 border-t border-b border-cyan-900/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-4"><span class="text-cyan-400">ECOSYSTEM</span> LINKS</h2>
+                    <p class="text-gray-400 text-lg">Use these verified channels for the $STRIPES movement.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Website & Arcade -->
+                    <div class="bg-gray-900/50 p-8 rounded-xl border border-cyan-500/30 hover:border-cyan-400 transition-colors">
+                        <h3 class="text-2xl font-bold text-cyan-400 mb-6 flex items-center"><span class="text-3xl mr-2">🌐</span> Web & Arcade</h3>
+                        <ul class="space-y-4">
+                            <li><a href="https://stripesonzealz.fun" target="_blank" class="text-gray-300 hover:text-white flex items-center">Official Website <span class="ml-auto text-cyan-500">↗</span></a></li>
+                            <li>
+                                <a href="https://stripesonzealz.fun/game" target="_blank" class="text-gray-300 hover:text-white flex flex-col">
+                                    <div class="flex items-center">Play the Game <span class="ml-auto text-cyan-500">↗</span></div>
+                                    <span class="text-xs text-pink-400 mt-1">*Just for fun, no $STRIPES rewards to earn</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Trade & Analytics -->
+                    <div class="bg-gray-900/50 p-8 rounded-xl border border-pink-500/30 hover:border-pink-400 transition-colors">
+                        <h3 class="text-2xl font-bold text-pink-400 mb-6 flex items-center"><span class="text-3xl mr-2">📊</span> Trade & Data</h3>
+                        <ul class="space-y-4">
+                            <li><a href="https://swap.pump.fun/?input=So11111111111111111111111111111111111111112&output=2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump" target="_blank" class="text-gray-300 hover:text-white flex items-center">Buy on Pumpswap <span class="ml-auto text-pink-500">↗</span></a></li>
+                            <li><a href="https://dexscreener.com/solana/5Kynn3ihycCtN5z3b2pftoyxYUVwsw7uCfQ5NdCBMVrx" target="_blank" class="text-gray-300 hover:text-white flex items-center">Chart on Dexscreener <span class="ml-auto text-pink-500">↗</span></a></li>
+                            <li><a href="https://v2.bubblemaps.io/map/qNeUKirYqvWQuZbTFO69" target="_blank" class="text-gray-300 hover:text-white flex items-center">Data on Bubblemaps <span class="ml-auto text-pink-500">↗</span></a></li>
+                            <li><a href="https://www.dextools.io/app/solana/pair-explorer/5Kynn3ihycCtN5z3b2pftoyxYUVwsw7uCfQ5NdCBMVrx" target="_blank" class="text-gray-300 hover:text-white flex items-center">View on Dextools <span class="ml-auto text-pink-500">↗</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Security & Socials -->
+                    <div class="bg-gray-900/50 p-8 rounded-xl border border-purple-500/30 hover:border-purple-400 transition-colors">
+                        <h3 class="text-2xl font-bold text-purple-400 mb-6 flex items-center"><span class="text-3xl mr-2">🔒</span> Security & Socials</h3>
+                        <ul class="space-y-4">
+                            <li><a href="https://app.streamflow.finance/contract/solana/mainnet/7dU1icdcC1qnYXHpXDWHsCStiPM5AZV6nQAqYYrhhku" target="_blank" class="text-gray-300 hover:text-white flex items-center">2.5% Supply Lock <span class="ml-auto text-purple-500">↗</span></a></li>
+                            <li><a href="https://solscan.io/token/2ctBZn1je6q62p9jyCJmYsWpfSfH4QV8nHzTg2drpump" target="_blank" class="text-gray-300 hover:text-white flex items-center">Solscan Contract <span class="ml-auto text-purple-500">↗</span></a></li>
+                            <li><a href="https://t.me/StripesPortal" target="_blank" class="text-gray-300 hover:text-white flex items-center">Main Telegram <span class="ml-auto text-purple-500">↗</span></a></li>
+                            <li><a href="https://x.com/dennispeters192" target="_blank" class="text-gray-300 hover:text-white flex items-center">X / Twitter <span class="ml-auto text-purple-500">↗</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Bot Gallery Section -->
+        <section id="bot" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">AI MEME & <span class="text-pink-400">PFP BOT</span></h2>
+                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">We created a custom AI bot that generates insane Cyberpunk Zebra memes and Profile Pictures. Check out some of the sickest generations from the community.</p>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <img src="7299.jpg" class="w-full h-auto aspect-square object-cover rounded-lg border border-pink-500 hover:neon-box-pink transition-all">
+                    <img src="7298.jpg" class="w-full h-auto aspect-square object-cover rounded-lg border border-cyan-500 hover:neon-box-cyan transition-all">
+                    <img src="7344.jpg" class="w-full h-auto aspect-square object-cover rounded-lg border border-pink-500 hover:neon-box-pink transition-all">
+                    <img src="7402.jpg" class="w-full h-auto aspect-square object-cover rounded-lg border border-purple-500 hover:shadow-[0_0_15px_#a855f7] transition-all">
+                    <img src="7652.jpg" class="w-full h-auto aspect-square object-cover rounded-lg border border-cyan-500 hover:neon-box-cyan transition-all">
+                    <img src="7620.jpg" class="w-full h-auto aspect-square object-cover rounded-lg border border-pink-500 hover:neon-box-pink transition-all">
+                    <img src="7425.jpg" class="w-full h-auto aspect-square object-cover rounded-lg border border-cyan-500 hover:neon-box-cyan transition-all">
+                    <img src="7413.jpg" class="w-full h-auto aspect-square object-cover rounded-lg border border-purple-500 hover:shadow-[0_0_15px_#a855f7] transition-all">
+                    <img src="7346.jpg" class="w-full h-auto aspect-square object-cover rounded-lg border border-pink-500 hover:neon-box-pink transition-all">
+                    <img src="7300.jpg" class="w-full h-auto aspect-square object-cover rounded-lg border border-cyan-500 hover:neon-box-cyan transition-all">
+                </div>
+            </div>
+        </section>
+
+        <!-- Meme Vault Section -->
+        <section id="memes" class="py-20 bg-black/80 border-t border-cyan-900/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">THE HERD'S <span class="text-cyan-400">MEME VAULT</span></h2>
+                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">Propaganda van de straten. The strongest community in the neon city.</p>
+                </div>
+                
+                <!-- Masonry-style grid for memes of different sizes -->
+                <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                    <img src="7163.jpg" class="w-full rounded-xl border border-gray-700 hover:border-pink-500 hover:neon-box-pink transition-all duration-300" alt="$STRIPES Meme">
+                    <img src="7162.jpg" class="w-full rounded-xl border border-gray-700 hover:border-cyan-500 hover:neon-box-cyan transition-all duration-300" alt="$STRIPES Meme">
+                    <img src="7320.jpg" class="w-full rounded-xl border border-gray-700 hover:border-pink-500 hover:neon-box-pink transition-all duration-300" alt="$STRIPES Meme">
+                    <img src="7345.jpg" class="w-full rounded-xl border border-gray-700 hover:border-cyan-500 hover:neon-box-cyan transition-all duration-300" alt="$STRIPES Meme">
+                    <img src="7401.jpg" class="w-full rounded-xl border border-gray-700 hover:border-pink-500 hover:neon-box-pink transition-all duration-300" alt="$STRIPES Meme">
+                    <img src="7405.jpg" class="w-full rounded-xl border border-gray-700 hover:border-cyan-500 hover:neon-box-cyan transition-all duration-300" alt="$STRIPES Meme">
+                    <img src="7473.jpg" class="w-full rounded-xl border border-gray-700 hover:border-pink-500 hover:neon-box-pink transition-all duration-300" alt="$STRIPES Meme">
+                    <img src="7468.jpg" class="w-full rounded-xl border border-gray-700 hover:border-cyan-500 hover:neon-box-cyan transition-all duration-300" alt="$STRIPES Meme">
+                    <img src="7509.jpg" class="w-full rounded-xl border border-gray-700 hover:border-pink-500 hover:neon-box-pink transition-all duration-300" alt="$STRIPES Meme">
+                    <img src="7521.jpg" class="w-full rounded-xl border border-gray-700 hover:border-cyan-500 hover:neon-box-cyan transition-all duration-300" alt="$STRIPES Meme">
+                </div>
+            </div>
+        </section>
+
+        <!-- What The Herd Says -->
+        <section class="py-20 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">WHAT THE <span class="text-cyan-400">HERD SAYS</span></h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-black/60 p-8 border border-pink-500 rounded-lg neon-box-pink">
+                        <p class="text-gray-300 text-lg italic">"This isn't just a coin, it's a digital revolution. The neon jungle belongs to $STRIPES!"</p>
+                        <p class="mt-4 text-pink-400 font-bold">- CyberPunk99</p>
+                    </div>
+                    <div class="bg-black/60 p-8 border border-cyan-500 rounded-lg neon-box-cyan transform md:-translate-y-4">
+                        <p class="text-gray-300 text-lg italic">"The strongest community on Solana right now. Holding the line and running the streets."</p>
+                        <p class="mt-4 text-cyan-400 font-bold">- NeonRider_SOL</p>
+                    </div>
+                    <div class="bg-black/60 p-8 border border-purple-500 rounded-lg shadow-[0_0_15px_#a855f7]">
+                        <p class="text-gray-300 text-lg italic">"Ditched the dog coins, the zebra herd is where the real alpha is at. Fast, sharp, focused."</p>
+                        <p class="mt-4 text-purple-400 font-bold">- GlitchHunter</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-black py-10 border-t border-gray-800 text-center">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="orbitron text-3xl font-bold tracking-wider mb-6">
+                    <span class="text-white">CYBERPUNK</span><span class="text-cyan-400 neon-text-cyan">ZEBRA</span>
+                </div>
+                <p class="text-gray-500 mb-2">Support: <a href="mailto:info@stripesonzealz.fun" class="text-pink-400 hover:text-pink-300">info@stripesonzealz.fun</a></p>
+                <p class="text-gray-600 text-sm">© 2026 Cyberpunk Zebra. Not financial advice. Do your own research.</p>
+            </div>
+        </footer>
     </div>
 
-    <!-- Navigation Bar -->
-    <nav class="sticky top-0 z-40 backdrop-blur-md bg-cyberdark/80 border-b border-purple-900/40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-neonpink via-neonpurple to-neoncyan flex items-center justify-center shadow-neon-purple animate-pulse">
-                    <i class="fa-solid fa-bolt text-white text-xl"></i>
-                </div>
-                <span class="font-display font-black text-2xl tracking-wider bg-gradient-to-r from-neoncyan via-white to-neonpink bg-clip-text text-transparent">$STRIPES</span>
-            </div>
-            <div class="hidden md:flex items-center space-x-8 text-sm font-semibold tracking-wide">
-                <a href="#hero" class="text-gray-300 hover:text-neoncyan transition-colors">Home</a>
-                <a href="#takeover" class="text-gray-300 hover:text-neoncyan transition-colors">The Takeover</a>
-                <a href="#wallet-check" class="text-gray-300 hover:text-neoncyan transition-colors">Wallet Check</a>
-                <a href="#tokenomics" class="text-gray-300 hover:text-neoncyan transition-colors">Tokenomics</a>
-                <a href="#ca" class="text-gray-300 hover:text-neoncyan transition-colors">Contract</a>
-            </div>
-            <div class="flex items-center space-x-4">
-                <a href="#buy" class="hidden sm:inline-flex items-center px-5 py-2.5 rounded-xl font-display font-bold text-xs uppercase tracking-widest bg-gradient-to-r from-neoncyan to-neonpurple text-cyberdark hover:opacity-90 shadow-neon-cyan transition-all transform hover:-translate-y-0.5">
-                    Buy $STRIPES
-                </a>
-                <a href="https://t.me/" target="_blank" class="w-10 h-10 rounded-xl bg-cybersurface border border-purple-500/30 flex items-center justify-center text-neonpink hover:bg-neonpink hover:text-white transition-all shadow-neon-pink">
-                    <i class="fa-brands fa-telegram text-lg"></i>
-                </a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section with Embedded YouTube Video (9ZlSMfa3zBo) -->
-    <header id="hero" class="relative pt-12 pb-20 lg:pt-20 lg:pb-32 overflow-hidden">
-        <!-- Ambient glow blobs -->
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-neonpurple/20 rounded-full blur-[120px] pointer-events-none"></div>
-        <div class="absolute top-1/3 left-1/4 w-72 h-72 bg-neoncyan/15 rounded-full blur-[100px] pointer-events-none"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-cybersurface border border-neonpink/40 text-neonpink text-xs font-bold uppercase tracking-widest mb-6 shadow-neon-pink">
-                <span class="w-2 h-2 rounded-full bg-neonpink animate-ping"></span>
-                <span>The Herd Takes Over Solana</span>
-            </div>
-            
-            <h1 class="font-display font-black text-4xl sm:text-6xl lg:text-7xl tracking-tight mb-6 max-w-5xl mx-auto leading-tight">
-                BREAK THE GRID WITH <span class="bg-gradient-to-r from-neoncyan via-neonpink to-neonpurple bg-clip-text text-transparent neon-text-glow">$STRIPES</span>
-            </h1>
-            
-            <p class="text-gray-300 text-base sm:text-xl max-w-2xl mx-auto mb-10 font-medium">
-                Cyberpunk Zebras with laser eyes are taking over the Solana network. Watch obsolete meme buildings collapse as supreme momentum takes over.
-            </p>
-
-            <!-- CTA Buttons -->
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
-                <a href="#buy" class="w-full sm:w-auto px-8 py-4 rounded-2xl font-display font-extrabold text-sm uppercase tracking-widest bg-gradient-to-r from-neoncyan to-blue-600 text-cyberdark hover:opacity-95 shadow-neon-cyan transition-all transform hover:-translate-y-1">
-                    <i class="fa-solid fa-rocket mr-2"></i> Buy $STRIPES
-                </a>
-                <a href="https://t.me/" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-2xl font-display font-extrabold text-sm uppercase tracking-widest bg-cybersurface border border-neonpink/50 text-neonpink hover:bg-neonpink hover:text-white shadow-neon-pink transition-all transform hover:-translate-y-1">
-                    <i class="fa-brands fa-telegram mr-2"></i> Join the Herd
-                </a>
-            </div>
-
-            <!-- Embedded YouTube Video Container (ID: 9ZlSMfa3zBo) -->
-            <div class="max-w-4xl mx-auto rounded-3xl p-3 bg-gradient-to-b from-neonpurple/50 via-cybersurface to-cyberdark border border-neoncyan/40 shadow-neon-cyan relative group">
-                <div class="absolute -inset-1 bg-gradient-to-r from-neoncyan to-neonpink rounded-3xl blur opacity-30 group-hover:opacity-75 transition duration-1000 group-hover:duration-200 pointer-events-none"></div>
-                <div class="relative rounded-2xl overflow-hidden aspect-video bg-black shadow-2xl">
-                    <iframe class="w-full h-full border-0" src="https://www.youtube.com/embed/9ZlSMfa3zBo?autoplay=1&mute=1&loop=1&playlist=9ZlSMfa3zBo" title="$STRIPES Cyberpunk Cinematic Intro" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-                <div class="mt-3 flex justify-between items-center text-xs font-display tracking-widest text-neoncyan px-2">
-                    <span>[ SYSTEM: SOLANA_MAINNET_ACTIVE ]</span>
-                    <span>HD CINEMATIC PREVIEW</span>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Contract Address Section -->
-    <section id="ca" class="py-12 bg-cybersurface/40 border-y border-purple-900/30">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h3 class="font-display font-bold text-sm uppercase tracking-widest text-neoncyan mb-3">Official Contract Address</h3>
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-cyberdark border border-purple-800/50 shadow-inner">
-                <span id="ca-text" class="font-mono text-xs sm:text-sm text-gray-300 break-all">STRIPES11111111111111111111111111SolanaTakeover99</span>
-                <button onclick="copyCA()" class="w-full sm:w-auto px-6 py-3 rounded-xl font-display font-bold text-xs uppercase tracking-wider bg-neonpurple text-white hover:bg-neoncyan hover:text-cyberdark transition-all shadow-neon-purple shrink-0">
-                    <i class="fa-regular fa-copy mr-2"></i> Copy CA
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- The Takeover Section -->
-    <section id="takeover" class="py-24 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="font-display font-black text-3xl sm:text-5xl mb-4">THE <span class="text-neonpink pink-text-glow">TAKEOVER</span></h2>
-                <p class="text-gray-400">The old meme architecture is crumbling. Neon laser eyes are burning down obsolete systems across Solana.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="p-8 rounded-3xl bg-cybersurface border border-purple-900/50 hover:border-neoncyan transition-all duration-300 group shadow-lg">
-                    <div class="w-14 h-14 rounded-2xl bg-neoncyan/10 border border-neoncyan/30 flex items-center justify-center text-neoncyan text-2xl mb-6 group-hover:scale-110 transition duration-300 shadow-neon-cyan">
-                        <i class="fa-solid fa-eye"></i>
-                    </div>
-                    <h3 class="font-display font-bold text-xl mb-3 text-white">Laser Eye Precision</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Equipped with high-intensity neon optics, the herd scans the blockchain for weak spots and clears the path.</p>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="p-8 rounded-3xl bg-cybersurface border border-purple-900/50 hover:border-neonpink transition-all duration-300 group shadow-lg">
-                    <div class="w-14 h-14 rounded-2xl bg-neonpink/10 border border-neonpink/30 flex items-center justify-center text-neonpink text-2xl mb-6 group-hover:scale-110 transition duration-300 shadow-neon-pink">
-                        <i class="fa-solid fa-building-shield"></i>
-                    </div>
-                    <h3 class="font-display font-bold text-xl mb-3 text-white">Meme Towers Crumble</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Outdated meme structures collapse under pressure as $STRIPES establishes absolute digital supremacy.</p>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="p-8 rounded-3xl bg-cybersurface border border-purple-900/50 hover:border-neonpurple transition-all duration-300 group shadow-lg">
-                    <div class="w-14 h-14 rounded-2xl bg-neonpurple/10 border border-neonpurple/30 flex items-center justify-center text-neonpurple text-2xl mb-6 group-hover:scale-110 transition duration-300 shadow-neon-purple">
-                        <i class="fa-solid fa-network-wired"></i>
-                    </div>
-                    <h3 class="font-display font-bold text-xl mb-3 text-white">Solana Domination</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Built for lightning speed. Zero friction, pure organic momentum driving the entire Solana ecosystem forward.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Wallet Check Section -->
-    <section id="wallet-check" class="py-24 bg-cybersurface/30 border-y border-purple-900/30">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <span class="text-neoncyan font-display font-bold text-xs uppercase tracking-widest">Holder Utility</span>
-            <h2 class="font-display font-black text-3xl sm:text-4xl mt-2 mb-4">SOLANA WALLET <span class="text-neoncyan neon-text-glow">CHECK</span></h2>
-            <p class="text-gray-400 max-w-xl mx-auto mb-10">Verify your Solana wallet to unlock exclusive herd alpha, governance voting rights, and priority drops.</p>
-            
-            <div class="p-8 rounded-3xl bg-cyberdark border border-purple-800/60 shadow-neon-purple max-w-2xl mx-auto">
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <input type="text" id="wallet-input" placeholder="Enter your Solana Wallet Address..." class="flex-1 bg-cybersurface border border-purple-900/80 rounded-2xl px-5 py-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-neoncyan transition-all">
-                    <button onclick="checkWallet()" class="px-8 py-4 rounded-2xl font-display font-bold text-xs uppercase tracking-widest bg-gradient-to-r from-neoncyan to-neonpurple text-cyberdark hover:opacity-90 transition-all shadow-neon-cyan shrink-0">
-                        Verify Access
-                    </button>
-                </div>
-                <div id="wallet-result" class="mt-6 hidden text-sm font-semibold p-4 rounded-xl bg-neoncyan/10 border border-neoncyan/40 text-neoncyan">
-                    <i class="fa-solid fa-circle-check mr-2"></i> Wallet verified! Welcome to the $STRIPES inner circle.
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tokenomics Section -->
-    <section id="tokenomics" class="py-24">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="font-display font-black text-3xl sm:text-5xl mb-4">TOKENO<span class="text-neoncyan neon-text-glow">MICS</span></h2>
-            <p class="text-gray-400 max-w-xl mx-auto mb-16">Transparent, fair, and community-driven. No gimmicks, just pure takeover power.</p>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-8 rounded-3xl bg-cybersurface border border-purple-900/50 text-center relative overflow-hidden group">
-                    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-neoncyan to-blue-500"></div>
-                    <h3 class="font-display font-bold text-2xl text-white mb-2">0% TAX</h3>
-                    <p class="text-gray-400 text-sm">Buy and sell freely with zero hidden fees or transfer taxes draining your bag.</p>
-                </div>
-                <div class="p-8 rounded-3xl bg-cybersurface border border-purple-900/50 text-center relative overflow-hidden group">
-                    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-neonpink to-purple-600"></div>
-                    <h3 class="font-display font-bold text-2xl text-white mb-2">LP BURNT</h3>
-                    <p class="text-gray-400 text-sm">Liquidity Pool tokens permanently burned. Safety guaranteed for the entire herd.</p>
-                </div>
-                <div class="p-8 rounded-3xl bg-cybersurface border border-purple-900/50 text-center relative overflow-hidden group">
-                    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-neonpurple to-neoncyan"></div>
-                    <h3 class="font-display font-bold text-2xl text-white mb-2">COMMUNITY OWNED</h3>
-                    <p class="text-gray-400 text-sm">Driven entirely by community conviction, viral memes, and unstoppable energy.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Buy Section / Footer Call to Action -->
-    <section id="buy" class="py-20 relative overflow-hidden bg-gradient-to-t from-purple-950/40 to-transparent">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <h2 class="font-display font-black text-3xl sm:text-5xl mb-6">READY TO RUN WITH <span class="bg-gradient-to-r from-neoncyan via-neonpink to-neonpurple bg-clip-text text-transparent">$STRIPES</span>?</h2>
-            <p class="text-gray-300 max-w-xl mx-auto mb-10">Join the movement before the grid completely collapses. Get your $STRIPES today.</p>
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#" class="w-full sm:w-auto px-10 py-4 rounded-2xl font-display font-extrabold text-sm uppercase tracking-widest bg-gradient-to-r from-neoncyan to-neonpurple text-cyberdark shadow-neon-cyan transition-all transform hover:-translate-y-1">
-                    Swap on Raydium
-                </a>
-                <a href="https://t.me/" target="_blank" class="w-full sm:w-auto px-10 py-4 rounded-2xl font-display font-extrabold text-sm uppercase tracking-widest bg-cybersurface border border-neonpink text-neonpink hover:bg-neonpink hover:text-white shadow-neon-pink transition-all transform hover:-translate-y-1">
-                    Join Telegram
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-12 border-t border-purple-900/40 text-center text-xs text-gray-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-center space-x-2 mb-4">
-                <div class="w-6 h-6 rounded-lg bg-neonpink flex items-center justify-center text-white text-xs">
-                    <i class="fa-solid fa-bolt"></i>
-                </div>
-                <span class="font-display font-bold text-white text-sm">$STRIPES</span>
-            </div>
-            <p class="max-w-md mx-auto mb-6">
-                $STRIPES is a memecoin with no intrinsic value or expectation of financial return. Enjoy the cyberpunk ride.
-            </p>
-            <p>&copy; 2026 $STRIPES. All rights reserved on Solana.</p>
-        </div>
-    </footer>
-
-    <!-- Script for copy feedback & wallet check -->
-    <script>
-        function copyCA() {
-            const caText = document.getElementById('ca-text').innerText;
-            const textArea = document.createElement("textarea");
-            textArea.value = caText;
-            textArea.style.position = "fixed";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            
-            try {
-                const successful = document.execCommand('copy');
-              
+</body>
+</html>
