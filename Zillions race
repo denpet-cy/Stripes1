@@ -1,0 +1,362 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$ZILLIONS Race Picker - Live Community Draw & Giveaway</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            300: '#FDE047',
+                            400: '#FACC15',
+                            500: '#EAB308',
+                            600: '#CA8A04',
+                            700: '#A16207',
+                        },
+                        darkbg: '#090a0f',
+                        cardbg: '#11131e',
+                        panelbg: '#171928'
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #07080c;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .gold-glow {
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.35);
+        }
+        
+        .gold-glow-lg {
+            box-shadow: 0 0 50px rgba(234, 179, 8, 0.55);
+        }
+
+        .text-gold-gradient {
+            background: linear-gradient(135deg, #FFF599 0%, #FACC15 50%, #CA8A04 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #FACC15 0%, #EAB308 50%, #CA8A04 100%);
+            color: #000;
+            font-weight: 800;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #FFE066 0%, #FACC15 50%, #EAB308 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(234, 179, 8, 0.45);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #25283b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #eab308;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        .pulse-glow-anim {
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+
+        /* Ticker Animation */
+        @keyframes ticker-slide {
+            0% { transform: translateY(100%); opacity: 0; }
+            15% { transform: translateY(0); opacity: 1; }
+            85% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100%); opacity: 0; }
+        }
+        .ticker-anim {
+            animation: ticker-slide 3.5s ease-in-out;
+        }
+
+        canvas {
+            display: block;
+            touch-action: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-darkbg text-gray-100 antialiased selection:bg-gold-500 selection:text-black">
+
+    <!-- TOP HEADER NAVBAR -->
+    <header class="border-b border-gray-800/80 bg-panelbg/90 backdrop-blur-md sticky top-0 z-30 px-4 py-3 shadow-md">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            
+            <!-- Branding -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-black via-gold-600 to-gold-400 p-0.5 shadow-lg shadow-gold-500/20 flex items-center justify-center">
+                    <div class="w-full h-full bg-black rounded-[10px] flex items-center justify-center text-gold-400 font-orbitron font-black text-xl">
+                        🏎️
+                    </div>
+                </div>
+                <div>
+                    <h1 class="font-orbitron font-black text-lg md:text-xl tracking-wider text-white flex items-center gap-2">
+                        $ZILLIONS <span class="text-gold-gradient text-xs px-2.5 py-0.5 rounded-full bg-gold-500/10 border border-gold-500/30 font-bold uppercase tracking-widest">RACE PICKER</span>
+                    </h1>
+                    <p class="text-xs text-gray-400 font-medium hidden sm:block">Live Community Draw & Giveaway Engine</p>
+                </div>
+            </div>
+
+            <!-- Top Actions -->
+            <div class="flex items-center space-x-2 md:space-x-3">
+                <!-- Sound Toggle -->
+                <button id="soundToggleBtn" class="px-3 py-1.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-gray-300 hover:text-gold-400 text-xs font-semibold flex items-center gap-2 transition border border-gray-800" title="Toggle Sound Effects">
+                    <i id="soundIcon" class="fas fa-volume-up text-gold-400"></i>
+                    <span class="hidden md:inline">Sound FX</span>
+                </button>
+
+                <!-- Camera View Mode -->
+                <button id="cameraToggleBtn" class="px-3 py-1.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-gray-300 hover:text-gold-400 text-xs font-semibold flex items-center gap-2 transition border border-gray-800">
+                    <i class="fas fa-video text-blue-400"></i>
+                    <span id="cameraModeText" class="hidden sm:inline">Camera: Full Track</span>
+                </button>
+
+                <a href="https://t.me" target="_blank" class="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 rounded-lg text-xs font-bold transition">
+                    <i class="fab fa-telegram-plane"></i> <span class="hidden md:inline">Telegram</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT GRID -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-3 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- LEFT PANEL: SETUP & CONTROLS (4 Cols) -->
+        <section class="lg:col-span-4 flex flex-col space-y-4">
+            
+            <!-- Setup Card -->
+            <div id="setupCard" class="bg-cardbg border border-gray-800/90 rounded-2xl p-5 shadow-xl flex flex-col space-y-4">
+                <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-users text-gold-400 text-base"></i>
+                        <h2 class="font-orbitron font-bold text-gray-100 text-sm md:text-base">Racers & Entrants</h2>
+                    </div>
+                    <span id="racerCountBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-gold-500/20 text-gold-400 border border-gold-500/30">
+                        6 Racers
+                    </span>
+                </div>
+
+                <!-- Textarea Handles Input -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider flex justify-between">
+                        <span>Telegram Handles (1 per line)</span>
+                        <span class="text-gray-500 italic">Separate with space/comma</span>
+                    </label>
+                    <textarea id="handlesInput" rows="6" 
+                        class="w-full bg-darkbg border border-gray-800 focus:border-gold-500 focus:ring-1 focus:ring-gold-500 rounded-xl p-3 text-sm font-mono text-gray-200 placeholder-gray-600 outline-none transition resize-none"
+                        placeholder="@TokenShark&#10;@Von&#10;@Elena&#10;@Rose&#10;@Zeke&#10;@Dev"></textarea>
+                </div>
+
+                <!-- Quick Action Buttons -->
+                <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+                    <button id="loadSamplesBtn" class="px-3 py-2 bg-gray-900 hover:bg-gray-800 text-gray-200 hover:text-gold-400 rounded-lg border border-gray-800 transition flex items-center justify-center gap-1.5">
+                        <i class="fas fa-wand-magic-sparkles text-gold-400"></i> Preset List
+                    </button>
+                    <button id="shuffleBtn" class="px-3 py-2 bg-gray-900 hover:bg-gray-800 text-gray-200 hover:text-gold-400 rounded-lg border border-gray-800 transition flex items-center justify-center gap-1.5">
+                        <i class="fas fa-shuffle text-blue-400"></i> Shuffle Grid
+                    </button>
+                    <button id="clearBtn" class="px-3 py-2 bg-gray-900/80 hover:bg-red-950/40 text-gray-400 hover:text-red-400 rounded-lg border border-gray-800 hover:border-red-800 transition flex items-center justify-center gap-1.5 col-span-2">
+                        <i class="fas fa-trash-can"></i> Clear Input
+                    </button>
+                </div>
+
+                <!-- Race Configuration Options -->
+                <div class="pt-3 border-t border-gray-800/80 space-y-3 text-xs">
+                    
+                    <!-- Laps Selector -->
+                    <div>
+                        <label class="block font-semibold text-gray-400 uppercase tracking-wider mb-1.5">
+                            Number of Laps
+                        </label>
+                        <div class="grid grid-cols-3 gap-2 font-bold">
+                            <button data-laps="1" class="lap-btn px-2 py-1.5 rounded-lg border border-gray-800 bg-gray-900 text-gray-400 hover:text-white transition">1 Lap</button>
+                            <button data-laps="2" class="lap-btn active px-2 py-1.5 rounded-lg border border-gold-500/50 bg-gold-500/20 text-gold-300 transition">2 Laps</button>
+                            <button data-laps="3" class="lap-btn px-2 py-1.5 rounded-lg border border-gray-800 bg-gray-900 text-gray-400 hover:text-white transition">3 Laps</button>
+                        </div>
+                    </div>
+
+                    <!-- Nitro Boost Frequency -->
+                    <div>
+                        <label class="block font-semibold text-gray-400 uppercase tracking-wider mb-1.5">
+                            Nitro Boost Frequency
+                        </label>
+                        <div class="grid grid-cols-3 gap-2 font-bold">
+                            <button data-nitro="0.001" class="nitro-btn px-2 py-1.5 rounded-lg border border-gray-800 bg-gray-900 text-gray-400 hover:text-white transition">Low</button>
+                            <button data-nitro="0.003" class="nitro-btn active px-2 py-1.5 rounded-lg border border-gold-500/50 bg-gold-500/20 text-gold-300 transition">Medium</button>
+                            <button data-nitro="0.007" class="nitro-btn px-2 py-1.5 rounded-lg border border-gray-800 bg-gray-900 text-gray-400 hover:text-white transition">High 🔥</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Action Controls -->
+                <div class="pt-2 flex flex-col gap-2">
+                    <button id="startRaceBtn" class="w-full py-4 rounded-xl btn-gold font-orbitron text-base tracking-wider uppercase flex items-center justify-center gap-3 shadow-lg shadow-gold-500/20 cursor-pointer">
+                        <i class="fas fa-flag-checkered text-xl"></i> START RACE 🚀
+                    </button>
+                    <button id="resetTrackBtn" class="w-full py-2.5 rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-400 hover:text-gray-200 border border-gray-800 text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2">
+                        <i class="fas fa-rotate-left"></i> RESET TRACK
+                    </button>
+                </div>
+            </div>
+
+            <!-- Banner Info -->
+            <div class="bg-gradient-to-r from-yellow-950/20 via-cardbg to-cardbg border border-gold-500/20 rounded-2xl p-4 flex items-start space-x-3">
+                <div class="p-2 rounded-lg bg-gold-500/10 text-gold-400 shrink-0 mt-0.5">
+                    <i class="fas fa-trophy text-lg"></i>
+                </div>
+                <div class="text-xs text-gray-300 space-y-1">
+                    <p class="font-bold text-gold-400">Fair & Randomized Draw System</p>
+                    <p class="text-gray-400 leading-relaxed">Every racer has equal probability with randomized apex acceleration, overtake moves, and Nitro boosts. May the best racer win!</p>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT PANEL: ANIMATED TRACK CANVAS & LIVE HUD (8 Cols) -->
+        <section class="lg:col-span-8 flex flex-col space-y-4">
+            
+            <!-- Canvas HUD Header -->
+            <div class="bg-cardbg border border-gray-800/90 rounded-2xl p-3.5 shadow-xl flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center space-x-3">
+                    <span id="raceStatusIndicator" class="flex h-3 w-3 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </span>
+                    <h3 id="raceStatusText" class="font-orbitron font-bold text-xs md:text-sm tracking-wider text-emerald-400 uppercase">READY FOR LAUNCH</h3>
+                </div>
+
+                <!-- Telemetry Stats -->
+                <div class="flex items-center space-x-3 text-xs font-mono">
+                    <div class="bg-darkbg px-3 py-1.5 rounded-lg border border-gray-800 flex items-center gap-2">
+                        <span class="text-gray-500">LEADER:</span>
+                        <span id="hudLeader" class="text-gold-400 font-bold">---</span>
+                    </div>
+                    <div class="bg-darkbg px-3 py-1.5 rounded-lg border border-gray-800 flex items-center gap-2">
+                        <span class="text-gray-500">LAP:</span>
+                        <span id="hudLap" class="text-blue-400 font-bold">0/2</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN CANVAS CONTAINER -->
+            <div class="relative w-full bg-black rounded-2xl border border-gray-800 overflow-hidden shadow-2xl min-h-[380px] md:min-h-[460px] flex items-center justify-center">
+                
+                <canvas id="raceCanvas" class="w-full h-full bg-[#0a0c12]"></canvas>
+
+                <!-- Countdown Overlay -->
+                <div id="countdownOverlay" class="absolute inset-0 bg-black/75 backdrop-blur-sm flex flex-col items-center justify-center z-20 hidden">
+                    <span id="countdownNumber" class="font-orbitron font-black text-7xl md:text-9xl text-gold-gradient animate-bounce">3</span>
+                    <p class="font-orbitron text-gray-300 tracking-widest text-xs md:text-sm uppercase mt-4">STARTING ENGINES...</p>
+                </div>
+
+                <!-- Ready Overlay -->
+                <div id="readyStateOverlay" class="absolute inset-0 bg-black/60 backdrop-blur-xs flex flex-col items-center justify-center text-center p-6 z-10">
+                    <div class="w-16 h-16 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-3xl mb-4 pulse-glow-anim">
+                        🏁
+                    </div>
+                    <h2 class="font-orbitron font-extrabold text-xl md:text-2xl text-white mb-2">$ZILLIONS CIRCUIT READY</h2>
+                    <p class="text-gray-400 text-xs md:text-sm max-w-md">Add Telegram handles on the left and hit Start Race to initiate the live giveaway draw!</p>
+                </div>
+            </div>
+
+            <!-- LIVE COMMENTARY TICKER -->
+            <div class="bg-cardbg border border-gray-800/90 rounded-2xl p-3 shadow-xl flex items-center space-x-3 overflow-hidden">
+                <div class="px-2.5 py-1 rounded-lg bg-gold-500/20 border border-gold-500/40 text-gold-400 font-orbitron font-bold text-[10px] tracking-wider uppercase shrink-0 flex items-center gap-1.5">
+                    <i class="fas fa-bullhorn text-xs"></i> LIVE TICKER
+                </div>
+                <div class="flex-1 overflow-hidden h-6 relative">
+                    <div id="tickerText" class="absolute inset-0 flex items-center text-xs font-mono text-gray-200 font-medium">
+                        Welcome to the $ZILLIONS Race Picker! Press START RACE when ready.
+                    </div>
+                </div>
+            </div>
+
+            <!-- LIVE LEADERBOARD GRID -->
+            <div class="bg-cardbg border border-gray-800/90 rounded-2xl p-4 shadow-xl">
+                <div class="flex items-center justify-between mb-3 border-b border-gray-800 pb-2">
+                    <h4 class="font-orbitron font-bold text-xs uppercase tracking-wider text-gray-300 flex items-center gap-2">
+                        <i class="fas fa-trophy text-gold-400"></i> Real-Time Leaderboard
+                    </h4>
+                    <span class="text-[10px] font-mono text-gray-500">LIVE STANDINGS</span>
+                </div>
+
+                <div id="leaderboardContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-xs">
+                    <div class="col-span-full text-center text-gray-600 py-3 text-xs italic">
+                        Racers are lined up on the grid
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- WINNER CELEBRATION MODAL -->
+    <div id="winnerModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <!-- Confetti Canvas -->
+        <canvas id="confettiCanvas" class="absolute inset-0 pointer-events-none z-10"></canvas>
+
+        <div class="relative bg-panelbg border-2 border-gold-500/60 rounded-3xl p-6 md:p-8 max-w-lg w-full gold-glow-lg z-20 text-center transform scale-90 transition-all duration-300" id="winnerModalCard">
+            
+            <!-- Trophy Header Icon -->
+            <div class="mx-auto w-20 h-20 rounded-full bg-gradient-to-tr from-gold-600 via-gold-400 to-yellow-200 p-1 flex items-center justify-center shadow-xl shadow-gold-500/40 -mt-14 mb-4">
+                <div class="w-full h-full bg-black rounded-full flex items-center justify-center text-gold-400 text-3xl">
+                    🏆
+                </div>
+            </div>
+
+            <span class="px-3 py-1 rounded-full bg-gold-500/20 text-gold-400 border border-gold-500/40 font-orbitron text-xs font-bold tracking-widest uppercase">
+                WE HAVE A WINNER!
+            </span>
+
+            <h2 class="font-orbitron font-black text-2xl md:text-3xl text-white my-2">
+                $ZILLIONS CHAMPION
+            </h2>
+
+            <!-- Winner Highlight Box -->
+            <div class="my-4 p-4 rounded-2xl bg-gradient-to-b from-gold-500/10 via-black to-black border border-gold-500/40 shadow-inner">
+                <p class="text-xs text-gray-400 uppercase font-se
